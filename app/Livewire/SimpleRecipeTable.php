@@ -11,6 +11,8 @@ class SimpleRecipeTable extends DataTableComponent
 {
     protected $model = Recipe::class;
 
+    protected $listeners = ['refreshComponent' => '$refresh'];
+
     public function configure(): void
     {
         $this->setPrimaryKey('id')
@@ -89,10 +91,9 @@ class SimpleRecipeTable extends DataTableComponent
                 ->format(fn ($value) => '<div class="text-sm text-gray-600 dark:text-gray-400">'.$value.'분</div>')
                 ->html(),
 
-            Column::make('집밥 원가')
-                ->label(function ($row) {
-                    return '<div class="text-sm font-semibold text-gray-900 dark:text-white">₩'.number_format($row->calculateCost()).'</div>';
-                })
+            Column::make('집밥 원가', 'calculated_cooking_cost')
+                ->sortable()
+                ->format(fn ($value) => '<div class="text-sm font-semibold text-gray-900 dark:text-white">₩'.number_format($value).'</div>')
                 ->html(),
 
             Column::make('배달비', 'delivery_price')
@@ -100,32 +101,74 @@ class SimpleRecipeTable extends DataTableComponent
                 ->format(fn ($value) => '<div class="text-sm text-gray-600 dark:text-gray-400">₩'.number_format($value).'</div>')
                 ->html(),
 
-            Column::make('절약금액')
-                ->label(function ($row) {
-                    $savings = $row->calculateSavings();
-
-                    return '<div class="text-sm font-semibold text-green-600 dark:text-green-400">₩'.number_format($savings).'</div>';
-                })
+            Column::make('절약금액', 'calculated_savings')
+                ->sortable()
+                ->format(fn ($value) => '<div class="text-sm font-semibold text-green-600 dark:text-green-400">₩'.number_format($value).'</div>')
                 ->html(),
 
-            Column::make('절약률')
-                ->label(function ($row) {
-                    $percentage = $row->calculateSavingsPercentage();
-
-                    return '<div class="text-sm font-semibold text-blue-600 dark:text-blue-400">'.number_format($percentage, 0).'%</div>';
-                })
+            Column::make('절약률', 'calculated_savings_percentage')
+                ->sortable()
+                ->format(fn ($value) => '<div class="text-sm font-semibold text-blue-600 dark:text-blue-400">'.number_format($value, 0).'%</div>')
                 ->html(),
 
-            Column::make('액션')
-                ->label(function ($row) {
-                    return '<a href="'.route('recipes.show', ['recipeId' => $row->id]).'" class="inline-flex items-center justify-center px-3 py-1.5 text-xs font-medium text-white bg-blue-600 hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600 rounded-lg transition-colors duration-200">보기</a>';
-                })
+            Column::make('액션', 'id')
+                ->format(fn ($value) => '<a href="'.route('recipes.show', ['recipeId' => $value]).'" class="inline-flex items-center justify-center px-3 py-1.5 text-xs font-medium text-white bg-blue-600 hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600 rounded-lg transition-colors duration-200">보기</a>')
                 ->html(),
         ];
     }
 
     public function builder(): Builder
     {
-        return Recipe::query()->with('ingredients');
+        // 성능 최적화: 서브쿼리를 한 번만 실행하고 재사용
+        $cookingCostSubquery = '(
+            SELECT COALESCE(SUM(ri.quantity * i.current_price), 0)
+            FROM recipe_ingredients ri
+            JOIN ingredients i ON i.id = ri.ingredient_id
+            WHERE ri.recipe_id = recipes.id
+        )';
+
+        $query = Recipe::query()
+            ->select([
+                'recipes.id',
+                'recipes.name',
+                'recipes.description',
+                'recipes.cooking_time',
+                'recipes.difficulty',
+                'recipes.servings',
+                'recipes.category',
+                'recipes.image_url',
+                'recipes.delivery_price',
+                'recipes.instructions',
+                'recipes.created_at',
+                'recipes.updated_at',
+            ])
+            ->selectRaw("{$cookingCostSubquery} as calculated_cooking_cost")
+            ->selectRaw("(delivery_price - {$cookingCostSubquery}) as calculated_savings")
+            ->selectRaw("(
+                CASE
+                    WHEN delivery_price > 0 THEN
+                        ((delivery_price - {$cookingCostSubquery}) / delivery_price) * 100
+                    ELSE 0
+                END
+            ) as calculated_savings_percentage");
+
+        return $query;
     }
+
+
+    /**
+     * 라이브와이어 테이블 라이브러리가 자동으로 컬럼을 추가하는 것을 방지
+     */
+    public function getBuilder(): Builder
+    {
+        $builder = $this->builder();
+
+        // 정렬 적용
+        foreach ($this->getSorts() as $field => $direction) {
+            $builder->orderBy($field, $direction);
+        }
+
+        return $builder;
+    }
+
 }
