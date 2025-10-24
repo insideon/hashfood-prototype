@@ -5,7 +5,8 @@
             --color-gray-800: 39 39 42;  /* zinc-800 */
             --color-zinc-800: 39 39 42;
             --color-zinc-700: 63 63 70;
-            --color-gray-200: 63 63 70;  /* zinc-700로 변경 */
+            --color-gray-200: 52 52 55;  /* zinc-700보다 어두운 zinc-700/80 */
+            --color-gray-300: 63 63 70;
         }
         
         /* 페이지네이션 네비게이션 스타일 */
@@ -14,24 +15,25 @@
             transition: all 0.2s;
         }
         
-        .dark nav[role="navigation"] span[class*="bg-white"],
-        .dark nav[role="navigation"] a[class*="bg-white"] {
+        .dark nav[role="navigation"] span,
+        .dark nav[role="navigation"] a {
             background-color: rgb(39 39 42) !important;
-            border-color: rgb(63 63 70) !important;
+            border-color: rgb(52 52 55) !important;  /* 더 어두운 테두리 */
             color: rgb(209 213 219) !important;
         }
         
-        .dark nav[role="navigation"] a[class*="bg-white"]:hover {
+        .dark nav[role="navigation"] a:hover {
             background-color: rgb(63 63 70) !important;
+            border-color: rgb(63 63 70) !important;
         }
         
         .dark nav[role="navigation"] span[aria-current="page"] span {
             background-color: rgb(63 63 70) !important;
-            border-color: rgb(82 82 91) !important;
+            border-color: rgb(63 63 70) !important;  /* 배경과 같은 색으로 */
             color: rgb(255 255 255) !important;
         }
     </style>
-    
+
     {{-- 검색 및 도구 모음 --}}
     <div class="mb-6 flex flex-col sm:flex-row gap-4 items-center justify-between">
         {{-- 검색 --}}
@@ -50,7 +52,7 @@
         {{-- 페이지당 항목 수 --}}
         <div class="flex items-center gap-2">
             <label class="text-sm font-medium text-gray-600 dark:text-gray-400">표시:</label>
-            <select 
+            <select
                 wire:model.live="perPage"
                 class="pl-3 pr-7 py-2 text-sm bg-white dark:bg-zinc-800 border border-gray-200 dark:border-zinc-700 rounded-lg text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all cursor-pointer appearance-none bg-[url('data:image/svg+xml;charset=utf-8,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 fill=%22none%22 viewBox=%220 0 20 20%22%3E%3Cpath stroke=%22%236b7280%22 stroke-linecap=%22round%22 stroke-linejoin=%22round%22 stroke-width=%221.5%22 d=%22m6 8 4 4 4-4%22/%3E%3C/svg%3E')] bg-[length:0.875rem] bg-[right_0.375rem_center] bg-no-repeat"
             >
