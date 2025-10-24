@@ -2,11 +2,11 @@
     <style>
         /* 페이지네이션 다크모드 색상 오버라이드 */
         .dark {
-            --color-gray-800: 39 39 42;  /* zinc-800 */
-            --color-zinc-800: 39 39 42;
-            --color-zinc-700: 63 63 70;
-            --color-gray-200: 52 52 55;  /* zinc-700보다 어두운 zinc-700/80 */
-            --color-gray-300: 63 63 70;
+            --color-gray-800: 32 32 35;  /* 더 어두운 zinc-850 */
+            --color-zinc-800: 32 32 35;
+            --color-zinc-700: 48 48 52;  /* 더 어두운 zinc-750 */
+            --color-gray-200: 42 42 46;  /* 은은한 테두리 */
+            --color-gray-300: 52 52 56;
         }
         
         /* 페이지네이션 네비게이션 스타일 */
@@ -17,19 +17,20 @@
         
         .dark nav[role="navigation"] span,
         .dark nav[role="navigation"] a {
-            background-color: rgb(39 39 42) !important;
-            border-color: rgb(52 52 55) !important;  /* 더 어두운 테두리 */
-            color: rgb(209 213 219) !important;
+            background-color: rgb(32 32 35) !important;  /* 더 어두운 배경 */
+            border-color: rgb(42 42 46) !important;  /* 은은한 테두리 */
+            color: rgb(161 161 170) !important;  /* 더 은은한 텍스트 */
         }
         
         .dark nav[role="navigation"] a:hover {
-            background-color: rgb(63 63 70) !important;
-            border-color: rgb(63 63 70) !important;
+            background-color: rgb(48 48 52) !important;  /* 호버 시 조금만 밝게 */
+            border-color: rgb(52 52 56) !important;
+            color: rgb(209 213 219) !important;
         }
         
         .dark nav[role="navigation"] span[aria-current="page"] span {
-            background-color: rgb(63 63 70) !important;
-            border-color: rgb(63 63 70) !important;  /* 배경과 같은 색으로 */
+            background-color: rgb(48 48 52) !important;  /* 현재 페이지 */
+            border-color: rgb(48 48 52) !important;  /* 배경과 같은 색 */
             color: rgb(255 255 255) !important;
         }
     </style>
