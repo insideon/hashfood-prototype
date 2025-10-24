@@ -1,12 +1,12 @@
 <div class="w-full">
     <style>
-        /* 다크모드 전체 색상 오버라이드 */
+        /* 다크모드 전체 색상 오버라이드 - 더 어둡게 */
         .dark {
-            --color-gray-800: 32 32 35;  /* 더 어두운 zinc-850 */
-            --color-zinc-800: 32 32 35;
-            --color-zinc-700: 38 38 41;  /* 매우 어두운 테두리 (거의 black에 가까움) */
-            --color-gray-200: 42 42 46;  /* 은은한 테두리 */
-            --color-gray-300: 52 52 56;
+            --color-gray-800: 24 24 27;  /* zinc-900 수준 */
+            --color-zinc-800: 24 24 27;
+            --color-zinc-700: 28 28 32;  /* 매우 어두운 테두리 */
+            --color-gray-200: 32 32 36;  /* 은은한 테두리 */
+            --color-gray-300: 39 39 42;
         }
         
         /* 페이지네이션 네비게이션 스타일 */
@@ -17,20 +17,20 @@
         
         .dark nav[role="navigation"] span,
         .dark nav[role="navigation"] a {
-            background-color: rgb(32 32 35);
-            border-color: rgb(42 42 46);
+            background-color: rgb(24 24 27);
+            border-color: rgb(32 32 36);
             color: rgb(161 161 170);
         }
         
         .dark nav[role="navigation"] a:hover {
-            background-color: rgb(48 48 52);
-            border-color: rgb(52 52 56);
+            background-color: rgb(39 39 42);
+            border-color: rgb(39 39 42);
             color: rgb(209 213 219);
         }
         
         .dark nav[role="navigation"] span[aria-current="page"] span {
-            background-color: rgb(48 48 52);
-            border-color: rgb(48 48 52);
+            background-color: rgb(39 39 42);
+            border-color: rgb(39 39 42);
             color: rgb(255 255 255);
         }
     </style>
