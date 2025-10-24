@@ -266,7 +266,7 @@
                             {{-- 액션 --}}
                             <td class="px-6 py-4 text-center">
                                 <a
-                                    href="{{ route('recipes.show', $recipe) }}"
+                                    href="{{ route('recipes.show', ['recipeId' => $recipe->id]) }}"
                                     class="inline-flex items-center px-2 py-1 border border-transparent text-xs font-medium rounded text-white bg-gradient-to-r from-orange-500 to-rose-500 hover:from-orange-600 hover:to-rose-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-orange-500 transition-all duration-200"
                                 >
                                     <flux:icon.eye class="w-3 h-3 mr-1" />

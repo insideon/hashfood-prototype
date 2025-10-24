@@ -58,7 +58,7 @@ $categories = computed(function () {
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             @forelse($this->recipes as $recipe)
                 <a
-                    href="{{ route('recipes.show', $recipe) }}"
+                    href="{{ route('recipes.show', ['recipeId' => $recipe->id]) }}"
                     class="group block bg-white dark:bg-zinc-800 rounded-lg shadow-sm hover:shadow-md transition-shadow overflow-hidden"
                     wire:key="recipe-{{ $recipe->id }}"
                 >
