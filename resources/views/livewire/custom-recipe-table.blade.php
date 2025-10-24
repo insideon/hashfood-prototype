@@ -175,26 +175,11 @@
                         <tr class="hover:bg-gray-50 dark:hover:bg-zinc-700/50 transition-colors duration-150">
                             {{-- 음식명 --}}
                             <td class="px-6 py-4">
-                                <div class="flex items-center">
-                                    <div class="flex-shrink-0 h-12 w-12">
-                                        <img 
-                                            class="h-12 w-12 rounded-lg object-cover" 
-                                            src="{{ $recipe->image_url }}" 
-                                            alt="{{ $recipe->name }}"
-                                            onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"
-                                        />
-                                        <div class="h-12 w-12 rounded-lg bg-gradient-to-br from-orange-500 to-rose-500 flex items-center justify-center text-white font-semibold text-lg" style="display: none;">
-                                            {{ substr($recipe->name, 0, 1) }}
-                                        </div>
-                                    </div>
-                                    <div class="ml-4">
-                                        <div class="text-sm font-semibold text-gray-900 dark:text-white">
-                                            {{ $recipe->name }}
-                                        </div>
-                                        <div class="text-sm text-gray-500 dark:text-gray-400">
-                                            {{ $recipe->servings }}인분
-                                        </div>
-                                    </div>
+                                <div class="text-sm font-semibold text-gray-900 dark:text-white">
+                                    {{ $recipe->name }}
+                                </div>
+                                <div class="text-sm text-gray-500 dark:text-gray-400">
+                                    {{ $recipe->servings }}인분
                                 </div>
                             </td>
 
@@ -283,11 +268,11 @@
 
                             {{-- 액션 --}}
                             <td class="px-6 py-4 text-center">
-                                <a
-                                    href="{{ route('recipes.show', $recipe) }}"
-                                    class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-lg text-white bg-gradient-to-r from-orange-500 to-rose-500 hover:from-orange-600 hover:to-rose-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-orange-500 transition-all duration-200 shadow-sm hover:shadow-md"
+                                <a 
+                                    href="{{ route('recipes.show', $recipe) }}" 
+                                    class="inline-flex items-center px-2 py-1 border border-transparent text-xs font-medium rounded text-white bg-gradient-to-r from-orange-500 to-rose-500 hover:from-orange-600 hover:to-rose-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-orange-500 transition-all duration-200"
                                 >
-                                    <flux:icon.eye class="w-4 h-4 mr-1" />
+                                    <flux:icon.eye class="w-3 h-3 mr-1" />
                                     보기
                                 </a>
                             </td>

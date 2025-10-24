@@ -70,17 +70,10 @@ layout('components.layouts.guest');
             </div>
         </div>
 
-        {{-- Recipe Table --}}
-        <div class="mb-8">
-            <h2 class="text-xl font-semibold text-gray-900 dark:text-white mb-6">
-                레시피 목록
-            </h2>
-            <p class="text-gray-600 dark:text-gray-400 mb-6">
-                실제 식자재 원가로 계산된 집밥 vs 배달비 비교
-            </p>
-
+                    {{-- Recipe Table --}}
+                    <div class="mb-8">
                         @livewire('custom-recipe-table')
-        </div>
+                    </div>
         </div>
     </div>
 
