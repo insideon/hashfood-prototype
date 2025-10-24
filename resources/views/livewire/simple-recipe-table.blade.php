@@ -1,4 +1,39 @@
 <div class="w-full">
+    <style>
+        /* 페이지네이션 스타일 */
+        .pagination-current {
+            background-color: rgb(239 246 255) !important;
+            color: rgb(29 78 216) !important;
+            border-color: rgb(191 219 254) !important;
+        }
+        
+        .pagination-link {
+            background-color: rgb(255 255 255) !important;
+            color: rgb(55 65 81) !important;
+            border-color: rgb(229 231 235) !important;
+        }
+        
+        .pagination-link:hover {
+            background-color: rgb(249 250 251) !important;
+        }
+        
+        .dark .pagination-current {
+            background-color: rgb(63 63 70) !important;
+            color: rgb(255 255 255) !important;
+            border-color: rgb(82 82 91) !important;
+        }
+        
+        .dark .pagination-link {
+            background-color: rgb(39 39 42) !important;
+            color: rgb(209 213 219) !important;
+            border-color: rgb(63 63 70) !important;
+        }
+        
+        .dark .pagination-link:hover {
+            background-color: rgb(63 63 70) !important;
+        }
+    </style>
+    
     {{-- 검색 및 도구 모음 --}}
     <div class="mb-6 flex flex-col sm:flex-row gap-4 items-center justify-between">
         {{-- 검색 --}}
