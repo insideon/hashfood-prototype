@@ -1,9 +1,14 @@
 <?php
 
 use App\Models\Recipe;
-use function Livewire\Volt\{layout};
+use function Livewire\Volt\{layout, state};
 
 layout('components.layouts.guest');
+
+// 간단한 상태와 메서드 추가
+state(['message' => 'Hello World']);
+
+$toJSON = fn() => json_encode(['status' => 'ok']);
 
 ?>
 
