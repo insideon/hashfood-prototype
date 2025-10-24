@@ -8,7 +8,7 @@
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <div class="flex justify-between h-16">
                     <div class="flex items-center">
-                        <a href="{{ route('recipes.index') }}" class="flex items-center space-x-3" wire:navigate>
+                        <a href="{{ route('home') }}" class="flex items-center space-x-3" wire:navigate>
                             <div class="w-8 h-8 bg-gradient-to-br from-orange-400 to-rose-500 rounded-lg flex items-center justify-center">
                                 <flux:icon.fire class="w-5 h-5 text-white" />
                             </div>
