@@ -4,7 +4,8 @@ use Illuminate\Support\Facades\Route;
 use Laravel\Fortify\Features;
 use Livewire\Volt\Volt;
 
-Route::redirect('/', '/recipes');
+// Landing page
+Volt::route('/', 'landing')->name('home');
 
 // Recipe routes
 Volt::route('recipes', 'recipes.index')->name('recipes.index');
