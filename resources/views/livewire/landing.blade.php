@@ -79,7 +79,7 @@ layout('components.layouts.guest');
                 실제 식자재 원가로 계산된 집밥 vs 배달비 비교
             </p>
 
-            @livewire('recipe-table')
+                        @livewire('custom-recipe-table')
         </div>
         </div>
     </div>
