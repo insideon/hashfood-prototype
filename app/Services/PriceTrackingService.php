@@ -72,7 +72,7 @@ class PriceTrackingService
             $changePercentage = (($newPrice - $oldPrice) / $oldPrice) * 100;
 
             if (abs($changePercentage) >= AppConstants::PRICE_ALERT_THRESHOLD_PERCENTAGE) {
-                $this->sendPriceAlert($ingredient, $oldPrice, $newPrice, $changePercentage);
+                $this->sendPriceAlert($ingredient, (float) $oldPrice, (float) $newPrice, $changePercentage);
             }
         }
     }

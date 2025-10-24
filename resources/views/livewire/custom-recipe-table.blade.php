@@ -290,16 +290,24 @@
         </div>
 
         {{-- 페이지네이션 --}}
-        @if($recipes->hasPages())
+        @if(method_exists($recipes, 'hasPages') && $recipes->hasPages())
             <div class="bg-white dark:bg-zinc-800 px-6 py-4 border-t border-gray-200 dark:border-zinc-700">
                 <div class="flex items-center justify-between">
                     <div class="flex items-center text-sm text-gray-700 dark:text-gray-300">
                         <span>
-                            {{ $recipes->firstItem() }} - {{ $recipes->lastItem() }} / {{ $recipes->total() }}개 결과
+                            @if(method_exists($recipes, 'firstItem') && method_exists($recipes, 'lastItem') && method_exists($recipes, 'total'))
+                                {{ $recipes->firstItem() }} - {{ $recipes->lastItem() }} / {{ $recipes->total() }}개 결과
+                            @elseif(method_exists($recipes, 'count'))
+                                {{ $recipes->count() }}개 결과
+                            @else
+                                결과 표시
+                            @endif
                         </span>
                     </div>
                     <div class="flex items-center space-x-2">
-                        {{ $recipes->links() }}
+                        @if(method_exists($recipes, 'links'))
+                            {{ $recipes->links() }}
+                        @endif
                     </div>
                 </div>
             </div>
