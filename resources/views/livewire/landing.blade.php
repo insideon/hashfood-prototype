@@ -15,7 +15,7 @@ $toJSON = fn() => json_encode(['status' => 'ok']);
 <div class="min-h-screen bg-gray-50 dark:bg-zinc-900">
     {{-- Hero Section --}}
     <div class="bg-gray-50 dark:bg-zinc-900">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 mt-8">
             <div class="text-center">
                 <h1 class="text-3xl sm:text-4xl font-bold text-gray-900 dark:text-white mb-4">
                     해 먹을까, 시켜 먹을까?
@@ -29,9 +29,9 @@ $toJSON = fn() => json_encode(['status' => 'ok']);
 
     {{-- Main Content --}}
     <div class="bg-gray-50 dark:bg-zinc-900">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
         {{-- Stats Summary --}}
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-12">
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
             <div class="bg-white dark:bg-zinc-800 rounded-xl p-6 shadow-sm border border-gray-200 dark:border-zinc-700">
                 <div class="flex items-center">
                     <div class="w-12 h-12 bg-orange-100 dark:bg-orange-900/20 rounded-xl flex items-center justify-center">
@@ -76,7 +76,7 @@ $toJSON = fn() => json_encode(['status' => 'ok']);
         </div>
 
         {{-- Recipe Table --}}
-        <div class="mt-12">
+        <div class="mt-4">
             @livewire('simple-recipe-table')
         </div>
         </div>

@@ -11,10 +11,15 @@
             background-color: rgb(59 130 246); /* blue-500 - 파란색 강조 */
             color: rgb(255 255 255);
         }
+
+        /* 페이지네이션 텍스트 숨기기 */
+        nav[role="navigation"] p {
+            display: none;
+        }
     </style>
 
     {{-- 검색 및 도구 모음 --}}
-    <div class="mb-6 flex flex-col sm:flex-row gap-4 items-center justify-between">
+    <div class="mb-4 flex flex-col sm:flex-row gap-4 items-center justify-between">
         {{-- 검색 --}}
         <div class="w-full sm:w-96">
             <div class="relative">
@@ -29,17 +34,19 @@
         </div>
 
         {{-- 페이지당 항목 수 --}}
-        <div class="flex items-center gap-2">
-            <label class="text-sm font-medium text-gray-600 dark:text-gray-400">표시:</label>
-            <select
-                wire:model.live="perPage"
-                class="pl-3 pr-7 py-2 text-sm bg-white dark:bg-zinc-800 border border-gray-200 dark:border-zinc-700 rounded-lg text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all cursor-pointer appearance-none bg-[url('data:image/svg+xml;charset=utf-8,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 fill=%22none%22 viewBox=%220 0 20 20%22%3E%3Cpath stroke=%22%236b7280%22 stroke-linecap=%22round%22 stroke-linejoin=%22round%22 stroke-width=%221.5%22 d=%22m6 8 4 4 4-4%22/%3E%3C/svg%3E')] bg-[length:0.875rem] bg-[right_0.375rem_center] bg-no-repeat"
-            >
-                <option value="10">10</option>
-                <option value="20">20</option>
-                <option value="50">50</option>
-                <option value="100">100</option>
-            </select>
+        <div class="flex items-center gap-3">
+            <div class="flex items-center gap-2 px-3 py-2 bg-white dark:bg-zinc-800 border border-gray-200 dark:border-zinc-700 rounded-lg">
+                <flux:icon.list-bullet class="w-4 h-4 text-gray-400 dark:text-gray-500" />
+                <select
+                    wire:model.live="perPage"
+                    class="text-sm bg-transparent text-gray-900 dark:text-white focus:outline-none cursor-pointer appearance-none bg-[url('data:image/svg+xml;charset=utf-8,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 fill=%22none%22 viewBox=%220 0 20 20%22%3E%3Cpath stroke=%22%236b7280%22 stroke-linecap=%22round%22 stroke-linejoin=%22round%22 stroke-width=%221.5%22 d=%22m6 8 4 4 4-4%22/%3E%3C/svg%3E')] bg-[length:0.75rem] bg-[right_0.25rem_center] bg-no-repeat"
+                >
+                    <option value="10">10</option>
+                    <option value="20">20</option>
+                    <option value="50">50</option>
+                    <option value="100">100</option>
+                </select>
+            </div>
         </div>
     </div>
 
@@ -181,11 +188,12 @@
             </table>
         </div>
 
-        {{-- 페이지네이션 --}}
-        @if($recipes->hasPages())
-            <div class="px-6 py-4 border-t border-gray-200 dark:border-zinc-700">
-                {{ $recipes->links() }}
-            </div>
-        @endif
     </div>
+
+    {{-- 페이지네이션 --}}
+    @if($recipes->hasPages())
+        <div class="flex justify-center mt-6">
+            {{ $recipes->links() }}
+        </div>
+    @endif
 </div>
