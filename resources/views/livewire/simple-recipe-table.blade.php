@@ -1,4 +1,18 @@
 <div class="w-full">
+    <style>
+        /* 페이지네이션 다크모드 색상 오버라이드 */
+        .dark nav[role="navigation"] button,
+        .dark nav[role="navigation"] span span {
+            background-color: rgb(39 39 42);
+            color: rgb(209 213 219);
+        }
+
+        .dark nav[role="navigation"] span[aria-current="page"] span {
+            background-color: rgb(59 130 246); /* blue-500 - 파란색 강조 */
+            color: rgb(255 255 255);
+        }
+    </style>
+
     {{-- 검색 및 도구 모음 --}}
     <div class="mb-6 flex flex-col sm:flex-row gap-4 items-center justify-between">
         {{-- 검색 --}}
