@@ -178,9 +178,6 @@
                                 <div class="text-sm font-semibold text-gray-900 dark:text-white">
                                     {{ $recipe->name }}
                                 </div>
-                                <div class="text-sm text-gray-500 dark:text-gray-400">
-                                    {{ $recipe->servings }}인분
-                                </div>
                             </td>
 
                             {{-- 카테고리 --}}
@@ -268,8 +265,8 @@
 
                             {{-- 액션 --}}
                             <td class="px-6 py-4 text-center">
-                                <a 
-                                    href="{{ route('recipes.show', $recipe) }}" 
+                                <a
+                                    href="{{ route('recipes.show', $recipe) }}"
                                     class="inline-flex items-center px-2 py-1 border border-transparent text-xs font-medium rounded text-white bg-gradient-to-r from-orange-500 to-rose-500 hover:from-orange-600 hover:to-rose-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-orange-500 transition-all duration-200"
                                 >
                                     <flux:icon.eye class="w-3 h-3 mr-1" />
