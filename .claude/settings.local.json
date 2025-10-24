@@ -6,7 +6,8 @@
       "Bash(psql:*)",
       "Bash(git add:*)",
       "Bash(git commit:*)",
-      "Bash(vendor/bin/pint:*)"
+      "Bash(vendor/bin/pint:*)",
+      "mcp__laravel-boost__database-query"
     ]
   },
   "enabledMcpjsonServers": [
