@@ -21,12 +21,16 @@ class UpdateIngredientPrices extends Command
      */
     protected $description = '식자재 가격을 업데이트합니다';
 
+    public function __construct(private PriceTrackingService $priceTrackingService)
+    {
+        parent::__construct();
+    }
+
     /**
      * Execute the console command.
      */
     public function handle(): int
     {
-        $priceTrackingService = new PriceTrackingService;
 
         $ingredientId = $this->option('ingredient');
 
@@ -40,11 +44,11 @@ class UpdateIngredientPrices extends Command
             }
 
             $this->info("식자재 '{$ingredient->name}'의 가격을 업데이트 중...");
-            $priceTrackingService->updateIngredientPrice($ingredient);
+            $this->priceTrackingService->updateIngredientPrice($ingredient);
             $this->info("가격 업데이트 완료: ₩{$ingredient->fresh()->current_price}");
         } else {
             $this->info('모든 식자재의 가격을 업데이트 중...');
-            $priceTrackingService->updateAllPrices();
+            $this->priceTrackingService->updateAllPrices();
             $this->info('모든 식자재 가격 업데이트 완료');
         }
 

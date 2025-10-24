@@ -2,6 +2,7 @@
 
 namespace App\Livewire;
 
+use App\Config\AppConstants;
 use App\Models\ActivityLog;
 use App\Models\Recipe;
 use App\Models\UserPreference;
@@ -41,43 +42,40 @@ class Dashboard extends Component
 
     public $budgetBasedRecommendations = [];
 
-    public function mount(): void
+    public function mount(RecommendationService $recommendationService): void
     {
         $this->user = Auth::user();
         $this->userPreferences = $this->user->userPreferences ?? UserPreference::create([
             'user_id' => $this->user->id,
-            'budget_limit' => 100000, // 기본값 10만원
-            'preferred_quality' => 'normal',
+            'budget_limit' => AppConstants::DEFAULT_BUDGET_LIMIT,
+            'preferred_quality' => AppConstants::DEFAULT_QUALITY,
         ]);
 
-        $this->loadStatistics();
+        $this->loadStatistics($recommendationService);
     }
 
-    public function loadStatistics(): void
+    public function loadStatistics(RecommendationService $recommendationService): void
     {
         $this->loadSavingsData();
         $this->loadDecisionData();
         $this->loadFavoriteRecipes();
         $this->loadRecentActivity();
         $this->loadTrendData();
-        $this->loadRecommendations();
+        $this->loadRecommendations($recommendationService);
     }
 
     private function loadSavingsData(): void
     {
-        // 총 절약 금액
         $this->totalSavings = ActivityLog::where('user_id', $this->user->id)
             ->where('decision_type', 'cook')
             ->sum('saved_amount');
 
-        // 이번 달 절약 금액
         $this->monthlySavings = ActivityLog::where('user_id', $this->user->id)
             ->where('decision_type', 'cook')
             ->whereMonth('created_at', now()->month)
             ->whereYear('created_at', now()->year)
             ->sum('saved_amount');
 
-        // 이번 주 절약 금액
         $this->weeklySavings = ActivityLog::where('user_id', $this->user->id)
             ->where('decision_type', 'cook')
             ->whereBetween('created_at', [now()->startOfWeek(), now()->endOfWeek()])
@@ -118,11 +116,20 @@ class Dashboard extends Component
 
     private function loadTrendData(): void
     {
+        $driver = DB::getDriverName();
+
         // 최근 6개월 트렌드
+        $monthSelect = match ($driver) {
+            'sqlite' => DB::raw('strftime("%Y-%m", created_at) as month'),
+            'mysql', 'mariadb' => DB::raw('DATE_FORMAT(created_at, "%Y-%m") as month'),
+            'pgsql' => DB::raw('TO_CHAR(created_at, \'YYYY-MM\') as month'),
+            default => DB::raw('strftime("%Y-%m", created_at) as month'),
+        };
+
         $this->monthlyTrend = ActivityLog::where('user_id', $this->user->id)
             ->where('decision_type', 'cook')
             ->select(
-                DB::raw('strftime("%Y-%m", created_at) as month'),
+                $monthSelect,
                 DB::raw('SUM(saved_amount) as total_savings'),
                 DB::raw('COUNT(*) as cooking_count')
             )
@@ -132,10 +139,17 @@ class Dashboard extends Component
             ->get();
 
         // 최근 4주 트렌드
+        $weekSelect = match ($driver) {
+            'sqlite' => DB::raw('strftime("%W", created_at) as week'),
+            'mysql', 'mariadb' => DB::raw('WEEK(created_at) as week'),
+            'pgsql' => DB::raw('EXTRACT(WEEK FROM created_at) as week'),
+            default => DB::raw('strftime("%W", created_at) as week'),
+        };
+
         $this->weeklyTrend = ActivityLog::where('user_id', $this->user->id)
             ->where('decision_type', 'cook')
             ->select(
-                DB::raw('strftime("%W", created_at) as week'),
+                $weekSelect,
                 DB::raw('SUM(saved_amount) as total_savings'),
                 DB::raw('COUNT(*) as cooking_count')
             )
@@ -145,10 +159,8 @@ class Dashboard extends Component
             ->get();
     }
 
-    private function loadRecommendations(): void
+    private function loadRecommendations(RecommendationService $recommendationService): void
     {
-        $recommendationService = new RecommendationService;
-
         $this->recommendedRecipes = $recommendationService->getRecommendations($this->user->id, 3);
         $this->timeBasedRecommendations = $recommendationService->getTimeBasedRecommendations($this->user->id, 3);
         $this->budgetBasedRecommendations = $recommendationService->getBudgetBasedRecommendations($this->user->id, 3);

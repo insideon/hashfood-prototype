@@ -2,6 +2,7 @@
 
 namespace App\Livewire;
 
+use App\Config\AppConstants;
 use App\Models\Recipe;
 use App\Models\UserPreference;
 use Illuminate\Support\Facades\Auth;
@@ -19,9 +20,9 @@ class Onboarding extends Component
     public $availableRecipes = [];
 
     // Step 2: 예산 설정
-    public $budgetLimit = 100000;
+    public $budgetLimit = AppConstants::DEFAULT_BUDGET_LIMIT;
 
-    public $preferredQuality = 'normal';
+    public $preferredQuality = AppConstants::DEFAULT_QUALITY;
 
     // Step 3: 알레르기/제한사항
     public $dietaryRestrictions = [];
@@ -57,10 +58,15 @@ class Onboarding extends Component
 
     public function toggleRecipe(int $recipeId): void
     {
+        $this->validate([
+            'selectedRecipes' => 'array|max:5',
+            'selectedRecipes.*' => 'exists:recipes,id',
+        ]);
+
         if (in_array($recipeId, $this->selectedRecipes)) {
             $this->selectedRecipes = array_filter($this->selectedRecipes, fn ($id) => $id !== $recipeId);
         } else {
-            if (count($this->selectedRecipes) < 5) {
+            if (count($this->selectedRecipes) < AppConstants::MAX_SELECTED_RECIPES) {
                 $this->selectedRecipes[] = $recipeId;
             }
         }
@@ -68,6 +74,10 @@ class Onboarding extends Component
 
     public function toggleRestriction(string $restriction): void
     {
+        $this->validate([
+            'dietaryRestrictions' => 'array',
+        ]);
+
         if (in_array($restriction, $this->dietaryRestrictions)) {
             $this->dietaryRestrictions = array_filter($this->dietaryRestrictions, fn ($r) => $r !== $restriction);
         } else {
@@ -77,6 +87,14 @@ class Onboarding extends Component
 
     public function completeOnboarding()
     {
+        $this->validate([
+            'selectedRecipes' => 'required|array|min:'.AppConstants::MIN_SELECTED_RECIPES.'|max:'.AppConstants::MAX_SELECTED_RECIPES,
+            'selectedRecipes.*' => 'exists:recipes,id',
+            'budgetLimit' => 'required|integer|min:'.AppConstants::MIN_BUDGET,
+            'preferredQuality' => 'required|in:low,normal,high',
+            'dietaryRestrictions' => 'array',
+        ]);
+
         $user = Auth::user();
 
         // 사용자 선호도 생성 또는 업데이트
@@ -117,9 +135,9 @@ class Onboarding extends Component
     public function getCanProceedProperty(): bool
     {
         return match ($this->currentStep) {
-            1 => count($this->selectedRecipes) >= 3,
+            1 => count($this->selectedRecipes) >= AppConstants::MIN_SELECTED_RECIPES,
             2 => $this->budgetLimit > 0,
-            3 => true, // 선택사항이므로 항상 진행 가능
+            3 => true,
             default => false,
         };
     }

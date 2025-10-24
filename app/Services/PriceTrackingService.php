@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Config\AppConstants;
 use App\Models\Ingredient;
 use App\Models\PriceHistory;
 use Illuminate\Support\Collection;
@@ -70,8 +71,7 @@ class PriceTrackingService
         if ($oldPrice > 0) {
             $changePercentage = (($newPrice - $oldPrice) / $oldPrice) * 100;
 
-            // 20% 이상 변동 시 알림 (PRD 요구사항)
-            if (abs($changePercentage) >= 20) {
+            if (abs($changePercentage) >= AppConstants::PRICE_ALERT_THRESHOLD_PERCENTAGE) {
                 $this->sendPriceAlert($ingredient, $oldPrice, $newPrice, $changePercentage);
             }
         }
@@ -82,17 +82,13 @@ class PriceTrackingService
      */
     private function sendPriceAlert(Ingredient $ingredient, float $oldPrice, float $newPrice, float $changePercentage): void
     {
-        // 실제 구현에서는 이메일, 푸시 알림 등을 사용
         Log::info("Price alert for {$ingredient->name}: {$oldPrice} -> {$newPrice} ({$changePercentage}%)");
-
-        // 여기서는 로그로만 기록하지만, 실제로는 Notification 시스템을 사용
-        // Notification::send($users, new PriceAlert($ingredient, $oldPrice, $newPrice, $changePercentage));
     }
 
     /**
      * 가격 트렌드를 분석합니다.
      */
-    public function analyzePriceTrends(int $days = 30): Collection
+    public function analyzePriceTrends(int $days = AppConstants::DEFAULT_TREND_ANALYSIS_DAYS): Collection
     {
         $trends = collect();
 
@@ -114,7 +110,7 @@ class PriceTrackingService
                     'first_price' => $firstPrice,
                     'last_price' => $lastPrice,
                     'change_percentage' => $changePercentage,
-                    'trend' => $changePercentage > 5 ? 'up' : ($changePercentage < -5 ? 'down' : 'stable'),
+                    'trend' => $changePercentage > AppConstants::PRICE_TREND_UP_THRESHOLD ? 'up' : ($changePercentage < AppConstants::PRICE_TREND_DOWN_THRESHOLD ? 'down' : 'stable'),
                     'volatility' => $this->calculateVolatility($histories),
                 ]);
             }
@@ -147,10 +143,10 @@ class PriceTrackingService
      */
     public function getOptimalBuyingTimes(): Collection
     {
-        $trends = $this->analyzePriceTrends(7); // 최근 7일 트렌드
+        $trends = $this->analyzePriceTrends(AppConstants::SHORT_TERM_ANALYSIS_DAYS);
 
         return $trends->filter(function ($trend) {
-            return $trend['trend'] === 'down' && $trend['change_percentage'] < -10;
+            return $trend['trend'] === 'down' && $trend['change_percentage'] < AppConstants::OPTIMAL_BUYING_THRESHOLD;
         })->take(5);
     }
 
@@ -159,10 +155,10 @@ class PriceTrackingService
      */
     public function getHighVolatilityIngredients(): Collection
     {
-        $trends = $this->analyzePriceTrends(30);
+        $trends = $this->analyzePriceTrends(AppConstants::DEFAULT_TREND_ANALYSIS_DAYS);
 
         return $trends->filter(function ($trend) {
-            return $trend['volatility'] > 1000; // 변동성이 높은 식자재
+            return $trend['volatility'] > AppConstants::HIGH_VOLATILITY_THRESHOLD;
         })->sortByDesc('volatility')->take(10);
     }
 
@@ -173,18 +169,16 @@ class PriceTrackingService
     {
         $currentPrice = $ingredient->current_price;
 
-        // 랜덤한 가격 변동 (-10% ~ +10%)
-        $variation = (rand(-100, 100) / 1000); // -10% ~ +10%
+        $variation = (rand(AppConstants::PRICE_VARIATION_MIN, AppConstants::PRICE_VARIATION_MAX) / AppConstants::PRICE_VARIATION_DIVISOR);
         $newPrice = $currentPrice * (1 + $variation);
 
-        // 최소 가격 보장
-        return max($newPrice, $currentPrice * 0.5);
+        return max($newPrice, $currentPrice * AppConstants::MINIMUM_PRICE_RATIO);
     }
 
     /**
      * 특정 기간의 가격 통계를 제공합니다.
      */
-    public function getPriceStatistics(Ingredient $ingredient, int $days = 30): array
+    public function getPriceStatistics(Ingredient $ingredient, int $days = AppConstants::DEFAULT_TREND_ANALYSIS_DAYS): array
     {
         $histories = PriceHistory::where('ingredient_id', $ingredient->id)
             ->where('recorded_at', '>=', now()->subDays($days))
@@ -221,10 +215,6 @@ class PriceTrackingService
      */
     public function schedulePriceUpdates(): void
     {
-        // 실제 구현에서는 Laravel Scheduler를 사용하여 정기적으로 실행
-        // $schedule->call([$this, 'updateAllPrices'])->daily();
-
-        // 여기서는 수동으로 실행
         $this->updateAllPrices();
     }
 }
