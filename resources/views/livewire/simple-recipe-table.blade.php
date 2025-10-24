@@ -8,13 +8,27 @@
         }
 
         .dark nav[role="navigation"] span[aria-current="page"] span {
-            background-color: rgb(59 130 246); /* blue-500 - 파란색 강조 */
+            background-color: rgb(59 130 246);
             color: rgb(255 255 255);
         }
 
         /* 페이지네이션 텍스트 숨기기 */
         nav[role="navigation"] p {
             display: none;
+        }
+
+        /* 테이블 헤더 스타일 */
+        .sortable-header {
+            cursor: pointer;
+            user-select: none;
+        }
+
+        .sortable-header:hover {
+            background-color: rgba(0, 0, 0, 0.05);
+        }
+
+        .dark .sortable-header:hover {
+            background-color: rgba(255, 255, 255, 0.05);
         }
     </style>
 
@@ -39,7 +53,7 @@
                 <flux:icon.list-bullet class="w-4 h-4 text-gray-400 dark:text-gray-500" />
                 <select
                     wire:model.live="perPage"
-                    class="text-sm bg-transparent text-gray-900 dark:text-white focus:outline-none cursor-pointer appearance-none bg-[url('data:image/svg+xml;charset=utf-8,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 fill=%22none%22 viewBox=%220 0 20 20%22%3E%3Cpath stroke=%22%236b7280%22 stroke-linecap=%22round%22 stroke-linejoin=%22round%22 stroke-width=%221.5%22 d=%22m6 8 4 4 4-4%22/%3E%3C/svg%3E')] bg-[length:0.75rem] bg-[right_0.25rem_center] bg-no-repeat"
+                    class="text-sm bg-transparent text-gray-900 dark:text-white focus:outline-none cursor-pointer"
                 >
                     <option value="10">10</option>
                     <option value="20">20</option>
@@ -53,162 +67,12 @@
     {{-- 테이블 --}}
     <div class="bg-white dark:bg-zinc-800 rounded-2xl shadow-sm border border-gray-200 dark:border-zinc-700 overflow-hidden">
         <div class="overflow-x-auto">
-            <table class="min-w-full">
-                <thead>
-                    <tr class="border-b border-gray-200 dark:border-zinc-700">
-                        <th class="px-6 py-4 text-left text-xs font-semibold text-gray-700 dark:text-gray-300 uppercase tracking-wider cursor-pointer hover:bg-gray-50 dark:hover:bg-zinc-700/50 transition-colors" wire:click="sortBy('name')">
-                            <div class="flex items-center gap-2">
-                                음식명
-                                @if($sortBy === 'name')
-                                    <flux:icon.chevron-up class="w-4 h-4 {{ $sortDirection === 'asc' ? '' : 'rotate-180' }} transition-transform" />
-                                @endif
-                            </div>
-                        </th>
-                        <th class="px-6 py-4 text-left text-xs font-semibold text-gray-700 dark:text-gray-300 uppercase tracking-wider cursor-pointer hover:bg-gray-50 dark:hover:bg-zinc-700/50 transition-colors" wire:click="sortBy('category')">
-                            <div class="flex items-center gap-2">
-                                카테고리
-                                @if($sortBy === 'category')
-                                    <flux:icon.chevron-up class="w-4 h-4 {{ $sortDirection === 'asc' ? '' : 'rotate-180' }} transition-transform" />
-                                @endif
-                            </div>
-                        </th>
-                        <th class="px-6 py-4 text-left text-xs font-semibold text-gray-700 dark:text-gray-300 uppercase tracking-wider cursor-pointer hover:bg-gray-50 dark:hover:bg-zinc-700/50 transition-colors" wire:click="sortBy('difficulty')">
-                            <div class="flex items-center gap-2">
-                                난이도
-                                @if($sortBy === 'difficulty')
-                                    <flux:icon.chevron-up class="w-4 h-4 {{ $sortDirection === 'asc' ? '' : 'rotate-180' }} transition-transform" />
-                                @endif
-                            </div>
-                        </th>
-                        <th class="px-6 py-4 text-left text-xs font-semibold text-gray-700 dark:text-gray-300 uppercase tracking-wider cursor-pointer hover:bg-gray-50 dark:hover:bg-zinc-700/50 transition-colors" wire:click="sortBy('cooking_time')">
-                            <div class="flex items-center gap-2">
-                                조리시간
-                                @if($sortBy === 'cooking_time')
-                                    <flux:icon.chevron-up class="w-4 h-4 {{ $sortDirection === 'asc' ? '' : 'rotate-180' }} transition-transform" />
-                                @endif
-                            </div>
-                        </th>
-                        <th class="px-6 py-4 text-left text-xs font-semibold text-gray-700 dark:text-gray-300 uppercase tracking-wider cursor-pointer hover:bg-gray-50 dark:hover:bg-zinc-700/50 transition-colors" wire:click="sortBy('cooking_cost')">
-                            <div class="flex items-center gap-2">
-                                집밥 원가
-                                @if($sortBy === 'cooking_cost')
-                                    <flux:icon.chevron-up class="w-4 h-4 {{ $sortDirection === 'asc' ? '' : 'rotate-180' }} transition-transform" />
-                                @endif
-                            </div>
-                        </th>
-                        <th class="px-6 py-4 text-left text-xs font-semibold text-gray-700 dark:text-gray-300 uppercase tracking-wider cursor-pointer hover:bg-gray-50 dark:hover:bg-zinc-700/50 transition-colors" wire:click="sortBy('delivery_price')">
-                            <div class="flex items-center gap-2">
-                                배달비
-                                @if($sortBy === 'delivery_price')
-                                    <flux:icon.chevron-up class="w-4 h-4 {{ $sortDirection === 'asc' ? '' : 'rotate-180' }} transition-transform" />
-                                @endif
-                            </div>
-                        </th>
-                        <th class="px-6 py-4 text-left text-xs font-semibold text-gray-700 dark:text-gray-300 uppercase tracking-wider cursor-pointer hover:bg-gray-50 dark:hover:bg-zinc-700/50 transition-colors" wire:click="sortBy('savings')">
-                            <div class="flex items-center gap-2">
-                                절약금액
-                                @if($sortBy === 'savings')
-                                    <flux:icon.chevron-up class="w-4 h-4 {{ $sortDirection === 'asc' ? '' : 'rotate-180' }} transition-transform" />
-                                @endif
-                            </div>
-                        </th>
-                        <th class="px-6 py-4 text-left text-xs font-semibold text-gray-700 dark:text-gray-300 uppercase tracking-wider cursor-pointer hover:bg-gray-50 dark:hover:bg-zinc-700/50 transition-colors" wire:click="sortBy('savings_percentage')">
-                            <div class="flex items-center gap-2">
-                                절약률
-                                @if($sortBy === 'savings_percentage')
-                                    <flux:icon.chevron-up class="w-4 h-4 {{ $sortDirection === 'asc' ? '' : 'rotate-180' }} transition-transform" />
-                                @endif
-                            </div>
-                        </th>
-                        <th class="px-6 py-4 text-center text-xs font-semibold text-gray-700 dark:text-gray-300 uppercase tracking-wider">
-                            액션
-                        </th>
-                    </tr>
-                </thead>
-                <tbody class="divide-y divide-gray-100 dark:divide-zinc-700">
-                    @forelse($recipes as $recipe)
-                        <tr class="hover:bg-gray-50 dark:hover:bg-zinc-700/30 transition-colors">
-                            <td class="px-6 py-4">
-                                <div class="text-sm font-semibold text-gray-900 dark:text-white">
-                                    {{ $recipe->name }}
-                                </div>
-                            </td>
-                        <td class="px-6 py-4">
-                            @php
-                                $colors = [
-                                    '한식' => 'text-red-600 dark:text-red-400',
-                                    '중식' => 'text-orange-600 dark:text-orange-400',
-                                    '일식' => 'text-blue-600 dark:text-blue-400',
-                                    '양식' => 'text-green-600 dark:text-green-400',
-                                ];
-                                $color = $colors[$recipe->category] ?? 'text-gray-600 dark:text-gray-400';
-                            @endphp
-                            <div class="text-sm font-medium {{ $color }}">
-                                {{ $recipe->category }}
-                            </div>
-                        </td>
-                            <td class="px-6 py-4">
-                                <div class="text-sm text-gray-600 dark:text-gray-400">
-                                    {{ $recipe->difficulty_korean }}
-                                </div>
-                            </td>
-                            <td class="px-6 py-4">
-                                <div class="text-sm text-gray-600 dark:text-gray-400">
-                                    {{ $recipe->cooking_time }}분
-                                </div>
-                            </td>
-                            <td class="px-6 py-4">
-                                <div class="text-sm font-semibold text-gray-900 dark:text-white">
-                                    ₩{{ number_format($recipe->calculateCost()) }}
-                                </div>
-                            </td>
-                            <td class="px-6 py-4">
-                                <div class="text-sm text-gray-600 dark:text-gray-400">
-                                    ₩{{ number_format($recipe->delivery_price) }}
-                                </div>
-                            </td>
-                            <td class="px-6 py-4">
-                                <div class="text-sm font-semibold text-green-600 dark:text-green-400">
-                                    ₩{{ number_format($recipe->calculateSavings()) }}
-                                </div>
-                            </td>
-                        <td class="px-6 py-4">
-                            <div class="text-sm font-semibold text-blue-600 dark:text-blue-400">
-                                {{ number_format($recipe->calculateSavingsPercentage(), 0) }}%
-                            </div>
-                        </td>
-                        <td class="px-6 py-4 text-center">
-                            <a
-                                href="{{ route('recipes.show', $recipe) }}"
-                                class="inline-flex items-center justify-center px-3 py-1.5 text-xs font-medium text-white bg-blue-600 hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600 rounded-lg transition-colors duration-200"
-                            >
-                                보기
-                            </a>
-                        </td>
-                        </tr>
-                    @empty
-                        <tr>
-                            <td colspan="9" class="px-6 py-16 text-center">
-                                <div class="flex flex-col items-center justify-center">
-                                    <div class="w-16 h-16 mb-4 rounded-full bg-gray-100 dark:bg-zinc-700 flex items-center justify-center">
-                                        <flux:icon.magnifying-glass class="w-8 h-8 text-gray-400 dark:text-gray-500" />
-                                    </div>
-                                    <p class="text-lg font-semibold text-gray-900 dark:text-white mb-2">레시피를 찾을 수 없습니다</p>
-                                    <p class="text-sm text-gray-500 dark:text-gray-400">다른 검색어를 시도해보세요</p>
-                                </div>
-                            </td>
-                        </tr>
-                    @endforelse
-                </tbody>
-            </table>
+            {{ $this->table }}
         </div>
-
     </div>
 
     {{-- 페이지네이션 --}}
-    @if($recipes->hasPages())
-        <div class="flex justify-center mt-6">
-            {{ $recipes->links() }}
-        </div>
-    @endif
+    <div class="flex justify-center mt-6">
+        {{ $this->paginationView }}
+    </div>
 </div>
