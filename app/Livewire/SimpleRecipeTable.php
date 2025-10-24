@@ -10,6 +10,8 @@ class SimpleRecipeTable extends Component
 {
     use WithPagination;
 
+    protected $paginationTheme = 'tailwind';
+
     public $search = '';
     public $sortBy = 'name';
     public $sortDirection = 'asc';
