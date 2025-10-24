@@ -12,7 +12,7 @@
                             <div class="w-8 h-8 bg-gradient-to-br from-orange-400 to-rose-500 rounded-lg flex items-center justify-center">
                                 <flux:icon.fire class="w-5 h-5 text-white" />
                             </div>
-                            <flux:heading size="lg" class="text-zinc-900 dark:text-white">HashFood</flux:heading>
+                            <flux:heading size="lg" class="text-zinc-900 dark:text-white">해시푸드</flux:heading>
                         </a>
                     </div>
 

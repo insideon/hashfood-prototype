@@ -25,45 +25,6 @@ $filteredRecipes = computed(function () {
 ?>
 
 <div class="min-h-screen bg-gray-50 dark:bg-zinc-900">
-    {{-- Navigation Header --}}
-    <nav class="bg-white dark:bg-zinc-800 border-b border-gray-200 dark:border-zinc-700">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex justify-between items-center h-16">
-                {{-- Logo --}}
-                <div class="flex items-center">
-                    <div class="flex-shrink-0 flex items-center">
-                        <div class="w-8 h-8 bg-gradient-to-br from-orange-500 to-rose-500 rounded-lg flex items-center justify-center mr-3">
-                            <flux:icon.fire class="w-5 h-5 text-white" />
-                        </div>
-                        <span class="text-xl font-bold text-gray-900 dark:text-white">해시푸드</span>
-                    </div>
-                </div>
-
-                {{-- Navigation Links --}}
-                <div class="hidden md:block">
-                    <div class="ml-10 flex items-baseline space-x-8">
-                        <a href="{{ route('recipes.index') }}" wire:navigate class="text-gray-600 dark:text-gray-300 hover:text-orange-600 dark:hover:text-orange-400 px-3 py-2 text-sm font-medium transition-colors">
-                            레시피
-                        </a>
-                        <a href="{{ route('price-tracking') }}" wire:navigate class="text-gray-600 dark:text-gray-300 hover:text-orange-600 dark:hover:text-orange-400 px-3 py-2 text-sm font-medium transition-colors">
-                            가격 트래킹
-                        </a>
-                    </div>
-                </div>
-
-                {{-- Auth Buttons --}}
-                <div class="flex items-center space-x-4">
-                    <a href="{{ route('login') }}" wire:navigate class="text-gray-600 dark:text-gray-300 hover:text-orange-600 dark:hover:text-orange-400 px-3 py-2 text-sm font-medium transition-colors">
-                        로그인
-                    </a>
-                    <a href="{{ route('register') }}" wire:navigate class="bg-orange-600 hover:bg-orange-700 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors">
-                        회원가입
-                    </a>
-                </div>
-            </div>
-        </div>
-    </nav>
-
     {{-- Hero Section --}}
     <div class="bg-white dark:bg-zinc-800">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
