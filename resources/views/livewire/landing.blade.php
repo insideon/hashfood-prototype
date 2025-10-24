@@ -26,7 +26,7 @@ $filteredRecipes = computed(function () {
 
 <div class="min-h-screen bg-gray-50 dark:bg-zinc-900">
     {{-- Hero Section --}}
-    <div class="bg-white dark:bg-zinc-800">
+    <div class="bg-gray-50 dark:bg-zinc-900">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
             <div class="text-center">
                 <h1 class="text-3xl sm:text-4xl font-bold text-gray-900 dark:text-white mb-4">
@@ -35,10 +35,10 @@ $filteredRecipes = computed(function () {
                 <p class="text-lg text-gray-600 dark:text-gray-400 mb-8 max-w-2xl mx-auto">
                     실제 식자재 원가로 비교하는 가장 합리적인 식사 선택
                 </p>
-
+                
                 {{-- Search --}}
                 <div class="max-w-md mx-auto">
-                    <flux:input
+                    <flux:input 
                         wire:model.live="search"
                         placeholder="음식명으로 검색..."
                         class="w-full"
@@ -49,7 +49,8 @@ $filteredRecipes = computed(function () {
     </div>
 
     {{-- Main Content --}}
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    <div class="bg-gray-50 dark:bg-zinc-900">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {{-- Stats Summary --}}
         <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
             <div class="bg-white dark:bg-zinc-800 rounded-xl p-6 shadow-sm border border-gray-200 dark:border-zinc-700">
@@ -202,10 +203,11 @@ $filteredRecipes = computed(function () {
                 </table>
             </div>
         </div>
+        </div>
     </div>
 
     {{-- Footer --}}
-    <footer class="bg-white dark:bg-zinc-800 border-t border-gray-200 dark:border-zinc-700 mt-16">
+    <footer class="bg-white dark:bg-zinc-800 border-t border-gray-200 dark:border-zinc-700">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
             <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
                 {{-- Brand --}}

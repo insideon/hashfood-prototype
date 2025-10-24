@@ -1,5 +1,5 @@
 <div>
-    <button 
+    <button
         id="dark-mode-toggle"
         class="p-2 rounded-lg text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-zinc-700 transition-colors duration-200"
         title="테마 변경"
@@ -17,23 +17,23 @@
 document.addEventListener('DOMContentLoaded', function() {
     const toggleButton = document.getElementById('dark-mode-toggle');
     const htmlElement = document.documentElement;
-    
+
     // 초기 다크 모드 상태 설정
     function initDarkMode() {
         const savedMode = localStorage.getItem('dark-mode');
         const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-        
+
         if (savedMode === 'true' || (savedMode === null && prefersDark)) {
             htmlElement.classList.add('dark');
         } else {
             htmlElement.classList.remove('dark');
         }
     }
-    
+
     // 다크 모드 토글
     function toggleDarkMode() {
         const isDark = htmlElement.classList.contains('dark');
-        
+
         if (isDark) {
             htmlElement.classList.remove('dark');
             localStorage.setItem('dark-mode', 'false');
@@ -42,10 +42,10 @@ document.addEventListener('DOMContentLoaded', function() {
             localStorage.setItem('dark-mode', 'true');
         }
     }
-    
+
     // 초기화
     initDarkMode();
-    
+
     // 토글 버튼 이벤트 리스너
     toggleButton.addEventListener('click', toggleDarkMode);
 });
