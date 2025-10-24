@@ -69,12 +69,6 @@ layout('components.layouts.guest');
                 </div>
             </div>
         </div>
-
-                    {{-- Recipe Table --}}
-                    <div class="mb-8">
-                        @livewire('custom-recipe-table')
-                    </div>
-        </div>
     </div>
 
     {{-- Footer --}}
