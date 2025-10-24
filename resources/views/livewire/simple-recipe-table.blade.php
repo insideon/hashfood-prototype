@@ -8,26 +8,38 @@
             --color-gray-200: 42 42 46;  /* 은은한 테두리 */
             --color-gray-300: 52 52 56;
         }
-
+        
+        /* 직접 테두리 색상 오버라이드 */
+        .dark input[type="text"],
+        .dark select,
+        .dark .border-zinc-700,
+        .dark .divide-zinc-700 {
+            border-color: rgb(38 38 41) !important;
+        }
+        
+        .dark .divide-zinc-700 > * + * {
+            border-color: rgb(38 38 41) !important;
+        }
+        
         /* 페이지네이션 네비게이션 스타일 */
         nav[role="navigation"] span,
         nav[role="navigation"] a {
             transition: all 0.2s;
         }
-
+        
         .dark nav[role="navigation"] span,
         .dark nav[role="navigation"] a {
             background-color: rgb(32 32 35) !important;  /* 더 어두운 배경 */
             border-color: rgb(42 42 46) !important;  /* 은은한 테두리 */
             color: rgb(161 161 170) !important;  /* 더 은은한 텍스트 */
         }
-
+        
         .dark nav[role="navigation"] a:hover {
             background-color: rgb(48 48 52) !important;  /* 호버 시 조금만 밝게 */
             border-color: rgb(52 52 56) !important;
             color: rgb(209 213 219) !important;
         }
-
+        
         .dark nav[role="navigation"] span[aria-current="page"] span {
             background-color: rgb(48 48 52) !important;  /* 현재 페이지 */
             border-color: rgb(48 48 52) !important;  /* 배경과 같은 색 */
