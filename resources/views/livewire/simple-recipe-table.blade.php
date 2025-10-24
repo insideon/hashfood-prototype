@@ -1,10 +1,10 @@
 <div class="w-full">
     <style>
-        /* 페이지네이션 다크모드 색상 오버라이드 */
+        /* 다크모드 전체 색상 오버라이드 */
         .dark {
             --color-gray-800: 32 32 35;  /* 더 어두운 zinc-850 */
             --color-zinc-800: 32 32 35;
-            --color-zinc-700: 48 48 52;  /* 더 어두운 zinc-750 */
+            --color-zinc-700: 38 38 41;  /* 매우 어두운 테두리 (거의 black에 가까움) */
             --color-gray-200: 42 42 46;  /* 은은한 테두리 */
             --color-gray-300: 52 52 56;
         }
@@ -45,7 +45,7 @@
                     type="text"
                     wire:model.live.debounce.300ms="search"
                     placeholder="어떤 음식을 찾으세요?"
-                    class="w-full pl-12 pr-4 py-3 bg-white dark:bg-zinc-800 border border-gray-200 dark:border-zinc-800/80 rounded-xl text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all"
+                    class="w-full pl-12 pr-4 py-3 bg-white dark:bg-zinc-800 border border-gray-200 dark:border-zinc-700 rounded-xl text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all"
                 />
             </div>
         </div>
@@ -55,7 +55,7 @@
             <label class="text-sm font-medium text-gray-600 dark:text-gray-400">표시:</label>
             <select
                 wire:model.live="perPage"
-                class="pl-3 pr-7 py-2 text-sm bg-white dark:bg-zinc-800 border border-gray-200 dark:border-zinc-800/80 rounded-lg text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all cursor-pointer appearance-none bg-[url('data:image/svg+xml;charset=utf-8,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 fill=%22none%22 viewBox=%220 0 20 20%22%3E%3Cpath stroke=%22%236b7280%22 stroke-linecap=%22round%22 stroke-linejoin=%22round%22 stroke-width=%221.5%22 d=%22m6 8 4 4 4-4%22/%3E%3C/svg%3E')] bg-[length:0.875rem] bg-[right_0.375rem_center] bg-no-repeat"
+                class="pl-3 pr-7 py-2 text-sm bg-white dark:bg-zinc-800 border border-gray-200 dark:border-zinc-700 rounded-lg text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all cursor-pointer appearance-none bg-[url('data:image/svg+xml;charset=utf-8,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 fill=%22none%22 viewBox=%220 0 20 20%22%3E%3Cpath stroke=%22%236b7280%22 stroke-linecap=%22round%22 stroke-linejoin=%22round%22 stroke-width=%221.5%22 d=%22m6 8 4 4 4-4%22/%3E%3C/svg%3E')] bg-[length:0.875rem] bg-[right_0.375rem_center] bg-no-repeat"
             >
                 <option value="10">10</option>
                 <option value="20">20</option>
@@ -66,11 +66,11 @@
     </div>
 
     {{-- 테이블 --}}
-    <div class="bg-white dark:bg-zinc-800 rounded-2xl shadow-sm border border-gray-200 dark:border-zinc-800/80 overflow-hidden">
+    <div class="bg-white dark:bg-zinc-800 rounded-2xl shadow-sm border border-gray-200 dark:border-zinc-700 overflow-hidden">
         <div class="overflow-x-auto">
             <table class="min-w-full">
                 <thead>
-                    <tr class="border-b border-gray-200 dark:border-zinc-800/80">
+                    <tr class="border-b border-gray-200 dark:border-zinc-700">
                         <th class="px-6 py-4 text-left text-xs font-semibold text-gray-700 dark:text-gray-300 uppercase tracking-wider cursor-pointer hover:bg-gray-50 dark:hover:bg-zinc-700/50 transition-colors" wire:click="sortBy('name')">
                             <div class="flex items-center gap-2">
                                 음식명
@@ -125,7 +125,7 @@
                         </th>
                     </tr>
                 </thead>
-                <tbody class="divide-y divide-gray-100 dark:divide-zinc-800/50">
+                <tbody class="divide-y divide-gray-100 dark:divide-zinc-700">
                     @forelse($recipes as $recipe)
                         <tr class="hover:bg-gray-50 dark:hover:bg-zinc-700/30 transition-colors">
                             <td class="px-6 py-4">
@@ -205,7 +205,7 @@
 
         {{-- 페이지네이션 --}}
         @if($recipes->hasPages())
-            <div class="px-6 py-4 border-t border-gray-200 dark:border-zinc-800/80">
+            <div class="px-6 py-4 border-t border-gray-200 dark:border-zinc-700">
                 {{ $recipes->links() }}
             </div>
         @endif
