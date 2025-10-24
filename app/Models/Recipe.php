@@ -83,4 +83,14 @@ class Recipe extends Model
 
         return ($savings / $this->delivery_price) * 100;
     }
+
+    public function getDifficultyKoreanAttribute(): string
+    {
+        return match ($this->difficulty) {
+            'easy' => '쉬움',
+            'medium' => '보통',
+            'hard' => '어려움',
+            default => $this->difficulty,
+        };
+    }
 }

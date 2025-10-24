@@ -35,10 +35,10 @@ $filteredRecipes = computed(function () {
                         <div class="w-8 h-8 bg-gradient-to-br from-orange-500 to-rose-500 rounded-lg flex items-center justify-center mr-3">
                             <flux:icon.fire class="w-5 h-5 text-white" />
                         </div>
-                        <span class="text-xl font-bold text-gray-900 dark:text-white">HashFood</span>
+                        <span class="text-xl font-bold text-gray-900 dark:text-white">해시푸드</span>
                     </div>
                 </div>
-                
+
                 {{-- Navigation Links --}}
                 <div class="hidden md:block">
                     <div class="ml-10 flex items-baseline space-x-8">
@@ -50,7 +50,7 @@ $filteredRecipes = computed(function () {
                         </a>
                     </div>
                 </div>
-                
+
                 {{-- Auth Buttons --}}
                 <div class="flex items-center space-x-4">
                     <a href="{{ route('login') }}" wire:navigate class="text-gray-600 dark:text-gray-300 hover:text-orange-600 dark:hover:text-orange-400 px-3 py-2 text-sm font-medium transition-colors">
@@ -74,10 +74,10 @@ $filteredRecipes = computed(function () {
                 <p class="text-lg text-gray-600 dark:text-gray-400 mb-8 max-w-2xl mx-auto">
                     실제 식자재 원가로 비교하는 가장 합리적인 식사 선택
                 </p>
-                
+
                 {{-- Search --}}
                 <div class="max-w-md mx-auto">
-                    <flux:input 
+                    <flux:input
                         wire:model.live="search"
                         placeholder="음식명으로 검색..."
                         class="w-full"
@@ -104,7 +104,7 @@ $filteredRecipes = computed(function () {
                     </div>
                 </div>
             </div>
-            
+
             <div class="bg-white dark:bg-zinc-800 rounded-xl p-6 shadow-sm border border-gray-200 dark:border-zinc-700">
                 <div class="flex items-center">
                     <div class="w-12 h-12 bg-green-100 dark:bg-green-900/20 rounded-xl flex items-center justify-center">
@@ -118,7 +118,7 @@ $filteredRecipes = computed(function () {
                     </div>
                 </div>
             </div>
-            
+
             <div class="bg-white dark:bg-zinc-800 rounded-xl p-6 shadow-sm border border-gray-200 dark:border-zinc-700">
                 <div class="flex items-center">
                     <div class="w-12 h-12 bg-blue-100 dark:bg-blue-900/20 rounded-xl flex items-center justify-center">
@@ -190,7 +190,7 @@ $filteredRecipes = computed(function () {
                                                 {{ $recipe->name }}
                                             </div>
                                             <div class="text-xs text-gray-500 dark:text-gray-400">
-                                                {{ $recipe->category }} • {{ $recipe->difficulty }}급
+                                                {{ $recipe->category }} • {{ $recipe->difficulty_korean }}
                                             </div>
                                         </div>
                                     </div>
@@ -219,7 +219,7 @@ $filteredRecipes = computed(function () {
                                     </span>
                                 </td>
                                 <td class="px-6 py-4 text-center">
-                                    <a href="{{ route('recipes.show', $recipe) }}" 
+                                    <a href="{{ route('recipes.show', $recipe) }}"
                                        wire:navigate
                                        class="inline-flex items-center px-3 py-1.5 border border-transparent text-xs font-medium rounded-lg text-orange-600 bg-orange-100 hover:bg-orange-200 dark:bg-orange-900/20 dark:text-orange-400 dark:hover:bg-orange-900/30 transition-colors">
                                         상세보기
@@ -253,7 +253,7 @@ $filteredRecipes = computed(function () {
                         <div class="w-8 h-8 bg-gradient-to-br from-orange-500 to-rose-500 rounded-lg flex items-center justify-center mr-3">
                             <flux:icon.fire class="w-5 h-5 text-white" />
                         </div>
-                        <span class="text-xl font-bold text-gray-900 dark:text-white">HashFood</span>
+                        <span class="text-xl font-bold text-gray-900 dark:text-white">해시푸드</span>
                     </div>
                     <p class="text-gray-600 dark:text-gray-400 mb-4 max-w-md">
                         실제 식자재 원가를 기반으로 가장 합리적인 식사 선택을 도와드리는 데이터 기반 플랫폼입니다.
@@ -270,7 +270,7 @@ $filteredRecipes = computed(function () {
                         </a>
                     </div>
                 </div>
-                
+
                 {{-- Services --}}
                 <div>
                     <h3 class="text-sm font-semibold text-gray-900 dark:text-white uppercase tracking-wider mb-4">
@@ -283,7 +283,7 @@ $filteredRecipes = computed(function () {
                         <li><a href="#" class="text-gray-600 dark:text-gray-400 hover:text-orange-600 dark:hover:text-orange-400 transition-colors">소비 분석</a></li>
                     </ul>
                 </div>
-                
+
                 {{-- Company --}}
                 <div>
                     <h3 class="text-sm font-semibold text-gray-900 dark:text-white uppercase tracking-wider mb-4">
@@ -297,12 +297,12 @@ $filteredRecipes = computed(function () {
                     </ul>
                 </div>
             </div>
-            
+
             {{-- Bottom --}}
             <div class="border-t border-gray-200 dark:border-zinc-700 mt-8 pt-8">
                 <div class="flex flex-col md:flex-row justify-between items-center">
                     <div class="text-sm text-gray-500 dark:text-gray-400 mb-4 md:mb-0">
-                        © 2025 HashFood. All rights reserved.
+                        © 2025 해시푸드. All rights reserved.
                     </div>
                     <div class="flex space-x-6 text-sm">
                         <a href="#" class="text-gray-500 dark:text-gray-400 hover:text-orange-600 dark:hover:text-orange-400 transition-colors">이용약관</a>

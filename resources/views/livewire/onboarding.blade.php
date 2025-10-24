@@ -54,7 +54,7 @@
                                                     {{ $recipe->name }}
                                                 </flux:text>
                                                 <flux:text class="text-sm text-zinc-500 dark:text-zinc-400">
-                                                    {{ $recipe->cooking_time }}분 • {{ $recipe->difficulty }}급
+                                                    {{ $recipe->cooking_time }}분 • {{ $recipe->difficulty_korean }}
                                                 </flux:text>
                                             </div>
                                             @if(in_array($recipe->id, $selectedRecipes))
