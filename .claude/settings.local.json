@@ -1,4 +1,12 @@
 {
+  "permissions": {
+    "allow": [
+      "Bash(php artisan:*)",
+      "mcp__herd__find_available_services",
+      "Bash(psql:*)",
+      "Bash(git add:*)"
+    ]
+  },
   "enabledMcpjsonServers": [
     "laravel-boost",
     "herd"
