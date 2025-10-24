@@ -1,43 +1,4 @@
 <div class="w-full">
-    <style>
-        /* 다크모드 테두리 색상 직접 오버라이드 */
-        .dark input[type="text"] {
-            border-color: rgb(28 28 32) !important;
-        }
-        
-        .dark select {
-            border-color: rgb(28 28 32) !important;
-        }
-        
-        .dark .border-zinc-700 {
-            border-color: rgb(28 28 32) !important;
-        }
-        
-        .dark .divide-zinc-700 > * + * {
-            border-color: rgb(28 28 32) !important;
-        }
-        
-        /* 페이지네이션 색상도 직접 적용 */
-        .dark nav[role="navigation"] span,
-        .dark nav[role="navigation"] a {
-            background-color: rgb(24 24 27) !important;
-            border-color: rgb(28 28 32) !important;
-            color: rgb(161 161 170) !important;
-        }
-        
-        .dark nav[role="navigation"] a:hover {
-            background-color: rgb(39 39 42) !important;
-            border-color: rgb(39 39 42) !important;
-            color: rgb(209 213 219) !important;
-        }
-        
-        .dark nav[role="navigation"] span[aria-current="page"] span {
-            background-color: rgb(39 39 42) !important;
-            border-color: rgb(39 39 42) !important;
-            color: rgb(255 255 255) !important;
-        }
-    </style>
-
     {{-- 검색 및 도구 모음 --}}
     <div class="mb-6 flex flex-col sm:flex-row gap-4 items-center justify-between">
         {{-- 검색 --}}
