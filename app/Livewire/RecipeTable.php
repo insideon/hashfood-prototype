@@ -20,7 +20,19 @@ class RecipeTable extends DataTableComponent
             ->setSearchEnabled()
             ->setSearchPlaceholder('음식명으로 검색...')
             ->setSearchDebounce(300)
-            ->setEmptyMessage('레시피가 없습니다.');
+            ->setEmptyMessage('레시피가 없습니다.')
+            ->setTableWrapperAttributes([
+                'class' => 'bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700',
+            ])
+            ->setTableAttributes([
+                'class' => 'min-w-full divide-y divide-gray-200 dark:divide-gray-700',
+            ])
+            ->setTheadAttributes([
+                'class' => 'bg-gray-50 dark:bg-gray-700',
+            ])
+            ->setTbodyAttributes([
+                'class' => 'bg-white dark:bg-gray-800 divide-y divide-gray-200 dark:divide-gray-700',
+            ]);
     }
 
     public function columns(): array
