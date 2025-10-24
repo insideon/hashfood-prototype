@@ -8,7 +8,7 @@
                 <input 
                     type="text" 
                     wire:model.live.debounce.300ms="search"
-                    placeholder="음식명으로 검색..."
+                    placeholder="어떤 음식을 찾으세요?"
                     class="w-full pl-12 pr-4 py-3 bg-white dark:bg-zinc-800 border border-gray-200 dark:border-zinc-700 rounded-xl text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all"
                 />
             </div>
@@ -19,12 +19,13 @@
             <label class="text-sm font-medium text-gray-600 dark:text-gray-400">표시:</label>
             <select 
                 wire:model.live="perPage"
-                class="px-4 py-2.5 bg-white dark:bg-zinc-800 border border-gray-200 dark:border-zinc-700 rounded-lg text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all cursor-pointer"
+                class="pl-4 pr-10 py-2.5 bg-white dark:bg-zinc-800 border border-gray-200 dark:border-zinc-700 rounded-lg text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all cursor-pointer appearance-none bg-[url('data:image/svg+xml;charset=utf-8,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 fill=%22none%22 viewBox=%220 0 20 20%22%3E%3Cpath stroke=%22%236b7280%22 stroke-linecap=%22round%22 stroke-linejoin=%22round%22 stroke-width=%221.5%22 d=%22m6 8 4 4 4-4%22/%3E%3C/svg%3E')] bg-[length:1.25rem] bg-[right_0.5rem_center] bg-no-repeat"
+                style="background-position-x: calc(100% - 0.5rem);"
             >
-                <option value="10">10개</option>
-                <option value="20">20개</option>
-                <option value="50">50개</option>
-                <option value="100">100개</option>
+                <option value="10">10</option>
+                <option value="20">20</option>
+                <option value="50">50</option>
+                <option value="100">100</option>
             </select>
         </div>
     </div>
