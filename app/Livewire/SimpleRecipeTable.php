@@ -4,6 +4,8 @@ namespace App\Livewire;
 
 use App\Models\Recipe;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\DB;
 use Rappasoft\LaravelLivewireTables\DataTableComponent;
 use Rappasoft\LaravelLivewireTables\Views\Column;
 
@@ -130,12 +132,12 @@ class SimpleRecipeTable extends DataTableComponent
                 ->format(fn ($value) => '<div class="text-sm font-semibold text-zinc-900 dark:text-zinc-100">₩'.number_format($value).'</div>')
                 ->html(),
 
-            Column::make('배달비', 'delivery_price')
+            Column::make('배달 가격', 'delivery_price')
                 ->sortable()
                 ->format(fn ($value) => '<div class="text-sm text-zinc-600 dark:text-zinc-300">₩'.number_format($value).'</div>')
                 ->html(),
 
-            Column::make('절약금액', 'calculated_savings')
+            Column::make('절약 금액', 'calculated_savings')
                 ->sortable()
                 ->format(fn ($value) => '<div class="text-sm font-semibold text-green-600 dark:text-green-400">₩'.number_format($value).'</div>')
                 ->html(),
@@ -155,20 +157,21 @@ class SimpleRecipeTable extends DataTableComponent
      * 데이터베이스 쿼리 빌더
      *
      * 계산된 컬럼들을 포함한 레시피 데이터를 조회합니다.
-     * 성능 최적화를 위해 서브쿼리를 재사용합니다.
+     * 성능 최적화를 위해 캐싱과 서브쿼리 재사용을 적용합니다.
      *
      * @return Builder
      */
     public function builder(): Builder
     {
-        // 성능 최적화: 서브쿼리를 한 번만 실행하고 재사용
-        $cookingCostSubquery = '(
-            SELECT COALESCE(SUM(ri.quantity * i.current_price), 0)
-            FROM recipe_ingredients ri
-            JOIN ingredients i ON i.id = ri.ingredient_id
-            WHERE ri.recipe_id = recipes.id
-        )';
+        // 캐시 키 생성 (재료 가격이 변경되면 캐시 무효화)
+        $cacheKey = 'recipe_calculations_' . $this->getIngredientsLastUpdated();
 
+        // 캐시에서 계산된 데이터 가져오기
+        $cachedCalculations = Cache::remember($cacheKey, 3600, function () {
+            return $this->calculateAllRecipeCosts();
+        });
+
+        // 기본 레시피 데이터 조회
         $query = Recipe::query()
             ->select([
                 'recipes.id',
@@ -183,18 +186,92 @@ class SimpleRecipeTable extends DataTableComponent
                 'recipes.instructions',
                 'recipes.created_at',
                 'recipes.updated_at',
-            ])
-            ->selectRaw("{$cookingCostSubquery} as calculated_cooking_cost")
-            ->selectRaw("(delivery_price - {$cookingCostSubquery}) as calculated_savings")
-            ->selectRaw("(
-                CASE
-                    WHEN delivery_price > 0 THEN
-                        ((delivery_price - {$cookingCostSubquery}) / delivery_price) * 100
-                    ELSE 0
-                END
-            ) as calculated_savings_percentage");
+            ]);
+
+        // 캐시된 계산 결과를 서브쿼리로 추가
+        if (!empty($cachedCalculations)) {
+            $recipeIds = array_keys($cachedCalculations);
+            $caseStatements = $this->buildCaseStatements($cachedCalculations);
+
+            $query->whereIn('recipes.id', $recipeIds)
+                ->selectRaw("({$caseStatements['cooking_cost']}) as calculated_cooking_cost")
+                ->selectRaw("({$caseStatements['savings']}) as calculated_savings")
+                ->selectRaw("({$caseStatements['savings_percentage']}) as calculated_savings_percentage");
+        } else {
+            // 캐시가 비어있을 때는 기본값으로 설정
+            $query->selectRaw('0 as calculated_cooking_cost')
+                ->selectRaw('0 as calculated_savings')
+                ->selectRaw('0 as calculated_savings_percentage');
+        }
 
         return $query;
+    }
+
+    /**
+     * 모든 레시피의 비용을 계산하여 캐시에 저장
+     */
+    private function calculateAllRecipeCosts(): array
+    {
+        $calculations = [];
+
+        // 모든 레시피와 재료 관계를 한 번에 로드
+        $recipes = Recipe::with(['ingredients' => function ($query) {
+            $query->select('ingredients.id', 'ingredients.current_price')
+                  ->withPivot('quantity');
+        }])->get();
+
+        foreach ($recipes as $recipe) {
+            $cookingCost = $recipe->ingredients->sum(function ($ingredient) {
+                return $ingredient->pivot->quantity * $ingredient->current_price;
+            });
+
+            $savings = $recipe->delivery_price - $cookingCost;
+            $savingsPercentage = $recipe->delivery_price > 0
+                ? ($savings / $recipe->delivery_price) * 100
+                : 0;
+
+            $calculations[$recipe->id] = [
+                'cooking_cost' => $cookingCost,
+                'savings' => $savings,
+                'savings_percentage' => $savingsPercentage,
+            ];
+        }
+
+        return $calculations;
+    }
+
+    /**
+     * 재료 테이블의 마지막 업데이트 시간을 가져와서 캐시 키에 사용
+     */
+    private function getIngredientsLastUpdated(): string
+    {
+        $lastUpdated = Cache::remember('ingredients_last_updated', 3600, function () {
+            return DB::table('ingredients')->max('updated_at') ?? 'never';
+        });
+
+        return md5($lastUpdated);
+    }
+
+    /**
+     * 캐시된 계산 결과를 SQL CASE 문으로 변환
+     */
+    private function buildCaseStatements(array $calculations): array
+    {
+        $cookingCostCases = [];
+        $savingsCases = [];
+        $savingsPercentageCases = [];
+
+        foreach ($calculations as $recipeId => $data) {
+            $cookingCostCases[] = "WHEN recipes.id = {$recipeId} THEN {$data['cooking_cost']}";
+            $savingsCases[] = "WHEN recipes.id = {$recipeId} THEN {$data['savings']}";
+            $savingsPercentageCases[] = "WHEN recipes.id = {$recipeId} THEN {$data['savings_percentage']}";
+        }
+
+        return [
+            'cooking_cost' => 'CASE ' . implode(' ', $cookingCostCases) . ' ELSE 0 END',
+            'savings' => 'CASE ' . implode(' ', $savingsCases) . ' ELSE 0 END',
+            'savings_percentage' => 'CASE ' . implode(' ', $savingsPercentageCases) . ' ELSE 0 END',
+        ];
     }
 
     /**
@@ -202,6 +279,7 @@ class SimpleRecipeTable extends DataTableComponent
      *
      * 라이브와이어 테이블 라이브러리의 기본 정렬 로직을 오버라이드하여
      * 계산된 컬럼들도 정렬할 수 있도록 합니다.
+     * 라이브와이어 테이블이 자동으로 페이징을 처리하므로 limit을 제거합니다.
      *
      * @return Builder
      */
@@ -214,9 +292,7 @@ class SimpleRecipeTable extends DataTableComponent
             $builder->orderBy($field, $direction);
         }
 
-        // 페이지당 항목 수 강제 설정
-        $builder->limit(20);
-
+        // 라이브와이어 테이블이 자동으로 페이징 처리하므로 limit 제거
         return $builder;
     }
 }

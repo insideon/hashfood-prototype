@@ -8,6 +8,7 @@ use App\Models\Recipe;
 use App\Models\UserPreference;
 use App\Services\RecommendationService;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
 use Livewire\Component;
 
@@ -66,31 +67,47 @@ class Dashboard extends Component
 
     private function loadSavingsData(): void
     {
-        $this->totalSavings = ActivityLog::where('user_id', $this->user->id)
-            ->where('decision_type', 'cook')
-            ->sum('saved_amount');
+        // 캐시 키 생성 (사용자별, 월별 캐시)
+        $cacheKey = "dashboard_savings_{$this->user->id}_" . now()->format('Y-m');
 
-        $this->monthlySavings = ActivityLog::where('user_id', $this->user->id)
-            ->where('decision_type', 'cook')
-            ->whereMonth('created_at', now()->month)
-            ->whereYear('created_at', now()->year)
-            ->sum('saved_amount');
+        // 캐시된 데이터 사용 (5분간 캐시)
+        $stats = Cache::remember($cacheKey, 300, function () {
+            return ActivityLog::where('user_id', $this->user->id)
+                ->where('decision_type', 'cook')
+                ->selectRaw('
+                    SUM(saved_amount) as total_savings,
+                    SUM(CASE
+                        WHEN created_at >= ? THEN saved_amount
+                        ELSE 0
+                    END) as monthly_savings,
+                    SUM(CASE
+                        WHEN created_at >= ? THEN saved_amount
+                        ELSE 0
+                    END) as weekly_savings
+                ', [
+                    now()->startOfMonth(),
+                    now()->startOfWeek()
+                ])
+                ->first();
+        });
 
-        $this->weeklySavings = ActivityLog::where('user_id', $this->user->id)
-            ->where('decision_type', 'cook')
-            ->whereBetween('created_at', [now()->startOfWeek(), now()->endOfWeek()])
-            ->sum('saved_amount');
+        $this->totalSavings = $stats->total_savings ?? 0;
+        $this->monthlySavings = $stats->monthly_savings ?? 0;
+        $this->weeklySavings = $stats->weekly_savings ?? 0;
     }
 
     private function loadDecisionData(): void
     {
-        $this->totalCookingDecisions = ActivityLog::where('user_id', $this->user->id)
-            ->where('decision_type', 'cook')
-            ->count();
+        // 단일 쿼리로 모든 결정 데이터를 한 번에 조회
+        $stats = ActivityLog::where('user_id', $this->user->id)
+            ->selectRaw('
+                COUNT(CASE WHEN decision_type = ? THEN 1 END) as cooking_count,
+                COUNT(CASE WHEN decision_type = ? THEN 1 END) as delivery_count
+            ', ['cook', 'delivery'])
+            ->first();
 
-        $this->totalDeliveryDecisions = ActivityLog::where('user_id', $this->user->id)
-            ->where('decision_type', 'delivery')
-            ->count();
+        $this->totalCookingDecisions = $stats->cooking_count ?? 0;
+        $this->totalDeliveryDecisions = $stats->delivery_count ?? 0;
     }
 
     private function loadFavoriteRecipes(): void
