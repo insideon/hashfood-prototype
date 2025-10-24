@@ -2,25 +2,37 @@
 
 use App\Models\Recipe;
 use Livewire\Volt\Component;
+use Livewire\WithPagination;
 use function Livewire\Volt\{computed, layout, state};
 
 layout('components.layouts.guest');
 
+state(['search' => '', 'sortBy' => 'name', 'sortDirection' => 'asc']);
+
 $recipes = computed(function () {
-    return Recipe::with('ingredients')->get();
-});
-
-state(['search' => '']);
-
-$filteredRecipes = computed(function () {
-    if (empty($this->search)) {
-        return $this->recipes;
+    $query = Recipe::with('ingredients');
+    
+    // 검색 필터
+    if (!empty($this->search)) {
+        $query->where('name', 'like', '%' . $this->search . '%');
     }
-
-    return $this->recipes->filter(function ($recipe) {
-        return stripos($recipe->name, $this->search) !== false;
-    });
+    
+    // 정렬
+    $query->orderBy($this->sortBy, $this->sortDirection);
+    
+    return $query->paginate(20);
 });
+
+$sortBy = fn($field) => function() use ($field) {
+    if ($this->sortBy === $field) {
+        $this->sortDirection = $this->sortDirection === 'asc' ? 'desc' : 'asc';
+    } else {
+        $this->sortBy = $field;
+        $this->sortDirection = 'asc';
+    }
+};
+
+$updatingSearch = fn() => $this->resetPage();
 
 ?>
 
@@ -60,13 +72,13 @@ $filteredRecipes = computed(function () {
                     </div>
                     <div class="ml-4">
                         <div class="text-2xl font-bold text-gray-900 dark:text-white">
-                            {{ $this->recipes->count() }}개
+                            {{ Recipe::count() }}개
                         </div>
                         <div class="text-sm text-gray-500 dark:text-gray-400">레시피</div>
                     </div>
                 </div>
             </div>
-
+            
             <div class="bg-white dark:bg-zinc-800 rounded-xl p-6 shadow-sm border border-gray-200 dark:border-zinc-700">
                 <div class="flex items-center">
                     <div class="w-12 h-12 bg-green-100 dark:bg-green-900/20 rounded-xl flex items-center justify-center">
@@ -74,13 +86,13 @@ $filteredRecipes = computed(function () {
                     </div>
                     <div class="ml-4">
                         <div class="text-2xl font-bold text-gray-900 dark:text-white">
-                            ₩{{ number_format($this->recipes->avg(function($r) { return $r->calculateSavings(); })) }}
+                            ₩{{ number_format(Recipe::get()->avg(function($r) { return $r->calculateSavings(); })) }}
                         </div>
                         <div class="text-sm text-gray-500 dark:text-gray-400">평균 절약</div>
                     </div>
                 </div>
             </div>
-
+            
             <div class="bg-white dark:bg-zinc-800 rounded-xl p-6 shadow-sm border border-gray-200 dark:border-zinc-700">
                 <div class="flex items-center">
                     <div class="w-12 h-12 bg-blue-100 dark:bg-blue-900/20 rounded-xl flex items-center justify-center">
@@ -88,7 +100,7 @@ $filteredRecipes = computed(function () {
                     </div>
                     <div class="ml-4">
                         <div class="text-2xl font-bold text-gray-900 dark:text-white">
-                            {{ number_format($this->recipes->avg(function($r) { return $r->calculateSavingsPercentage(); }), 0) }}%
+                            {{ number_format(Recipe::get()->avg(function($r) { return $r->calculateSavingsPercentage(); }), 0) }}%
                         </div>
                         <div class="text-sm text-gray-500 dark:text-gray-400">평균 절약률</div>
                     </div>
@@ -112,16 +124,49 @@ $filteredRecipes = computed(function () {
                     <thead class="bg-gray-50 dark:bg-zinc-900">
                         <tr>
                             <th class="px-6 py-4 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
-                                음식명
+                                <button wire:click="sortBy('name')" class="flex items-center space-x-1 hover:text-gray-700 dark:hover:text-gray-300">
+                                    <span>음식명</span>
+                                    @if($sortBy === 'name')
+                                        @if($sortDirection === 'asc')
+                                            <flux:icon.chevron-up class="w-4 h-4" />
+                                        @else
+                                            <flux:icon.chevron-down class="w-4 h-4" />
+                                        @endif
+                                    @else
+                                        <flux:icon.chevron-up-down class="w-4 h-4 opacity-50" />
+                                    @endif
+                                </button>
                             </th>
                             <th class="px-6 py-4 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
-                                조리시간
+                                <button wire:click="sortBy('cooking_time')" class="flex items-center space-x-1 hover:text-gray-700 dark:hover:text-gray-300">
+                                    <span>조리시간</span>
+                                    @if($sortBy === 'cooking_time')
+                                        @if($sortDirection === 'asc')
+                                            <flux:icon.chevron-up class="w-4 h-4" />
+                                        @else
+                                            <flux:icon.chevron-down class="w-4 h-4" />
+                                        @endif
+                                    @else
+                                        <flux:icon.chevron-up-down class="w-4 h-4 opacity-50" />
+                                    @endif
+                                </button>
                             </th>
                             <th class="px-6 py-4 text-right text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
                                 집밥 원가
                             </th>
                             <th class="px-6 py-4 text-right text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
-                                배달비
+                                <button wire:click="sortBy('delivery_price')" class="flex items-center space-x-1 hover:text-gray-700 dark:hover:text-gray-300">
+                                    <span>배달비</span>
+                                    @if($sortBy === 'delivery_price')
+                                        @if($sortDirection === 'asc')
+                                            <flux:icon.chevron-up class="w-4 h-4" />
+                                        @else
+                                            <flux:icon.chevron-down class="w-4 h-4" />
+                                        @endif
+                                    @else
+                                        <flux:icon.chevron-up-down class="w-4 h-4 opacity-50" />
+                                    @endif
+                                </button>
                             </th>
                             <th class="px-6 py-4 text-right text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
                                 절약금액
@@ -135,7 +180,7 @@ $filteredRecipes = computed(function () {
                         </tr>
                     </thead>
                     <tbody class="divide-y divide-gray-200 dark:divide-zinc-700">
-                        @forelse($this->filteredRecipes as $recipe)
+                        @forelse($this->recipes as $recipe)
                             @php
                                 $cookingCost = $recipe->calculateCost();
                                 $savings = $recipe->calculateSavings();
@@ -201,6 +246,11 @@ $filteredRecipes = computed(function () {
                         @endforelse
                     </tbody>
                 </table>
+            </div>
+            
+            {{-- Pagination --}}
+            <div class="px-6 py-4 border-t border-gray-200 dark:border-zinc-700">
+                {{ $this->recipes->links() }}
             </div>
         </div>
         </div>
