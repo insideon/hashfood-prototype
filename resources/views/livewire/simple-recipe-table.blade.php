@@ -1,37 +1,4 @@
 <div class="w-full">
-    <style>
-        /* 페이지네이션 다크모드 색상 오버라이드 */
-        .dark nav[role="navigation"] button,
-        .dark nav[role="navigation"] span span {
-            background-color: rgb(39 39 42);
-            color: rgb(209 213 219);
-        }
-
-        .dark nav[role="navigation"] span[aria-current="page"] span {
-            background-color: rgb(59 130 246);
-            color: rgb(255 255 255);
-        }
-
-        /* 페이지네이션 텍스트 숨기기 */
-        nav[role="navigation"] p {
-            display: none;
-        }
-
-        /* 테이블 헤더 스타일 */
-        .sortable-header {
-            cursor: pointer;
-            user-select: none;
-        }
-
-        .sortable-header:hover {
-            background-color: rgba(0, 0, 0, 0.05);
-        }
-
-        .dark .sortable-header:hover {
-            background-color: rgba(255, 255, 255, 0.05);
-        }
-    </style>
-
     {{-- 검색 및 도구 모음 --}}
     <div class="mb-4 flex flex-col sm:flex-row gap-4 items-center justify-between">
         {{-- 검색 --}}
@@ -65,14 +32,10 @@
     </div>
 
     {{-- 테이블 --}}
-    <div class="bg-white dark:bg-zinc-800 rounded-2xl shadow-sm border border-gray-200 dark:border-zinc-700 overflow-hidden">
-        <div class="overflow-x-auto">
-            {{ $this->table }}
-        </div>
+    <div class="overflow-x-auto">
+        {{ $this->table }}
     </div>
 
     {{-- 페이지네이션 --}}
-    <div class="flex justify-center mt-6">
-        {{ $this->paginationView }}
-    </div>
+    {{ $this->paginationView }}
 </div>

@@ -20,7 +20,7 @@ $toJSON = fn() => json_encode(['status' => 'ok']);
                 <h1 class="text-3xl sm:text-4xl font-bold text-gray-900 dark:text-white mb-4">
                     해 먹을까, 시켜 먹을까?
                 </h1>
-                <p class="text-lg text-gray-600 dark:text-gray-400 mb-8 max-w-2xl mx-auto">
+                <p class="text-lg text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">
                     실제 식자재 원가로 비교하는 가장 합리적인 식사 선택
                 </p>
             </div>
