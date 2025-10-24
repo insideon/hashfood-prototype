@@ -1,15 +1,7 @@
 <!DOCTYPE html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}" class="{{ session('dark_mode', false) ? 'dark' : '' }}">
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
     <head>
         @include('partials.head')
-        <script>
-            // 다크 모드 상태를 즉시 적용
-            if (localStorage.getItem('dark-mode') === 'true' || (!localStorage.getItem('dark-mode') && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
-                document.documentElement.classList.add('dark');
-            } else {
-                document.documentElement.classList.remove('dark');
-            }
-        </script>
     </head>
     <body class="min-h-screen bg-zinc-50 dark:bg-zinc-900">
         <nav class="bg-white dark:bg-zinc-800 border-b border-zinc-200 dark:border-zinc-700">
@@ -46,20 +38,5 @@
         {{ $slot }}
 
         @fluxScripts
-        
-        <script>
-            // Livewire 이벤트 리스너
-            document.addEventListener('livewire:init', () => {
-                Livewire.on('dark-mode-changed', (isDark) => {
-                    if (isDark) {
-                        document.documentElement.classList.add('dark');
-                        localStorage.setItem('dark-mode', 'true');
-                    } else {
-                        document.documentElement.classList.remove('dark');
-                        localStorage.setItem('dark-mode', 'false');
-                    }
-                });
-            });
-        </script>
     </body>
 </html>
