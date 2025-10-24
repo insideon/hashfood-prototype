@@ -8,10 +8,10 @@
                     <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                         <flux:icon.magnifying-glass class="h-5 w-5 text-gray-400" />
                     </div>
-                    <input 
-                        type="text" 
+                    <input
+                        type="text"
                         wire:model.live.debounce.300ms="search"
-                        placeholder="음식명으로 검색..." 
+                        placeholder="음식명으로 검색..."
                         class="block w-full pl-10 pr-3 py-2 border border-gray-300 dark:border-zinc-600 rounded-lg bg-white dark:bg-zinc-700 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent"
                     />
                 </div>
@@ -19,7 +19,7 @@
 
             {{-- 카테고리 필터 --}}
             <div class="lg:w-48">
-                <select 
+                <select
                     wire:model.live="categoryFilter"
                     class="block w-full px-3 py-2 border border-gray-300 dark:border-zinc-600 rounded-lg bg-white dark:bg-zinc-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent"
                 >
@@ -35,7 +35,7 @@
 
             {{-- 난이도 필터 --}}
             <div class="lg:w-48">
-                <select 
+                <select
                     wire:model.live="difficultyFilter"
                     class="block w-full px-3 py-2 border border-gray-300 dark:border-zinc-600 rounded-lg bg-white dark:bg-zinc-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent"
                 >
@@ -56,8 +56,8 @@
                     <tr>
                         {{-- 음식명 --}}
                         <th scope="col" class="px-6 py-4 text-left text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider">
-                            <button 
-                                wire:click="sortBy('name')" 
+                            <button
+                                wire:click="sortBy('name')"
                                 class="flex items-center space-x-1 hover:text-gray-700 dark:hover:text-gray-300 transition-colors"
                             >
                                 <span>음식명</span>
@@ -75,8 +75,8 @@
 
                         {{-- 카테고리 --}}
                         <th scope="col" class="px-6 py-4 text-left text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider">
-                            <button 
-                                wire:click="sortBy('category')" 
+                            <button
+                                wire:click="sortBy('category')"
                                 class="flex items-center space-x-1 hover:text-gray-700 dark:hover:text-gray-300 transition-colors"
                             >
                                 <span>카테고리</span>
@@ -94,8 +94,8 @@
 
                         {{-- 난이도 --}}
                         <th scope="col" class="px-6 py-4 text-left text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider">
-                            <button 
-                                wire:click="sortBy('difficulty')" 
+                            <button
+                                wire:click="sortBy('difficulty')"
                                 class="flex items-center space-x-1 hover:text-gray-700 dark:hover:text-gray-300 transition-colors"
                             >
                                 <span>난이도</span>
@@ -113,8 +113,8 @@
 
                         {{-- 조리시간 --}}
                         <th scope="col" class="px-6 py-4 text-left text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider">
-                            <button 
-                                wire:click="sortBy('cooking_time')" 
+                            <button
+                                wire:click="sortBy('cooking_time')"
                                 class="flex items-center space-x-1 hover:text-gray-700 dark:hover:text-gray-300 transition-colors"
                             >
                                 <span>조리시간</span>
@@ -137,8 +137,8 @@
 
                         {{-- 배달비 --}}
                         <th scope="col" class="px-6 py-4 text-right text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider">
-                            <button 
-                                wire:click="sortBy('delivery_price')" 
+                            <button
+                                wire:click="sortBy('delivery_price')"
                                 class="flex items-center space-x-1 hover:text-gray-700 dark:hover:text-gray-300 transition-colors ml-auto"
                             >
                                 <span>배달비</span>
@@ -181,8 +181,11 @@
                                             class="h-12 w-12 rounded-lg object-cover" 
                                             src="{{ $recipe->image_url }}" 
                                             alt="{{ $recipe->name }}"
-                                            onerror="this.src='https://via.placeholder.com/48x48/6366f1/ffffff?text='+encodeURIComponent('{{ substr($recipe->name, 0, 1) }}')"
+                                            onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"
                                         />
+                                        <div class="h-12 w-12 rounded-lg bg-gradient-to-br from-orange-500 to-rose-500 flex items-center justify-center text-white font-semibold text-lg" style="display: none;">
+                                            {{ substr($recipe->name, 0, 1) }}
+                                        </div>
                                     </div>
                                     <div class="ml-4">
                                         <div class="text-sm font-semibold text-gray-900 dark:text-white">
@@ -280,8 +283,8 @@
 
                             {{-- 액션 --}}
                             <td class="px-6 py-4 text-center">
-                                <a 
-                                    href="{{ route('recipes.show', $recipe) }}" 
+                                <a
+                                    href="{{ route('recipes.show', $recipe) }}"
                                     class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-lg text-white bg-gradient-to-r from-orange-500 to-rose-500 hover:from-orange-600 hover:to-rose-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-orange-500 transition-all duration-200 shadow-sm hover:shadow-md"
                                 >
                                     <flux:icon.eye class="w-4 h-4 mr-1" />
