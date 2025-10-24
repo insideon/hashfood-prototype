@@ -11,9 +11,16 @@ Volt::route('/', 'landing')->name('home');
 Volt::route('recipes', 'recipes.index')->name('recipes.index');
 Volt::route('recipes/{recipeId}', 'recipes.show')->name('recipes.show');
 
+// Price tracking route
+Volt::route('price-tracking', 'price-tracking')->name('price-tracking');
+
 Route::view('dashboard', 'dashboard')
-    ->middleware(['auth', 'verified'])
+    ->middleware(['auth', 'verified', 'onboarding'])
     ->name('dashboard');
+
+Route::get('onboarding', function () {
+    return view('onboarding');
+})->middleware(['auth', 'verified'])->name('onboarding');
 
 Route::middleware(['auth'])->group(function () {
     Route::redirect('settings', 'settings/profile');
