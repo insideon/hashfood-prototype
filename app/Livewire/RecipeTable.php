@@ -43,9 +43,9 @@ class RecipeTable extends DataTableComponent
                         '일식' => 'bg-blue-100 text-blue-800 dark:bg-blue-900/20 dark:text-blue-400',
                         '양식' => 'bg-green-100 text-green-800 dark:bg-green-900/20 dark:text-green-400',
                     ];
-                    
+
                     $color = $colors[$value] ?? 'bg-gray-100 text-gray-800 dark:bg-gray-900/20 dark:text-gray-400';
-                    
+
                     return '<span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium '.$color.'">'.e($value).'</span>';
                 })
                 ->html(),

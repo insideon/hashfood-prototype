@@ -79,6 +79,7 @@ $toJSON = fn() => json_encode(['status' => 'ok']);
         <div class="mb-8">
             @livewire('recipe-table')
         </div>
+        </div>
     </div>
 
     {{-- Footer --}}
