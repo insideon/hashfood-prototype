@@ -4,9 +4,11 @@ use Illuminate\Support\Facades\Route;
 use Laravel\Fortify\Features;
 use Livewire\Volt\Volt;
 
-Route::get('/', function () {
-    return view('welcome');
-})->name('home');
+Route::redirect('/', '/recipes');
+
+// Recipe routes
+Volt::route('recipes', 'recipes.index')->name('recipes.index');
+Volt::route('recipes/{recipeId}', 'recipes.show')->name('recipes.show');
 
 Route::view('dashboard', 'dashboard')
     ->middleware(['auth', 'verified'])
