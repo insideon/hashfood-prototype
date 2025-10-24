@@ -18,7 +18,7 @@ $featuredRecipes = computed(function () {
         <div class="absolute inset-0 bg-grid-zinc-900/[0.04] dark:bg-grid-white/[0.02]"></div>
         <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24 sm:py-32">
             <div class="text-center">
-                <flux:badge color="orange" size="lg" class="mb-6">
+                <flux:badge color="orange" class="mb-6 text-lg px-6 py-2">
                     평균 월 15만원 절약
                 </flux:badge>
 
@@ -32,11 +32,11 @@ $featuredRecipes = computed(function () {
                 </flux:text>
 
                 <div class="flex flex-col sm:flex-row gap-4 justify-center mb-12">
-                    <flux:button size="lg" variant="primary" href="{{ route('recipes.index') }}" wire:navigate>
+                    <flux:button variant="primary" href="{{ route('recipes.index') }}" wire:navigate class="px-8 py-3 text-lg">
                         <flux:icon.magnifying-glass class="w-5 h-5" />
                         레시피 둘러보기
                     </flux:button>
-                    <flux:button size="lg" variant="outline" href="#how-it-works">
+                    <flux:button variant="outline" href="#how-it-works" class="px-8 py-3 text-lg">
                         <flux:icon.play class="w-5 h-5" />
                         어떻게 작동하나요?
                     </flux:button>
@@ -220,7 +220,7 @@ $featuredRecipes = computed(function () {
             </div>
 
             <div class="text-center">
-                <flux:button size="lg" variant="primary" href="{{ route('recipes.index') }}" wire:navigate>
+                <flux:button variant="primary" href="{{ route('recipes.index') }}" wire:navigate class="px-8 py-3 text-lg">
                     전체 레시피 보기
                     <flux:icon.arrow-right class="w-5 h-5" />
                 </flux:button>
@@ -238,11 +238,11 @@ $featuredRecipes = computed(function () {
                 무료로 시작하고, 매달 평균 15만원을 절약해보세요
             </flux:text>
             <div class="flex flex-col sm:flex-row gap-4 justify-center">
-                <flux:button size="lg" variant="ghost" href="{{ route('recipes.index') }}" wire:navigate class="bg-white text-orange-600 hover:bg-zinc-100">
+                <flux:button variant="ghost" href="{{ route('recipes.index') }}" wire:navigate class="bg-white text-orange-600 hover:bg-zinc-100 px-8 py-3 text-lg">
                     <flux:icon.rocket-launch class="w-5 h-5" />
                     지금 시작하기
                 </flux:button>
-                <flux:button size="lg" variant="ghost" href="{{ route('register') }}" wire:navigate class="border-white text-white hover:bg-white/10">
+                <flux:button variant="ghost" href="{{ route('register') }}" wire:navigate class="border-white text-white hover:bg-white/10 px-8 py-3 text-lg">
                     <flux:icon.user-plus class="w-5 h-5" />
                     회원가입
                 </flux:button>
