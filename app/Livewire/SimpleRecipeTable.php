@@ -59,8 +59,17 @@ class SimpleRecipeTable extends DataTableComponent
                 'default' => false,
             ])
             ->setThAttributes(function ($column) {
+                // 액션 컬럼은 중앙 정렬
+                if ($column->getTitle() === '액션') {
+                    return [
+                        'class' => 'px-6 py-4 text-center text-sm font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider cursor-pointer hover:bg-zinc-50 dark:hover:bg-zinc-700 transition-colors',
+                        'default' => false,
+                    ];
+                }
+
+                // 다른 컬럼들은 왼쪽 정렬
                 return [
-                    'class' => 'px-6 py-4 text-left text-xs font-semibold text-zinc-700 dark:text-zinc-300 uppercase tracking-wider cursor-pointer hover:bg-zinc-50 dark:hover:bg-zinc-700 transition-colors',
+                    'class' => 'px-6 py-4 text-left text-sm font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider cursor-pointer hover:bg-zinc-50 dark:hover:bg-zinc-700 transition-colors',
                     'default' => false,
                 ];
             })
@@ -148,7 +157,7 @@ class SimpleRecipeTable extends DataTableComponent
                 ->html(),
 
             Column::make('액션', 'id')
-                ->format(fn ($value) => '<a href="'.route('recipes.show', ['recipeId' => $value]).'" class="inline-flex items-center justify-center px-3 py-1.5 text-xs font-medium text-white bg-blue-600 hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600 rounded-lg transition-colors duration-200">보기</a>')
+                ->format(fn ($value) => '<div class="text-center"><a href="'.route('recipes.show', ['recipeId' => $value]).'" class="inline-flex items-center justify-center px-3 py-1.5 text-xs font-medium text-white bg-blue-600 hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600 rounded-lg transition-colors duration-200">보기</a></div>')
                 ->html(),
         ];
     }
