@@ -73,7 +73,7 @@ $filteredRecipes = computed(function () {
                     </div>
                     <div class="ml-4">
                         <div class="text-2xl font-bold text-gray-900 dark:text-white">
-                            ₩{{ number_format($this->recipes->avg(fn($r) => $r->calculateSavings())) }}
+                            ₩{{ number_format($this->recipes->avg(function($r) { return $r->calculateSavings(); })) }}
                         </div>
                         <div class="text-sm text-gray-500 dark:text-gray-400">평균 절약</div>
                     </div>
@@ -87,7 +87,7 @@ $filteredRecipes = computed(function () {
                     </div>
                     <div class="ml-4">
                         <div class="text-2xl font-bold text-gray-900 dark:text-white">
-                            {{ number_format($this->recipes->avg(fn($r) => $r->calculateSavingsPercentage())), 0 }}%
+                            {{ number_format($this->recipes->avg(function($r) { return $r->calculateSavingsPercentage(); }), 0) }}%
                         </div>
                         <div class="text-sm text-gray-500 dark:text-gray-400">평균 절약률</div>
                     </div>
