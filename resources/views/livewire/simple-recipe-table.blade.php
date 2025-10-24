@@ -8,31 +8,6 @@
             --color-gray-200: 32 32 36;  /* 은은한 테두리 */
             --color-gray-300: 39 39 42;
         }
-        
-        /* 페이지네이션 네비게이션 스타일 */
-        nav[role="navigation"] span,
-        nav[role="navigation"] a {
-            transition: all 0.2s;
-        }
-        
-        .dark nav[role="navigation"] span,
-        .dark nav[role="navigation"] a {
-            background-color: rgb(24 24 27);
-            border-color: rgb(32 32 36);
-            color: rgb(161 161 170);
-        }
-        
-        .dark nav[role="navigation"] a:hover {
-            background-color: rgb(39 39 42);
-            border-color: rgb(39 39 42);
-            color: rgb(209 213 219);
-        }
-        
-        .dark nav[role="navigation"] span[aria-current="page"] span {
-            background-color: rgb(39 39 42);
-            border-color: rgb(39 39 42);
-            color: rgb(255 255 255);
-        }
     </style>
 
     {{-- 검색 및 도구 모음 --}}
