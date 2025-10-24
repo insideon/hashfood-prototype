@@ -1,38 +1,9 @@
 <?php
 
 use App\Models\Recipe;
-use Livewire\Volt\Component;
-use Livewire\WithPagination;
-use function Livewire\Volt\{computed, layout, state};
+use function Livewire\Volt\{layout};
 
 layout('components.layouts.guest');
-
-state(['search' => '', 'sortBy' => 'name', 'sortDirection' => 'asc']);
-
-$recipes = computed(function () {
-    $query = Recipe::with('ingredients');
-    
-    // 검색 필터
-    if (!empty($this->search)) {
-        $query->where('name', 'like', '%' . $this->search . '%');
-    }
-    
-    // 정렬
-    $query->orderBy($this->sortBy, $this->sortDirection);
-    
-    return $query->paginate(20);
-});
-
-$sortBy = fn($field) => function() use ($field) {
-    if ($this->sortBy === $field) {
-        $this->sortDirection = $this->sortDirection === 'asc' ? 'desc' : 'asc';
-    } else {
-        $this->sortBy = $field;
-        $this->sortDirection = 'asc';
-    }
-};
-
-$updatingSearch = fn() => $this->resetPage();
 
 ?>
 
@@ -47,15 +18,6 @@ $updatingSearch = fn() => $this->resetPage();
                 <p class="text-lg text-gray-600 dark:text-gray-400 mb-8 max-w-2xl mx-auto">
                     실제 식자재 원가로 비교하는 가장 합리적인 식사 선택
                 </p>
-
-                {{-- Search --}}
-                <div class="max-w-md mx-auto">
-                    <flux:input
-                        wire:model.live="search"
-                        placeholder="음식명으로 검색..."
-                        class="w-full"
-                    />
-                </div>
             </div>
         </div>
     </div>
@@ -78,7 +40,7 @@ $updatingSearch = fn() => $this->resetPage();
                     </div>
                 </div>
             </div>
-            
+
             <div class="bg-white dark:bg-zinc-800 rounded-xl p-6 shadow-sm border border-gray-200 dark:border-zinc-700">
                 <div class="flex items-center">
                     <div class="w-12 h-12 bg-green-100 dark:bg-green-900/20 rounded-xl flex items-center justify-center">
@@ -92,7 +54,7 @@ $updatingSearch = fn() => $this->resetPage();
                     </div>
                 </div>
             </div>
-            
+
             <div class="bg-white dark:bg-zinc-800 rounded-xl p-6 shadow-sm border border-gray-200 dark:border-zinc-700">
                 <div class="flex items-center">
                     <div class="w-12 h-12 bg-blue-100 dark:bg-blue-900/20 rounded-xl flex items-center justify-center">
@@ -109,149 +71,15 @@ $updatingSearch = fn() => $this->resetPage();
         </div>
 
         {{-- Recipe Table --}}
-        <div class="bg-white dark:bg-zinc-800 rounded-xl shadow-sm border border-gray-200 dark:border-zinc-700 overflow-hidden">
-            <div class="px-6 py-5 border-b border-gray-200 dark:border-zinc-700">
-                <h2 class="text-xl font-semibold text-gray-900 dark:text-white">
-                    음식별 원가 및 절약 정보
-                </h2>
-                <p class="text-sm text-gray-500 dark:text-gray-400 mt-1">
-                    실제 식자재 가격을 기반으로 계산된 원가와 배달비와의 비교
-                </p>
-            </div>
-
-            <div class="overflow-x-auto">
-                <table class="w-full">
-                    <thead class="bg-gray-50 dark:bg-zinc-900">
-                        <tr>
-                            <th class="px-6 py-4 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
-                                <button wire:click="sortBy('name')" class="flex items-center space-x-1 hover:text-gray-700 dark:hover:text-gray-300">
-                                    <span>음식명</span>
-                                    @if($sortBy === 'name')
-                                        @if($sortDirection === 'asc')
-                                            <flux:icon.chevron-up class="w-4 h-4" />
-                                        @else
-                                            <flux:icon.chevron-down class="w-4 h-4" />
-                                        @endif
-                                    @else
-                                        <flux:icon.chevron-up-down class="w-4 h-4 opacity-50" />
-                                    @endif
-                                </button>
-                            </th>
-                            <th class="px-6 py-4 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
-                                <button wire:click="sortBy('cooking_time')" class="flex items-center space-x-1 hover:text-gray-700 dark:hover:text-gray-300">
-                                    <span>조리시간</span>
-                                    @if($sortBy === 'cooking_time')
-                                        @if($sortDirection === 'asc')
-                                            <flux:icon.chevron-up class="w-4 h-4" />
-                                        @else
-                                            <flux:icon.chevron-down class="w-4 h-4" />
-                                        @endif
-                                    @else
-                                        <flux:icon.chevron-up-down class="w-4 h-4 opacity-50" />
-                                    @endif
-                                </button>
-                            </th>
-                            <th class="px-6 py-4 text-right text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
-                                집밥 원가
-                            </th>
-                            <th class="px-6 py-4 text-right text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
-                                <button wire:click="sortBy('delivery_price')" class="flex items-center space-x-1 hover:text-gray-700 dark:hover:text-gray-300">
-                                    <span>배달비</span>
-                                    @if($sortBy === 'delivery_price')
-                                        @if($sortDirection === 'asc')
-                                            <flux:icon.chevron-up class="w-4 h-4" />
-                                        @else
-                                            <flux:icon.chevron-down class="w-4 h-4" />
-                                        @endif
-                                    @else
-                                        <flux:icon.chevron-up-down class="w-4 h-4 opacity-50" />
-                                    @endif
-                                </button>
-                            </th>
-                            <th class="px-6 py-4 text-right text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
-                                절약금액
-                            </th>
-                            <th class="px-6 py-4 text-right text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
-                                절약률
-                            </th>
-                            <th class="px-6 py-4 text-center text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
-                                액션
-                            </th>
-                        </tr>
-                    </thead>
-                    <tbody class="divide-y divide-gray-200 dark:divide-zinc-700">
-                        @forelse($this->recipes as $recipe)
-                            @php
-                                $cookingCost = $recipe->calculateCost();
-                                $savings = $recipe->calculateSavings();
-                                $savingsPercentage = $recipe->calculateSavingsPercentage();
-                            @endphp
-                            <tr class="hover:bg-gray-50 dark:hover:bg-zinc-700/50 transition-colors">
-                                <td class="px-6 py-4">
-                                    <div class="flex items-center">
-                                        <div class="w-10 h-10 bg-gradient-to-br from-orange-500 to-rose-500 rounded-xl flex items-center justify-center mr-3">
-                                            <flux:icon.fire class="w-5 h-5 text-white" />
-                                        </div>
-                                        <div>
-                                            <div class="text-sm font-medium text-gray-900 dark:text-white">
-                                                {{ $recipe->name }}
-                                            </div>
-                                            <div class="text-xs text-gray-500 dark:text-gray-400">
-                                                {{ $recipe->category }} • {{ $recipe->difficulty_korean }}
-                                            </div>
-                                        </div>
-                                    </div>
-                                </td>
-                                <td class="px-6 py-4 text-sm text-gray-900 dark:text-white">
-                                    {{ $recipe->cooking_time }}분
-                                </td>
-                                <td class="px-6 py-4 text-sm text-right">
-                                    <span class="font-semibold text-green-600">
-                                        ₩{{ number_format($cookingCost) }}
-                                    </span>
-                                </td>
-                                <td class="px-6 py-4 text-sm text-right">
-                                    <span class="font-semibold text-gray-600 dark:text-gray-400">
-                                        ₩{{ number_format($recipe->delivery_price) }}
-                                    </span>
-                                </td>
-                                <td class="px-6 py-4 text-sm text-right">
-                                    <span class="font-semibold text-green-600">
-                                        ₩{{ number_format($savings) }}
-                                    </span>
-                                </td>
-                                <td class="px-6 py-4 text-sm text-right">
-                                    <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800 dark:bg-green-900/20 dark:text-green-400">
-                                        {{ number_format($savingsPercentage, 1) }}%
-                                    </span>
-                                </td>
-                                <td class="px-6 py-4 text-center">
-                                    <a href="{{ route('recipes.show', $recipe) }}"
-                                       wire:navigate
-                                       class="inline-flex items-center px-3 py-1.5 border border-transparent text-xs font-medium rounded-lg text-orange-600 bg-orange-100 hover:bg-orange-200 dark:bg-orange-900/20 dark:text-orange-400 dark:hover:bg-orange-900/30 transition-colors">
-                                        상세보기
-                                    </a>
-                                </td>
-                            </tr>
-                        @empty
-                            <tr>
-                                <td colspan="7" class="px-6 py-12 text-center">
-                                    <div class="text-gray-500 dark:text-gray-400">
-                                        <flux:icon.magnifying-glass class="w-12 h-12 mx-auto mb-4 opacity-50" />
-                                        <p class="text-lg font-medium mb-2">검색 결과가 없습니다</p>
-                                        <p class="text-sm">다른 검색어로 시도해보세요</p>
-                                    </div>
-                                </td>
-                            </tr>
-                        @endforelse
-                    </tbody>
-                </table>
-            </div>
+        <div class="mb-8">
+            <h2 class="text-xl font-semibold text-gray-900 dark:text-white mb-6">
+                레시피 목록
+            </h2>
+            <p class="text-gray-600 dark:text-gray-400 mb-6">
+                실제 식자재 원가로 계산된 집밥 vs 배달비 비교
+            </p>
             
-            {{-- Pagination --}}
-            <div class="px-6 py-4 border-t border-gray-200 dark:border-zinc-700">
-                {{ $this->recipes->links() }}
-            </div>
+            @livewire('recipe-table')
         </div>
         </div>
     </div>
