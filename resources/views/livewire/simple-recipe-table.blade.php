@@ -1,36 +1,34 @@
 <div class="w-full">
     <style>
-        /* 페이지네이션 스타일 */
-        .pagination-current {
-            background-color: rgb(239 246 255) !important;
-            color: rgb(29 78 216) !important;
-            border-color: rgb(191 219 254) !important;
+        /* 페이지네이션 다크모드 색상 오버라이드 */
+        .dark {
+            --color-gray-800: 39 39 42;  /* zinc-800 */
+            --color-zinc-800: 39 39 42;
+            --color-zinc-700: 63 63 70;
+            --color-gray-200: 63 63 70;  /* zinc-700로 변경 */
         }
         
-        .pagination-link {
-            background-color: rgb(255 255 255) !important;
-            color: rgb(55 65 81) !important;
-            border-color: rgb(229 231 235) !important;
+        /* 페이지네이션 네비게이션 스타일 */
+        nav[role="navigation"] span,
+        nav[role="navigation"] a {
+            transition: all 0.2s;
         }
         
-        .pagination-link:hover {
-            background-color: rgb(249 250 251) !important;
-        }
-        
-        .dark .pagination-current {
-            background-color: rgb(63 63 70) !important;
-            color: rgb(255 255 255) !important;
-            border-color: rgb(82 82 91) !important;
-        }
-        
-        .dark .pagination-link {
+        .dark nav[role="navigation"] span[class*="bg-white"],
+        .dark nav[role="navigation"] a[class*="bg-white"] {
             background-color: rgb(39 39 42) !important;
-            color: rgb(209 213 219) !important;
             border-color: rgb(63 63 70) !important;
+            color: rgb(209 213 219) !important;
         }
         
-        .dark .pagination-link:hover {
+        .dark nav[role="navigation"] a[class*="bg-white"]:hover {
             background-color: rgb(63 63 70) !important;
+        }
+        
+        .dark nav[role="navigation"] span[aria-current="page"] span {
+            background-color: rgb(63 63 70) !important;
+            border-color: rgb(82 82 91) !important;
+            color: rgb(255 255 255) !important;
         }
     </style>
     
