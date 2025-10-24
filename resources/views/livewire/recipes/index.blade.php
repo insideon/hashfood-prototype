@@ -4,7 +4,7 @@ use App\Models\Recipe;
 use Livewire\Volt\Component;
 use function Livewire\Volt\{computed, layout, state};
 
-layout('layouts.guest');
+layout('components.layouts.guest');
 
 state(['search' => '', 'category' => '']);
 
