@@ -4,7 +4,9 @@
       "Bash(php artisan:*)",
       "mcp__herd__find_available_services",
       "Bash(psql:*)",
-      "Bash(git add:*)"
+      "Bash(git add:*)",
+      "Bash(git commit:*)",
+      "Bash(vendor/bin/pint:*)"
     ]
   },
   "enabledMcpjsonServers": [
