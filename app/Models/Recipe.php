@@ -46,6 +46,15 @@ class Recipe extends Model
     public function calculateCost(?int $servings = null): float
     {
         $servings = $servings ?? $this->servings;
+
+        // servings가 0이면 기본값 1로 설정
+        if ($servings <= 0) {
+            $servings = 1;
+        }
+        if ($this->servings <= 0) {
+            $this->servings = 1;
+        }
+
         $multiplier = $servings / $this->servings;
 
         return $this->ingredients->sum(function ($ingredient) use ($multiplier) {
@@ -56,6 +65,12 @@ class Recipe extends Model
     public function calculateCostPerServing(?int $servings = null): float
     {
         $servings = $servings ?? $this->servings;
+
+        // servings가 0이면 기본값 1로 설정
+        if ($servings <= 0) {
+            $servings = 1;
+        }
+
         $totalCost = $this->calculateCost($servings);
 
         return $totalCost / $servings;
