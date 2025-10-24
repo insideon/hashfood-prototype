@@ -1,9 +1,10 @@
 <?php
 
 use App\Models\Recipe;
-use Livewire\Attributes\Layout;
 use Livewire\Volt\Component;
-use function Livewire\Volt\{computed, state};
+use function Livewire\Volt\{computed, layout, state};
+
+layout('layouts.guest');
 
 state(['search' => '', 'category' => '']);
 
@@ -22,7 +23,9 @@ $categories = computed(function () {
         ->pluck('category');
 });
 
-?> @layout('layouts.guest') <div>
+?>
+
+<div>
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {{-- Header --}}
         <div class="mb-8">

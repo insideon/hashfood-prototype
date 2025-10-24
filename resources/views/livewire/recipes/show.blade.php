@@ -1,9 +1,10 @@
 <?php
 
 use App\Models\Recipe;
-use Livewire\Attributes\Layout;
 use Livewire\Volt\Component;
-use function Livewire\Volt\{computed, state};
+use function Livewire\Volt\{computed, layout, state};
+
+layout('layouts.guest');
 
 state(['recipeId', 'servings']);
 
@@ -19,7 +20,9 @@ $updateServings = function ($newServings) {
     $this->servings = max(1, $newServings);
 };
 
-?> @layout('layouts.guest') <div>
+?>
+
+<div>
     <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {{-- Back Button --}}
         <div class="mb-6">
