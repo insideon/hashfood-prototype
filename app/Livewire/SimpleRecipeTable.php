@@ -13,8 +13,11 @@ class SimpleRecipeTable extends Component
     protected $paginationTheme = 'tailwind';
 
     public $search = '';
+
     public $sortBy = 'name';
+
     public $sortDirection = 'asc';
+
     public $perPage = 20;
 
     protected $queryString = [
@@ -41,12 +44,27 @@ class SimpleRecipeTable extends Component
 
     public function render()
     {
+        $isCalculatedSort = in_array($this->sortBy, ['cooking_cost', 'savings', 'savings_percentage']);
+
         $recipes = Recipe::query()
-            ->when($this->search, function ($query) {
-                $query->where('name', 'like', '%' . $this->search . '%');
-            })
-            ->orderBy($this->sortBy, $this->sortDirection)
+            ->with('ingredients')
+            ->when($this->search, fn ($query) => $query->where('name', 'like', "%{$this->search}%"))
+            ->when(! $isCalculatedSort, fn ($query) => $query->orderBy($this->sortBy, $this->sortDirection))
             ->paginate($this->perPage);
+
+        // For calculated fields, sort the current page items
+        if ($isCalculatedSort) {
+            $items = $recipes->getCollection();
+
+            $sorted = $items->sortBy(fn ($recipe) => match ($this->sortBy) {
+                'cooking_cost' => $recipe->calculateCost(),
+                'savings' => $recipe->calculateSavings(),
+                'savings_percentage' => $recipe->calculateSavingsPercentage(),
+                default => 0,
+            }, SORT_REGULAR, $this->sortDirection === 'desc');
+
+            $recipes->setCollection($sorted->values());
+        }
 
         return view('livewire.simple-recipe-table', [
             'recipes' => $recipes,

@@ -88,8 +88,13 @@
                                 @endif
                             </div>
                         </th>
-                        <th class="px-6 py-4 text-left text-xs font-semibold text-gray-700 dark:text-gray-300 uppercase tracking-wider">
-                            집밥 원가
+                        <th class="px-6 py-4 text-left text-xs font-semibold text-gray-700 dark:text-gray-300 uppercase tracking-wider cursor-pointer hover:bg-gray-50 dark:hover:bg-zinc-700/50 transition-colors" wire:click="sortBy('cooking_cost')">
+                            <div class="flex items-center gap-2">
+                                집밥 원가
+                                @if($sortBy === 'cooking_cost')
+                                    <flux:icon.chevron-up class="w-4 h-4 {{ $sortDirection === 'asc' ? '' : 'rotate-180' }} transition-transform" />
+                                @endif
+                            </div>
                         </th>
                         <th class="px-6 py-4 text-left text-xs font-semibold text-gray-700 dark:text-gray-300 uppercase tracking-wider cursor-pointer hover:bg-gray-50 dark:hover:bg-zinc-700/50 transition-colors" wire:click="sortBy('delivery_price')">
                             <div class="flex items-center gap-2">
@@ -99,11 +104,21 @@
                                 @endif
                             </div>
                         </th>
-                        <th class="px-6 py-4 text-left text-xs font-semibold text-gray-700 dark:text-gray-300 uppercase tracking-wider">
-                            절약금액
+                        <th class="px-6 py-4 text-left text-xs font-semibold text-gray-700 dark:text-gray-300 uppercase tracking-wider cursor-pointer hover:bg-gray-50 dark:hover:bg-zinc-700/50 transition-colors" wire:click="sortBy('savings')">
+                            <div class="flex items-center gap-2">
+                                절약금액
+                                @if($sortBy === 'savings')
+                                    <flux:icon.chevron-up class="w-4 h-4 {{ $sortDirection === 'asc' ? '' : 'rotate-180' }} transition-transform" />
+                                @endif
+                            </div>
                         </th>
-                        <th class="px-6 py-4 text-left text-xs font-semibold text-gray-700 dark:text-gray-300 uppercase tracking-wider">
-                            절약률
+                        <th class="px-6 py-4 text-left text-xs font-semibold text-gray-700 dark:text-gray-300 uppercase tracking-wider cursor-pointer hover:bg-gray-50 dark:hover:bg-zinc-700/50 transition-colors" wire:click="sortBy('savings_percentage')">
+                            <div class="flex items-center gap-2">
+                                절약률
+                                @if($sortBy === 'savings_percentage')
+                                    <flux:icon.chevron-up class="w-4 h-4 {{ $sortDirection === 'asc' ? '' : 'rotate-180' }} transition-transform" />
+                                @endif
+                            </div>
                         </th>
                         <th class="px-6 py-4 text-center text-xs font-semibold text-gray-700 dark:text-gray-300 uppercase tracking-wider">
                             액션
