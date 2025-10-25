@@ -129,6 +129,7 @@ class SimpleRecipeTable extends DataTableComponent
             ])
             ->setTableAttributes([
                 'class' => 'min-w-full bg-white dark:bg-zinc-800 text-gray-900 dark:text-white',
+                'style' => 'min-width: 60rem;',
                 'default' => false,
             ])
             ->setTheadAttributes([
@@ -166,7 +167,11 @@ class SimpleRecipeTable extends DataTableComponent
                     'default' => false,
                 ];
             })
-            ->setEmptyMessage('레시피를 찾을 수 없습니다.');
+            ->setEmptyMessage('레시피를 찾을 수 없습니다.')
+            ->setToolBarAttributes([
+                'class' => 'flex flex-col mb-4 md:p-0',
+                'default-styling' => false,
+            ]);
     }
 
     /**
@@ -178,7 +183,7 @@ class SimpleRecipeTable extends DataTableComponent
             Column::make('음식명', 'name')
                 ->sortable()
                 ->searchable()
-                ->format(fn ($value) => '<div class="text-sm font-semibold text-zinc-900 dark:text-zinc-100 overflow-hidden text-ellipsis whitespace-nowrap">'.$value.'</div>')
+                ->format(fn ($value) => '<div class="text-sm font-semibold text-zinc-900 dark:text-zinc-100 overflow-hidden text-ellipsis whitespace-nowrap" style="min-width: 12ch;">'.$value.'</div>')
                 ->html(),
 
             Column::make('카테고리', 'category')
@@ -193,13 +198,13 @@ class SimpleRecipeTable extends DataTableComponent
                     ];
                     $color = $colors[$value] ?? 'text-zinc-600 dark:text-zinc-400';
 
-                    return '<div class="text-sm font-medium '.$color.' overflow-hidden text-ellipsis whitespace-nowrap">'.$value.'</div>';
+                    return '<div class="text-sm font-medium '.$color.' overflow-hidden text-ellipsis whitespace-nowrap" style="min-width: 6ch;">'.$value.'</div>';
                 })
                 ->html(),
 
             Column::make('집밥 원가', 'calculated_cooking_cost')
                 ->sortable()
-                ->format(fn ($value) => '<div class="text-sm font-semibold text-zinc-900 dark:text-zinc-100 overflow-hidden text-ellipsis whitespace-nowrap">₩'.number_format($value).'</div>')
+                ->format(fn ($value) => '<div class="text-sm font-semibold text-zinc-900 dark:text-zinc-100 overflow-hidden text-ellipsis whitespace-nowrap" style="min-width: 8ch;">₩'.number_format($value).'</div>')
                 ->html(),
 
             Column::make('배달 가격', 'delivery_price')

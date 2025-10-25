@@ -1,6 +1,6 @@
 @aware(['isTailwind', 'isBootstrap'])
 
-<div class="relative w-full max-w-xs">
+<div class="relative w-full max-w-xs sm:max-w-sm md:max-w-md">
     @if($this->hasSearchIcon)
         <x-livewire-tables::tools.toolbar.items.search.icon :searchIcon="$this->getSearchIcon" :searchIconClasses="$this->getSearchIconClasses" :searchIconOtherAttributes="$this->getSearchIconOtherAttributes"  />
     @endif
