@@ -20,10 +20,20 @@ $toJSON = fn() => json_encode(['status' => 'ok']);
                 <h1 class="text-3xl sm:text-4xl font-bold text-gray-900 dark:text-white mb-4">
                     <span id="typing-text" class="typing-animation"></span>
                 </h1>
-                <p class="text-lg text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">
+                <p class="text-lg text-gray-600 dark:text-gray-400 max-w-2xl mx-auto mb-8">
                     실제 식자재 원가로 비교하는<br class="sm:hidden">
                     가장 합리적인 식사 선택
                 </p>
+                <div class="flex justify-center gap-4">
+                    <flux:button variant="primary" href="{{ route('recipes.index') }}" wire:navigate icon="fire" class="text-base px-6 py-3">
+                        레시피 둘러보기
+                    </flux:button>
+                    @guest
+                        <flux:button variant="ghost" href="{{ route('login') }}" wire:navigate class="text-base px-6 py-3">
+                            무료로 시작하기
+                        </flux:button>
+                    @endguest
+                </div>
             </div>
         </div>
     </div>
