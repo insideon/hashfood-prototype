@@ -16,14 +16,16 @@
 </div>
 
 <script>
-document.addEventListener('DOMContentLoaded', function() {
-    const toggleButton = document.getElementById('dark-mode-toggle');
-    const sunIcon = document.getElementById('sun-icon');
-    const moonIcon = document.getElementById('moon-icon');
+(function() {
     const htmlElement = document.documentElement;
 
     // 아이콘 업데이트 함수
     function updateIcons() {
+        const sunIcon = document.getElementById('sun-icon');
+        const moonIcon = document.getElementById('moon-icon');
+
+        if (!sunIcon || !moonIcon) return;
+
         const isDark = htmlElement.classList.contains('dark');
         if (isDark) {
             sunIcon.style.display = 'block';
@@ -48,7 +50,8 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     // 다크 모드 토글
-    function toggleDarkMode() {
+    function toggleDarkMode(e) {
+        e.preventDefault();
         const isDark = htmlElement.classList.contains('dark');
 
         if (isDark) {
@@ -61,10 +64,19 @@ document.addEventListener('DOMContentLoaded', function() {
         updateIcons();
     }
 
-    // 초기화
-    initDarkMode();
+    // 초기화 함수
+    function init() {
+        initDarkMode();
 
-    // 토글 버튼 이벤트 리스너
-    toggleButton.addEventListener('click', toggleDarkMode);
-});
+        const toggleButton = document.getElementById('dark-mode-toggle');
+        if (toggleButton && !toggleButton.hasAttribute('data-dark-mode-initialized')) {
+            toggleButton.setAttribute('data-dark-mode-initialized', 'true');
+            toggleButton.addEventListener('click', toggleDarkMode);
+        }
+    }
+
+    // 초기 로드 및 Livewire 네비게이션 시 실행
+    document.addEventListener('DOMContentLoaded', init);
+    document.addEventListener('livewire:navigated', init);
+})();
 </script>

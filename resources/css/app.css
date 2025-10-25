@@ -61,6 +61,22 @@ select:focus[data-flux-control] {
     @apply outline-hidden ring-2 ring-accent ring-offset-2 ring-offset-accent-foreground;
 }
 
+/* 다크모드: Input과 Select 스타일 */
+.dark input[data-flux-control],
+.dark textarea[data-flux-control],
+.dark select[data-flux-control] {
+    @apply bg-zinc-800 text-white border-zinc-700;
+}
+
+.dark input[data-flux-control]::placeholder {
+    @apply text-zinc-400;
+}
+
+.dark select[data-flux-control] option {
+    @apply bg-zinc-800 text-white;
+}
+
+
 /* \[:where(&)\]:size-4 {
     @apply size-4;
 } */

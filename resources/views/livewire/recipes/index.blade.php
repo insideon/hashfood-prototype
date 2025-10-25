@@ -190,10 +190,6 @@ $updated = function ($property) {
                     </svg>
                 </div>
             </div>
-        @else
-            <div class="mt-8 text-center py-4 text-zinc-500 dark:text-zinc-400">
-                모든 레시피를 불러왔습니다
-            </div>
         @endif
     </div>
 </div>

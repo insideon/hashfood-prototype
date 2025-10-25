@@ -42,7 +42,7 @@
                 id="{{ $tableName }}-tbody"
                 {{ $attributes->merge($customAttributes['tbody'])
                         ->class([
-                            'bg-white divide-y divide-gray-200 dark:bg-gray-800 dark:divide-none' => $customAttributes['tbody']['default'] ?? true
+                            'bg-white divide-y divide-gray-200 dark:bg-zinc-800 dark:divide-none' => $customAttributes['tbody']['default'] ?? true
                         ])
                         ->except(['default','default-styling','default-colors']) }}
             >
