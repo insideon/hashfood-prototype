@@ -7,6 +7,10 @@
     <span {{ $customLabelAttributes->except(['default', 'default-colors', 'default-styling']) }}>
         <span class="delivery-price-label">{{ $columnTitle }}</span>
     </span>
+@elseif($columnTitle === '절약률')
+    <span {{ $customLabelAttributes->except(['default', 'default-colors', 'default-styling']) }}>
+        <span class="savings-rate-label">{{ $columnTitle }}</span>
+    </span>
 @else
     <span {{ $customLabelAttributes->except(['default', 'default-colors', 'default-styling']) }}>
         {{ $columnTitle }}

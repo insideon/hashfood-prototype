@@ -69,13 +69,12 @@ class SimpleRecipeTable extends DataTableComponent
      */
     private function setBasicConfiguration(): self
     {
-        return $this->setPrimaryKey('id')
-            ->setDefaultSort(self::DEFAULT_SORT_FIELD, self::DEFAULT_SORT_DIRECTION)
-            ->setSortingPillsDisabled()
-            ->setColumnSelectDisabled()
-            ->setDisplayPaginationDetails(false)
-            ->setLoadingPlaceholderEnabled()
-            ->setLoadingPlaceholderContent('레시피를 불러오는 중...');
+                return $this->setPrimaryKey('id')
+                    ->setDefaultSort(self::DEFAULT_SORT_FIELD, self::DEFAULT_SORT_DIRECTION)
+                    ->setSortingPillsDisabled()
+                    ->setColumnSelectDisabled()
+                    ->setDisplayPaginationDetails(false)
+                    ->setLoadingPlaceholderDisabled();
     }
 
     /**
@@ -133,7 +132,7 @@ class SimpleRecipeTable extends DataTableComponent
                 'default' => false,
             ])
             ->setTheadAttributes([
-                'class' => 'border-b border-zinc-200 dark:border-zinc-700 overflow-visible',
+                'class' => 'border-b border-zinc-200 dark:border-zinc-700',
                 'default' => false,
             ])
             ->setTbodyAttributes([
@@ -143,7 +142,7 @@ class SimpleRecipeTable extends DataTableComponent
             ->setThAttributes(function ($column) {
                 $baseClass = 'px-3 py-2 md:px-6 md:py-4 text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider cursor-pointer hover:bg-zinc-50 dark:hover:bg-zinc-700 transition-colors whitespace-nowrap';
 
-                if ($column->getTitle() === '집밥 원가' || $column->getTitle() === '배달 가격') {
+                if ($column->getTitle() === '집밥 원가' || $column->getTitle() === '배달 가격' || $column->getTitle() === '절약률') {
                     return [
                         'class' => $baseClass . ' text-left overflow-visible relative',
                         'default' => false,

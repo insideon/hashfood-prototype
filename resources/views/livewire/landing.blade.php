@@ -86,33 +86,22 @@ $toJSON = fn() => json_encode(['status' => 'ok']);
     {{-- Footer --}}
     <footer class="bg-white dark:bg-zinc-800 border-t border-gray-200 dark:border-zinc-700 mt-16">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
-            <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-8">
                 {{-- Brand --}}
-                <div class="col-span-1 md:col-span-2">
+                <div class="col-span-2">
                     <div class="flex items-center mb-4">
                         <div class="w-8 h-8 bg-gradient-to-br from-orange-500 to-rose-500 rounded-lg flex items-center justify-center mr-3">
                             <flux:icon.fire class="w-5 h-5 text-white" />
                         </div>
                         <span class="text-xl font-bold text-gray-900 dark:text-white">해시푸드</span>
                     </div>
-                    <p class="text-gray-600 dark:text-gray-400 mb-4 max-w-md">
+                    <p class="text-gray-600 dark:text-gray-400 max-w-md">
                         실제 식자재 원가를 기반으로 가장 합리적인 식사 선택을 도와드리는 데이터 기반 플랫폼입니다.
                     </p>
-                    <div class="flex space-x-4">
-                        <a href="#" class="text-gray-400 hover:text-orange-600 transition-colors">
-                            <flux:icon.heart class="w-5 h-5" />
-                        </a>
-                        <a href="#" class="text-gray-400 hover:text-orange-600 transition-colors">
-                            <flux:icon.share class="w-5 h-5" />
-                        </a>
-                        <a href="#" class="text-gray-400 hover:text-orange-600 transition-colors">
-                            <flux:icon.star class="w-5 h-5" />
-                        </a>
-                    </div>
                 </div>
 
                 {{-- Services --}}
-                <div>
+                <div class="col-span-1">
                     <h3 class="text-sm font-semibold text-gray-900 dark:text-white uppercase tracking-wider mb-4">
                         서비스
                     </h3>
@@ -125,7 +114,7 @@ $toJSON = fn() => json_encode(['status' => 'ok']);
                 </div>
 
                 {{-- Company --}}
-                <div>
+                <div class="col-span-1">
                     <h3 class="text-sm font-semibold text-gray-900 dark:text-white uppercase tracking-wider mb-4">
                         회사
                     </h3>

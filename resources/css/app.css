@@ -135,8 +135,9 @@ select:focus[data-flux-control] {
 .cooking-cost-label::after {
     content: '인건비, 임대료 등 간접비를 제외한 재료비 기준의 예상 원가입니다.';
     position: fixed;
+    left: var(--cooking-tooltip-left, 50%);
+    top: var(--cooking-tooltip-top, 40%);
     transform: translateX(-50%);
-    margin-top: -80px;
     width: 224px;
     padding: 12px;
     background-color: #18181b;
@@ -155,6 +156,14 @@ select:focus[data-flux-control] {
     z-index: 9999;
     text-align: center;
     white-space: normal;
+}
+
+@media (max-width: 767px) {
+    .cooking-cost-label::after {
+        width: 200px;
+        padding: 10px;
+        font-size: 11px;
+    }
 }
 
 .dark .cooking-cost-label::after {
@@ -180,8 +189,9 @@ select:focus[data-flux-control] {
 .delivery-price-label::after {
     content: '배달 앱에서 판매되는 음식의 배달료가 포함된 평균 판매 가격입니다.';
     position: fixed;
+    left: var(--delivery-tooltip-left, 50%);
+    top: var(--delivery-tooltip-top, 40%);
     transform: translateX(-50%);
-    margin-top: -80px;
     width: 200px;
     padding: 12px;
     background-color: #18181b;
@@ -209,4 +219,66 @@ select:focus[data-flux-control] {
 .delivery-price-label:hover::after {
     opacity: 1;
     visibility: visible;
+}
+
+@media (max-width: 767px) {
+    .delivery-price-label::after {
+        width: 200px;
+        padding: 10px;
+        font-size: 11px;
+    }
+}
+
+/* 절약률 툴팁 스타일 */
+.savings-rate-label {
+    position: relative;
+    border-bottom: 1px dotted #a3a3a3;
+    cursor: help;
+}
+
+.dark .savings-rate-label {
+    border-bottom-color: #737373;
+}
+
+.savings-rate-label::after {
+    content: '배달 가격 대비 집밥 원가로 절약할 수 있는 비율입니다.';
+    position: fixed;
+    left: var(--savings-tooltip-left, 50%);
+    top: var(--savings-tooltip-top, 40%);
+    transform: translateX(-50%);
+    width: 200px;
+    padding: 12px;
+    background-color: #18181b;
+    color: white;
+    font-size: 12px;
+    font-weight: 400;
+    text-transform: none;
+    letter-spacing: 0;
+    line-height: 1.6;
+    border-radius: 8px;
+    box-shadow: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.15s ease-out;
+    pointer-events: none;
+    z-index: 9999;
+    text-align: center;
+    white-space: normal;
+}
+
+.dark .savings-rate-label::after {
+    background-color: #3f3f46;
+}
+
+.savings-rate-label:hover::after {
+    opacity: 1;
+    visibility: visible;
+}
+
+@media (max-width: 767px) {
+    .savings-rate-label::after {
+        width: 200px;
+        padding: 10px;
+        font-size: 11px;
+    }
 }
