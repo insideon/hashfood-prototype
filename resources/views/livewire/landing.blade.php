@@ -21,7 +21,8 @@ $toJSON = fn() => json_encode(['status' => 'ok']);
                     <span id="typing-text" class="typing-animation"></span>
                 </h1>
                 <p class="text-lg text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">
-                    실제 식자재 원가로 비교하는 가장 합리적인 식사 선택
+                    실제 식자재 원가로 비교하는<br class="sm:hidden">
+                    가장 합리적인 식사 선택
                 </p>
             </div>
         </div>
