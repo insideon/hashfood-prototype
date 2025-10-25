@@ -24,14 +24,18 @@
             'd-none d-lg-table-cell' => $isBootstrap && $column->shouldCollapseOnTablet(),
         ])
         ->except(['default', 'default-colors', 'default-styling'])
-}}>
+}}
+@if($this->sortingIsEnabled() && ($column->isSortable() || $column->getSortCallback()))
+    wire:click="sortBy('{{ $column->getColumnSortKey() }}')"
+@endif
+>
     @if($column->getColumnLabelStatus())
         @unless ($this->sortingIsEnabled() && ($column->isSortable() || $column->getSortCallback()))
             <x-livewire-tables::table.th.label :$customLabelAttributes :columnTitle="$column->getTitle()" />
         @else
             @if ($isTailwind)
 
-                <button wire:click="sortBy('{{ $column->getColumnSortKey() }}')" {{
+                <div {{
                         $attributes->merge($customSortButtonAttributes)
                             ->class([
                                 'text-gray-500 dark:text-gray-400' => (($customSortButtonAttributes['default-colors'] ?? true) || ($customSortButtonAttributes['default'] ?? true)),
@@ -41,9 +45,9 @@
                 }}>
                     <x-livewire-tables::table.th.label :$customLabelAttributes :columnTitle="$column->getTitle()" />
                     <x-livewire-tables::table.th.sort-icons :$direction :$customIconAttributes />
-                </button>
+                </div>
             @elseif ($isBootstrap)
-                <div wire:click="sortBy('{{ $column->getColumnSortKey() }}')" {{
+                <div {{
                         $attributes->merge($customSortButtonAttributes)
                             ->class([
                                 'd-flex align-items-center laravel-livewire-tables-cursor' => (($customSortButtonAttributes['default-styling'] ?? true) || ($customSortButtonAttributes['default'] ?? true))
