@@ -189,7 +189,7 @@ document.addEventListener('DOMContentLoaded', function() {
             setTimeout(() => {
                 isDeleting = true;
                 typeText();
-            }, 2000); // 2초 대기
+            }, 1000); // 2초 대기
         } else if (isDeleting && currentText.length === 0) {
             // 지우기 완료, 다음 텍스트로 이동
             isDeleting = false;
