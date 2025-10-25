@@ -6,14 +6,24 @@ use function Livewire\Volt\{computed, layout, state};
 
 layout('components.layouts.guest');
 
-state(['search' => '', 'category' => '']);
+state(['search' => '', 'category' => '', 'page' => 1, 'perPage' => 12]);
 
 $recipes = computed(function () {
     return Recipe::query()
         ->with('ingredients')
         ->when($this->search, fn($q) => $q->where('name', 'like', "%{$this->search}%"))
         ->when($this->category, fn($q) => $q->where('category', $this->category))
+        ->take($this->page * $this->perPage)
         ->get();
+});
+
+$hasMore = computed(function () {
+    $total = Recipe::query()
+        ->when($this->search, fn($q) => $q->where('name', 'like', "%{$this->search}%"))
+        ->when($this->category, fn($q) => $q->where('category', $this->category))
+        ->count();
+
+    return ($this->page * $this->perPage) < $total;
 });
 
 $categories = computed(function () {
@@ -22,6 +32,17 @@ $categories = computed(function () {
         ->distinct()
         ->pluck('category');
 });
+
+$loadMore = function () {
+    $this->page++;
+};
+
+// 검색이나 카테고리 변경 시 첫 페이지로 리셋
+$updated = function ($property) {
+    if (in_array($property, ['search', 'category'])) {
+        $this->page = 1;
+    }
+};
 
 ?>
 
@@ -141,5 +162,39 @@ $categories = computed(function () {
                 </div>
             @endforelse
         </div>
+
+        {{-- Infinite Scroll Trigger --}}
+        @if($this->hasMore)
+            <div
+                class="mt-8 text-center py-4"
+                x-data="{
+                    observe() {
+                        let observer = new IntersectionObserver((entries) => {
+                            entries.forEach(entry => {
+                                if (entry.isIntersecting) {
+                                    @this.call('loadMore')
+                                }
+                            })
+                        }, {
+                            rootMargin: '100px'
+                        })
+                        observer.observe(this.$el)
+                    }
+                }"
+                x-init="observe"
+            >
+                <div wire:loading wire:target="loadMore" class="flex items-center justify-center gap-2 text-zinc-600 dark:text-zinc-400">
+                    <svg class="animate-spin h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                        <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                        <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                    </svg>
+                    <span>레시피 불러오는 중...</span>
+                </div>
+            </div>
+        @else
+            <div class="mt-8 text-center py-4 text-zinc-500 dark:text-zinc-400">
+                모든 레시피를 불러왔습니다
+            </div>
+        @endif
     </div>
 </div>
