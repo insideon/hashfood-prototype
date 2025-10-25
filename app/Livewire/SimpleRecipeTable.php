@@ -68,14 +68,14 @@ class SimpleRecipeTable extends DataTableComponent
                 // 액션 컬럼은 중앙 정렬
                 if ($column->getTitle() === '액션') {
                     return [
-                        'class' => 'px-6 py-4 text-center text-sm font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider cursor-pointer hover:bg-zinc-50 dark:hover:bg-zinc-700 transition-colors',
+                        'class' => 'px-6 py-4 text-center text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider cursor-pointer hover:bg-zinc-50 dark:hover:bg-zinc-700 transition-colors',
                         'default' => false,
                     ];
                 }
 
                 // 다른 컬럼들은 왼쪽 정렬
                 return [
-                    'class' => 'px-6 py-4 text-left text-sm font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider cursor-pointer hover:bg-zinc-50 dark:hover:bg-zinc-700 transition-colors',
+                    'class' => 'px-6 py-4 text-left text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider cursor-pointer hover:bg-zinc-50 dark:hover:bg-zinc-700 transition-colors',
                     'default' => false,
                 ];
             })

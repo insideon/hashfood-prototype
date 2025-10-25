@@ -14,7 +14,7 @@
     $attributes->merge($customThAttributes)
         ->class([
             'text-gray-500 dark:bg-gray-800 dark:text-gray-400' => $isTailwind && (($customThAttributes['default-colors'] ?? true) || ($customThAttributes['default'] ?? true)),
-            'px-6 py-3 text-left text-sm font-semibold whitespace-nowrap uppercase tracking-wider' => $isTailwind && (($customThAttributes['default-styling'] ?? true) || ($customThAttributes['default'] ?? true)),
+            'px-6 py-3 text-left text-xs font-semibold whitespace-nowrap uppercase tracking-wider' => $isTailwind && (($customThAttributes['default-styling'] ?? true) || ($customThAttributes['default'] ?? true)),
             'text-center' => $isTailwind && $column->getTitle() === '액션',
             'hidden' => $isTailwind && $column->shouldCollapseAlways(),
             'hidden md:table-cell' => $isTailwind && $column->shouldCollapseOnMobile(),
@@ -36,7 +36,7 @@
                         $attributes->merge($customSortButtonAttributes)
                             ->class([
                                 'text-gray-500 dark:text-gray-400' => (($customSortButtonAttributes['default-colors'] ?? true) || ($customSortButtonAttributes['default'] ?? true)),
-                                'flex items-center space-x-1 text-left text-sm leading-4 font-semibold uppercase tracking-wider group focus:outline-none' => (($customSortButtonAttributes['default-styling'] ?? true) || ($customSortButtonAttributes['default'] ?? true)),
+                                'flex items-center space-x-1 text-left text-xs leading-4 font-semibold uppercase tracking-wider group focus:outline-none' => (($customSortButtonAttributes['default-styling'] ?? true) || ($customSortButtonAttributes['default'] ?? true)),
                                 'text-center' => $column->getTitle() === '액션',
                             ])
                             ->except(['default', 'default-colors', 'default-styling', 'wire:key'])
