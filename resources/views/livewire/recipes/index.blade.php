@@ -25,11 +25,11 @@ $categories = computed(function () {
 
 ?>
 
-<div>
+<div class="min-h-screen bg-gray-50 dark:bg-zinc-900">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {{-- Header --}}
         <div class="mb-8">
-            <flux:heading size="xl" class="mb-2">오늘 뭐 먹지?</flux:heading>
+            <flux:heading size="xl" class="mb-2 text-gray-900 dark:text-white">오늘 뭐 먹지?</flux:heading>
             <flux:text class="text-zinc-600 dark:text-zinc-400">
                 배달 음식보다 저렴하게 집에서 만들어보세요
             </flux:text>
@@ -59,7 +59,7 @@ $categories = computed(function () {
             @forelse($this->recipes as $recipe)
                 <a
                     href="{{ route('recipes.show', ['recipeId' => $recipe->id]) }}"
-                    class="group block bg-white dark:bg-zinc-800 rounded-lg shadow-sm hover:shadow-md transition-shadow overflow-hidden"
+                    class="group block bg-white dark:bg-zinc-800 rounded-lg shadow-sm hover:shadow-md transition-shadow overflow-hidden border border-gray-200 dark:border-zinc-700"
                     wire:key="recipe-{{ $recipe->id }}"
                 >
                     {{-- Image Placeholder --}}
@@ -70,7 +70,7 @@ $categories = computed(function () {
                     {{-- Content --}}
                     <div class="p-5">
                         <div class="flex items-start justify-between mb-2">
-                            <flux:heading size="lg" class="group-hover:text-orange-600 transition-colors">
+                            <flux:heading size="lg" class="text-gray-900 dark:text-white group-hover:text-orange-600 dark:group-hover:text-orange-400 transition-colors">
                                 {{ $recipe->name }}
                             </flux:heading>
                             <flux:badge color="zinc" size="sm">{{ $recipe->category }}</flux:badge>
@@ -133,8 +133,8 @@ $categories = computed(function () {
                 </a>
             @empty
                 <div class="col-span-full text-center py-12">
-                    <flux:icon.magnifying-glass class="w-12 h-12 mx-auto text-zinc-400 mb-4" />
-                    <flux:heading size="lg" class="mb-2">레시피를 찾을 수 없습니다</flux:heading>
+                    <flux:icon.magnifying-glass class="w-12 h-12 mx-auto text-zinc-400 dark:text-zinc-500 mb-4" />
+                    <flux:heading size="lg" class="mb-2 text-gray-900 dark:text-white">레시피를 찾을 수 없습니다</flux:heading>
                     <flux:text class="text-zinc-600 dark:text-zinc-400">
                         검색어나 카테고리를 변경해보세요
                     </flux:text>
