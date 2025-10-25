@@ -91,7 +91,7 @@ class SimpleRecipeTable extends DataTableComponent
                     'default' => false,
                 ];
             })
-            ->setEmptyMessage('레시피를 찾을 수 없습니다')
+            ->setEmptyMessage('레시피를 찾을 수 없습니다.')
             ->setToolBarAttributes([
                 'class' => 'flex flex-col items-center mb-4 px-4 md:p-0'
             ]);
