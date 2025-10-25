@@ -23,11 +23,8 @@
                                 대시보드
                             </flux:button>
                         @else
-                            <flux:button variant="ghost" href="{{ route('login') }}" wire:navigate>
+                            <flux:button variant="primary" href="{{ route('login') }}" wire:navigate>
                                 로그인
-                            </flux:button>
-                            <flux:button variant="primary" href="{{ route('register') }}" wire:navigate>
-                                회원가입
                             </flux:button>
                         @endauth
                     </div>
