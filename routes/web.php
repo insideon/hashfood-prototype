@@ -13,6 +13,10 @@ Route::get('rss.xml', RssFeedController::class)->name('rss');
 // Landing page
 Volt::route('/', 'landing')->name('home');
 
+// Legal pages
+Volt::route('terms', 'pages.terms')->name('terms');
+Volt::route('privacy', 'pages.privacy')->name('privacy');
+
 // Recipe routes
 Volt::route('recipes', 'recipes.index')->name('recipes.index');
 Volt::route('recipes/{recipeId}', 'recipes.show')->name('recipes.show');

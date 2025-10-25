@@ -131,12 +131,11 @@ $toJSON = fn() => json_encode(['status' => 'ok']);
             <div class="border-t border-gray-200 dark:border-zinc-700 mt-8 pt-8">
                 <div class="flex flex-col md:flex-row justify-between items-center">
                     <div class="text-sm text-gray-500 dark:text-gray-400 mb-4 md:mb-0">
-                        © 2025 해시푸드. All rights reserved.
+                        © 2025 HashFood, operated by Loofend Inc. All rights reserved.
                     </div>
                     <div class="flex space-x-6 text-sm">
-                        <a href="#" class="text-gray-500 dark:text-gray-400 hover:text-orange-600 dark:hover:text-orange-400 transition-colors">이용약관</a>
-                        <a href="#" class="text-gray-500 dark:text-gray-400 hover:text-orange-600 dark:hover:text-orange-400 transition-colors">개인정보처리방침</a>
-                        <a href="#" class="text-gray-500 dark:text-gray-400 hover:text-orange-600 dark:hover:text-orange-400 transition-colors">운영정책</a>
+                        <a href="{{ route('terms') }}" wire:navigate class="text-gray-500 dark:text-gray-400 hover:text-orange-600 dark:hover:text-orange-400 transition-colors">이용약관</a>
+                        <a href="{{ route('privacy') }}" wire:navigate class="text-gray-500 dark:text-gray-400 hover:text-orange-600 dark:hover:text-orange-400 transition-colors">개인정보처리방침</a>
                     </div>
                 </div>
             </div>
