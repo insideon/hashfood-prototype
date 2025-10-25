@@ -145,8 +145,10 @@ $toJSON = fn() => json_encode(['status' => 'ok']);
 </div>
 
 <script>
-document.addEventListener('DOMContentLoaded', function() {
+function initTypingAnimation() {
     const typingElement = document.getElementById('typing-text');
+    if (!typingElement) return;
+
     const texts = [
         "오늘은 뭘 먹을까?",
         "해 먹을까, 시켜 먹을까?",
@@ -159,37 +161,45 @@ document.addEventListener('DOMContentLoaded', function() {
     let index = 0;
     let isDeleting = false;
     let currentText = '';
+    let timeoutId = null;
+
+    // 기존 타이머가 있다면 취소
+    if (typingElement.dataset.timeoutId) {
+        clearTimeout(parseInt(typingElement.dataset.timeoutId));
+    }
 
     function typeText() {
         const currentFullText = texts[textIndex];
 
         if (!isDeleting && index < currentFullText.length) {
-            // 타이핑 중
             currentText += currentFullText.charAt(index);
             typingElement.textContent = currentText;
             index++;
-            setTimeout(typeText, 80); // 타이핑 속도 (80ms)
+            timeoutId = setTimeout(typeText, 80);
         } else if (isDeleting && currentText.length > 0) {
-            // 지우는 중
             currentText = currentText.slice(0, -1);
             typingElement.textContent = currentText;
-            setTimeout(typeText, 50); // 지우기 속도 (50ms)
+            timeoutId = setTimeout(typeText, 50);
         } else if (!isDeleting && index >= currentFullText.length) {
-            // 타이핑 완료, 잠시 대기 후 지우기 시작
-            setTimeout(() => {
+            timeoutId = setTimeout(() => {
                 isDeleting = true;
                 typeText();
-            }, 1000); // 2초 대기
+            }, 1000);
         } else if (isDeleting && currentText.length === 0) {
-            // 지우기 완료, 다음 텍스트로 이동
             isDeleting = false;
             index = 0;
-            textIndex = (textIndex + 1) % texts.length; // 다음 텍스트로 순환
-            setTimeout(typeText, 500); // 0.5초 대기 후 다시 시작
+            textIndex = (textIndex + 1) % texts.length;
+            timeoutId = setTimeout(typeText, 500);
+        }
+
+        if (timeoutId) {
+            typingElement.dataset.timeoutId = timeoutId;
         }
     }
 
-    // 페이지 로드 후 500ms 후에 타이핑 시작
     setTimeout(typeText, 500);
-});
+}
+
+document.addEventListener('DOMContentLoaded', initTypingAnimation);
+document.addEventListener('livewire:navigated', initTypingAnimation);
 </script>
