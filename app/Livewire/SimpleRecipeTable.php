@@ -251,9 +251,9 @@ class SimpleRecipeTable extends DataTableComponent
                         <a href="'.$coupangUrl.'"
                            target="_blank"
                            rel="noopener noreferrer"
-                           class="inline-flex items-center justify-center hover:opacity-80 transition-opacity duration-200"
+                           class="inline-flex items-center justify-center w-8 h-8 hover:opacity-80 transition-opacity duration-200"
                            title="쿠팡에서 검색">
-                            <img src="'.asset('images/coupang-logo.png').'" alt="쿠팡" class="w-8 h-8 rounded-full" />
+                            <img src="'.asset('images/coupang-logo.png').'" alt="쿠팡" class="w-full h-full rounded-full object-contain" />
                         </a>
                     </div>';
                 })
