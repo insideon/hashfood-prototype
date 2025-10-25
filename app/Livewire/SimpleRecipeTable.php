@@ -141,7 +141,7 @@ class SimpleRecipeTable extends DataTableComponent
                 'default' => false,
             ])
             ->setThAttributes(function ($column) {
-                $baseClass = 'px-6 py-4 text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider cursor-pointer hover:bg-zinc-50 dark:hover:bg-zinc-700 transition-colors';
+                $baseClass = 'px-3 py-2 md:px-6 md:py-4 text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider cursor-pointer hover:bg-zinc-50 dark:hover:bg-zinc-700 transition-colors whitespace-nowrap';
 
                 if ($column->getTitle() === '액션') {
                     return [
@@ -157,7 +157,7 @@ class SimpleRecipeTable extends DataTableComponent
             })
             ->setTdAttributes(function ($column, $row) {
                 return [
-                    'class' => 'px-6 py-4 text-sm text-zinc-900 dark:text-zinc-200',
+                    'class' => 'px-3 py-2 md:px-6 md:py-4 text-sm text-zinc-900 dark:text-zinc-200 whitespace-nowrap',
                     'default' => false,
                 ];
             })
