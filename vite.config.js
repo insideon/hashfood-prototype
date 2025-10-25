@@ -15,4 +15,14 @@ export default defineConfig({
     server: {
         cors: true,
     },
+    build: {
+        rollupOptions: {
+            output: {
+                manualChunks: {
+                    'livewire': ['livewire/livewire'],
+                    'flux': ['livewire/flux'],
+                }
+            }
+        }
+    }
 });
