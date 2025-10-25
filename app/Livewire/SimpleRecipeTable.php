@@ -103,7 +103,9 @@ class SimpleRecipeTable extends DataTableComponent
             ->setPaginationWrapperAttributes([
                 'class' => 'flex justify-center mt-4',
                 'default' => false,
-            ]);
+            ])
+            ->setPaginationTheme('tailwind')
+            ->setPaginationMethod('standard');
     }
 
     /**
