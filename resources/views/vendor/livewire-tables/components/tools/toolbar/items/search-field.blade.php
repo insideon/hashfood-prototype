@@ -7,7 +7,6 @@
 
     <x-livewire-tables::tools.toolbar.items.search.input />
 
-    {{-- ClearSearch 버튼 활성화 --}}
     @if ($this->hasSearch)
         <x-livewire-tables::tools.toolbar.items.search.remove />
     @endif

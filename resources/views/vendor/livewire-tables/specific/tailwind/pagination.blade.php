@@ -1,35 +1,15 @@
 <div>
     @if ($paginator->hasPages())
-        @php(isset($this->numberOfPaginatorsRendered[$paginator->getPageName()]) ? $this->numberOfPaginatorsRendered[$paginator->getPageName()]++ : $this->numberOfPaginatorsRendered[$paginator->getPageName()] = 1)
+        @php
+            if (isset($this->numberOfPaginatorsRendered[$paginator->getPageName()])) {
+                $this->numberOfPaginatorsRendered[$paginator->getPageName()]++;
+            } else {
+                $this->numberOfPaginatorsRendered[$paginator->getPageName()] = 1;
+            }
+        @endphp
 
-        <nav role="navigation" aria-label="Pagination Navigation" class="flex items-center justify-between">
-            <div class="flex justify-between flex-1 md:hidden">
-                <span>
-                    @if ($paginator->onFirstPage())
-                        <span class="relative inline-flex items-center px-4 py-2 text-sm font-medium text-zinc-500 bg-white border border-zinc-300 cursor-default leading-5 rounded-md dark:bg-zinc-800 dark:text-zinc-300 dark:border-zinc-700">
-                            {!! __('pagination.previous') !!}
-                        </span>
-                    @else
-                        <button type="button" wire:click="previousPage('{{ $paginator->getPageName() }}')" wire:loading.attr="disabled" dusk="previousPage{{ $paginator->getPageName() == 'page' ? '' : '.' . $paginator->getPageName() }}.before" class="relative inline-flex items-center px-4 py-2 text-sm font-medium text-zinc-700 bg-white border border-zinc-300 leading-5 rounded-md hover:text-zinc-500 focus:outline-none focus:shadow-outline-blue focus:border-blue-300 active:bg-zinc-100 active:text-zinc-700 transition ease-in-out duration-150 dark:bg-zinc-800 dark:text-zinc-300 dark:ring-zinc-600 dark:border-zinc-700 dark:hover:bg-zinc-700">
-                            {!! __('pagination.previous') !!}
-                        </button>
-                    @endif
-                </span>
-
-                <span>
-                    @if ($paginator->hasMorePages())
-                        <button type="button" wire:click="nextPage('{{ $paginator->getPageName() }}')" wire:loading.attr="disabled" dusk="nextPage{{ $paginator->getPageName() == 'page' ? '' : '.' . $paginator->getPageName() }}.before" class="relative inline-flex items-center px-4 py-2 ml-3 text-sm font-medium text-zinc-700 bg-white border border-zinc-300 leading-5 rounded-md hover:text-zinc-500 focus:outline-none focus:shadow-outline-blue focus:border-blue-300 active:bg-zinc-100 active:text-zinc-700 transition ease-in-out duration-150 dark:bg-zinc-800 dark:text-zinc-300 dark:ring-zinc-600 dark:border-zinc-700 dark:hover:bg-zinc-700">
-                            {!! __('pagination.next') !!}
-                        </button>
-                    @else
-                        <span class="relative inline-flex items-center px-4 py-2 ml-3 text-sm font-medium text-zinc-500 bg-white border border-zinc-300 cursor-default leading-5 rounded-md dark:bg-zinc-800 dark:text-zinc-300 dark:border-zinc-700">
-                            {!! __('pagination.next') !!}
-                        </span>
-                    @endif
-                </span>
-            </div>
-
-            <div class="hidden md:flex-1 md:flex md:items-center md:justify-between">
+        <nav role="navigation" aria-label="Pagination Navigation" class="flex items-center justify-center">
+            <div class="flex items-center justify-center">
                 <div>
                     <span class="relative z-0 inline-flex rounded-md shadow-sm">
                         <span>
@@ -56,7 +36,7 @@
                             @foreach ($elements as $element)
                                 {{-- "Three Dots" Separator --}}
                                 @if (is_string($element))
-                                    <span aria-disabled="true">
+                                    <span aria-disabled="true" class="hidden md:inline">
                                         <span class="relative inline-flex items-center px-4 py-2 -ml-px text-sm font-medium text-zinc-700 bg-white border border-zinc-300 cursor-default leading-5 dark:bg-zinc-800 dark:text-zinc-300 dark:border-zinc-700">{{ $element }}</span>
                                     </span>
                                 @endif
@@ -64,13 +44,25 @@
                                 {{-- Array Of Links --}}
                                 @if (is_array($element))
                                     @foreach ($element as $page => $url)
-                                        <span wire:key="paginator-{{ $paginator->getPageName() }}-{{ $this->numberOfPaginatorsRendered[$paginator->getPageName()] }}-page{{ $page }}">
+                                        @php
+                                            $currentPage = $paginator->currentPage();
+                                            $lastPage = $paginator->lastPage();
+                                            // 모바일에서 최소 5개 페이지 표시 (1-5 또는 현재 페이지 기준 범위)
+                                            if ($currentPage <= 3) {
+                                                $showOnMobile = $page <= 5;
+                                            } elseif ($currentPage >= $lastPage - 2) {
+                                                $showOnMobile = $page >= $lastPage - 4;
+                                            } else {
+                                                $showOnMobile = abs($page - $currentPage) <= 2;
+                                            }
+                                        @endphp
+                                        <span wire:key="paginator-{{ $paginator->getPageName() }}-{{ $this->numberOfPaginatorsRendered[$paginator->getPageName()] }}-page{{ $page }}" class="{{ $showOnMobile ? '' : 'hidden md:inline' }}">
                                             @if ($page == $paginator->currentPage())
                                                 <span aria-current="page">
-                                                    <span class="relative inline-flex items-center px-4 py-2 -ml-px text-sm font-medium text-white bg-blue-600 border border-blue-600 cursor-default leading-5 dark:bg-blue-500 dark:text-white dark:border-blue-500">{{ $page }}</span>
+                                                    <span class="relative inline-flex items-center px-3 py-2 md:px-4 -ml-px text-sm font-medium text-white bg-blue-600 border border-blue-600 cursor-default leading-5 dark:bg-blue-500 dark:text-white dark:border-blue-500">{{ $page }}</span>
                                                 </span>
                                             @else
-                                                <button type="button" wire:click="gotoPage({{ $page }}, '{{ $paginator->getPageName() }}')" class="relative inline-flex items-center px-4 py-2 -ml-px text-sm font-medium text-zinc-700 bg-white border border-zinc-300 leading-5 hover:text-zinc-500 focus:z-10 focus:outline-none focus:border-blue-300 focus:shadow-outline-blue active:bg-zinc-100 active:text-zinc-700 transition ease-in-out duration-150 dark:bg-zinc-800 dark:text-zinc-300 dark:ring-zinc-600 dark:border-zinc-700 dark:hover:bg-zinc-700" aria-label="{{ __('Go to page :page', ['page' => $page]) }}">
+                                                <button type="button" wire:click="gotoPage({{ $page }}, '{{ $paginator->getPageName() }}')" class="relative inline-flex items-center px-3 py-2 md:px-4 -ml-px text-sm font-medium text-zinc-700 bg-white border border-zinc-300 leading-5 hover:text-zinc-500 focus:z-10 focus:outline-none focus:border-blue-300 focus:shadow-outline-blue active:bg-zinc-100 active:text-zinc-700 transition ease-in-out duration-150 dark:bg-zinc-800 dark:text-zinc-300 dark:ring-zinc-600 dark:border-zinc-700 dark:hover:bg-zinc-700" aria-label="{{ __('Go to page :page', ['page' => $page]) }}">
                                                     {{ $page }}
                                                 </button>
                                             @endif

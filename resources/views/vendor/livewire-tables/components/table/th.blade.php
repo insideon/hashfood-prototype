@@ -14,8 +14,7 @@
     $attributes->merge($customThAttributes)
         ->class([
             'text-gray-500 dark:bg-gray-800 dark:text-gray-400' => $isTailwind && (($customThAttributes['default-colors'] ?? true) || ($customThAttributes['default'] ?? true)),
-            'px-6 py-3 text-left text-xs font-semibold whitespace-nowrap uppercase tracking-wider overflow-hidden text-ellipsis' => $isTailwind && (($customThAttributes['default-styling'] ?? true) || ($customThAttributes['default'] ?? true)),
-            'text-center' => $isTailwind && $column->getTitle() === '액션',
+            'px-6 py-3 text-left text-xs font-medium whitespace-nowrap uppercase tracking-wider' => $isTailwind && (($customThAttributes['default-styling'] ?? true) || ($customThAttributes['default'] ?? true)),
             'hidden' => $isTailwind && $column->shouldCollapseAlways(),
             'hidden md:table-cell' => $isTailwind && $column->shouldCollapseOnMobile(),
             'hidden lg:table-cell' => $isTailwind && $column->shouldCollapseOnTablet(),
@@ -25,23 +24,18 @@
             'd-none d-lg-table-cell' => $isBootstrap && $column->shouldCollapseOnTablet(),
         ])
         ->except(['default', 'default-colors', 'default-styling'])
-}}
-@if($this->sortingIsEnabled() && ($column->isSortable() || $column->getSortCallback()))
-    wire:click="sortBy('{{ $column->getColumnSortKey() }}')"
-@endif
->
+}}>
     @if($column->getColumnLabelStatus())
         @unless ($this->sortingIsEnabled() && ($column->isSortable() || $column->getSortCallback()))
             <x-livewire-tables::table.th.label :$customLabelAttributes :columnTitle="$column->getTitle()" />
         @else
             @if ($isTailwind)
 
-                <button {{
+                <button wire:click="sortBy('{{ $column->getColumnSortKey() }}')" {{
                         $attributes->merge($customSortButtonAttributes)
                             ->class([
                                 'text-gray-500 dark:text-gray-400' => (($customSortButtonAttributes['default-colors'] ?? true) || ($customSortButtonAttributes['default'] ?? true)),
-                                'flex items-center space-x-1 text-left text-xs leading-4 font-semibold uppercase tracking-wider group focus:outline-none' => (($customSortButtonAttributes['default-styling'] ?? true) || ($customSortButtonAttributes['default'] ?? true)),
-                                'text-center' => $column->getTitle() === '액션',
+                                'flex items-center space-x-1 text-left text-xs leading-4 font-medium uppercase tracking-wider group focus:outline-none' => (($customSortButtonAttributes['default-styling'] ?? true) || ($customSortButtonAttributes['default'] ?? true)),
                             ])
                             ->except(['default', 'default-colors', 'default-styling', 'wire:key'])
                 }}>
@@ -49,7 +43,7 @@
                     <x-livewire-tables::table.th.sort-icons :$direction :$customIconAttributes />
                 </button>
             @elseif ($isBootstrap)
-                <div {{
+                <div wire:click="sortBy('{{ $column->getColumnSortKey() }}')" {{
                         $attributes->merge($customSortButtonAttributes)
                             ->class([
                                 'd-flex align-items-center laravel-livewire-tables-cursor' => (($customSortButtonAttributes['default-styling'] ?? true) || ($customSortButtonAttributes['default'] ?? true))
