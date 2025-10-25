@@ -1,6 +1,6 @@
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<meta name="naver-site-verification" content="c24400f78284d99705ebdcdbf3387d32a4a5020b" />
+<meta name="naver-site-verification" content="bd6e5d99f69e6d84a13b776b8d59a73b3b1423d3" />
 
 <title>{{ $title ?? config('app.name') }}</title>
 
