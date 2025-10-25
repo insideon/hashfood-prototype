@@ -104,7 +104,8 @@ class SimpleRecipeTable extends DataTableComponent
                 'class' => 'flex justify-center mt-4',
                 'default' => false,
             ])
-            ->setPaginationEnabled();
+            ->setPaginationEnabled()
+            ->setPaginationMethod('standard');
     }
 
     /**
