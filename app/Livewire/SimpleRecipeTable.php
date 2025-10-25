@@ -24,7 +24,7 @@ class SimpleRecipeTable extends DataTableComponent
     // 상수 정의
     private const DEFAULT_SORT_FIELD = 'calculated_savings_percentage';
     private const DEFAULT_SORT_DIRECTION = 'desc';
-    private const ITEMS_PER_PAGE = 5;
+    private const ITEMS_PER_PAGE = 10;
     private const SEARCH_PLACEHOLDER = '오늘은 어떤 음식을 드실건가요?';
 
     /**
@@ -103,7 +103,8 @@ class SimpleRecipeTable extends DataTableComponent
             ->setPaginationWrapperAttributes([
                 'class' => 'flex justify-center mt-4',
                 'default' => false,
-            ]);
+            ])
+            ->setPaginationEnabled();
     }
 
     /**
