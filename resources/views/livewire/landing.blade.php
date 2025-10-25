@@ -18,7 +18,7 @@ $toJSON = fn() => json_encode(['status' => 'ok']);
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 mt-8">
             <div class="text-center">
                 <h1 class="text-3xl sm:text-4xl font-bold text-gray-900 dark:text-white mb-4">
-                    해 먹을까, 시켜 먹을까?
+                    <span id="typing-text" class="typing-animation"></span>
                 </h1>
                 <p class="text-lg text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">
                     실제 식자재 원가로 비교하는 가장 합리적인 식사 선택
@@ -153,3 +153,53 @@ $toJSON = fn() => json_encode(['status' => 'ok']);
         </div>
     </footer>
 </div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const typingElement = document.getElementById('typing-text');
+    const texts = [
+        "오늘은 뭘 먹을까?",
+        "해 먹을까, 시켜 먹을까?",
+        "배달비 아까워...",
+        "배달 음식의 원가는?",
+        "집에서 만들어 먹자!",
+        "가성비 최고의 음식은?",
+    ];
+    let textIndex = 0;
+    let index = 0;
+    let isDeleting = false;
+    let currentText = '';
+
+    function typeText() {
+        const currentFullText = texts[textIndex];
+
+        if (!isDeleting && index < currentFullText.length) {
+            // 타이핑 중
+            currentText += currentFullText.charAt(index);
+            typingElement.textContent = currentText;
+            index++;
+            setTimeout(typeText, 120); // 타이핑 속도 (120ms)
+        } else if (isDeleting && currentText.length > 0) {
+            // 지우는 중
+            currentText = currentText.slice(0, -1);
+            typingElement.textContent = currentText;
+            setTimeout(typeText, 80); // 지우기 속도 (80ms)
+        } else if (!isDeleting && index >= currentFullText.length) {
+            // 타이핑 완료, 잠시 대기 후 지우기 시작
+            setTimeout(() => {
+                isDeleting = true;
+                typeText();
+            }, 2000); // 2초 대기
+        } else if (isDeleting && currentText.length === 0) {
+            // 지우기 완료, 다음 텍스트로 이동
+            isDeleting = false;
+            index = 0;
+            textIndex = (textIndex + 1) % texts.length; // 다음 텍스트로 순환
+            setTimeout(typeText, 500); // 0.5초 대기 후 다시 시작
+        }
+    }
+
+    // 페이지 로드 후 500ms 후에 타이핑 시작
+    setTimeout(typeText, 500);
+});
+</script>
