@@ -7,6 +7,7 @@
 <link rel="icon" href="/favicon.ico" sizes="any">
 <link rel="icon" href="/favicon.svg" type="image/svg+xml">
 <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<link rel="alternate" type="application/rss+xml" title="{{ config('app.name') }} RSS Feed" href="{{ route('rss') }}" />
 
 <!-- Resource hints for performance -->
 <link rel="dns-prefetch" href="//fonts.bunny.net">

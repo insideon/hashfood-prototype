@@ -1,2 +1,6 @@
 User-agent: *
-Disallow:
+Disallow: /dashboard
+Disallow: /settings
+Disallow: /onboarding
+
+Sitemap: https://www.hashfood.io/sitemap.xml

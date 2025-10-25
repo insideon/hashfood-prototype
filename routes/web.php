@@ -1,8 +1,14 @@
 <?php
 
+use App\Http\Controllers\RssFeedController;
+use App\Http\Controllers\SitemapController;
 use Illuminate\Support\Facades\Route;
 use Laravel\Fortify\Features;
 use Livewire\Volt\Volt;
+
+// SEO routes
+Route::get('sitemap.xml', SitemapController::class)->name('sitemap');
+Route::get('rss.xml', RssFeedController::class)->name('rss');
 
 // Landing page
 Volt::route('/', 'landing')->name('home');
