@@ -119,10 +119,10 @@ $toJSON = fn() => json_encode(['status' => 'ok']);
                         회사
                     </h3>
                     <ul class="space-y-3">
-                        <li><a href="#" class="text-gray-600 dark:text-gray-400 hover:text-orange-600 dark:hover:text-orange-400 transition-colors">회사 소개</a></li>
-                        <li><a href="#" class="text-gray-600 dark:text-gray-400 hover:text-orange-600 dark:hover:text-orange-400 transition-colors">채용</a></li>
-                        <li><a href="#" class="text-gray-600 dark:text-gray-400 hover:text-orange-600 dark:hover:text-orange-400 transition-colors">블로그</a></li>
-                        <li><a href="#" class="text-gray-600 dark:text-gray-400 hover:text-orange-600 dark:hover:text-orange-400 transition-colors">문의</a></li>
+                        <li><a href="https://loofend.com" target="_blank" rel="noopener noreferrer" class="text-gray-600 dark:text-gray-400 hover:text-orange-600 dark:hover:text-orange-400 transition-colors">회사 소개</a></li>
+                        <li><a href="mailto:contact@loofend.com" class="text-gray-600 dark:text-gray-400 hover:text-orange-600 dark:hover:text-orange-400 transition-colors">제휴</a></li>
+                        <li><a href="mailto:contact@loofend.com" class="text-gray-600 dark:text-gray-400 hover:text-orange-600 dark:hover:text-orange-400 transition-colors">광고</a></li>
+                        <li><a href="mailto:contact@loofend.com" class="text-gray-600 dark:text-gray-400 hover:text-orange-600 dark:hover:text-orange-400 transition-colors">문의</a></li>
                     </ul>
                 </div>
             </div>
