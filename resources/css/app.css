@@ -120,3 +120,93 @@ select:focus[data-flux-control] {
 .letter-animation:nth-child(18) { animation-delay: 1.8s; }
 .letter-animation:nth-child(19) { animation-delay: 1.9s; }
 .letter-animation:nth-child(20) { animation-delay: 2.0s; }
+
+/* 집밥 원가 툴팁 스타일 */
+.cooking-cost-label {
+    position: relative;
+    border-bottom: 1px dotted #a3a3a3;
+    cursor: help;
+}
+
+.dark .cooking-cost-label {
+    border-bottom-color: #737373;
+}
+
+.cooking-cost-label::after {
+    content: '인건비, 임대료 등 간접비를 제외한 재료비 기준의 예상 원가입니다.';
+    position: fixed;
+    transform: translateX(-50%);
+    margin-top: -80px;
+    width: 224px;
+    padding: 12px;
+    background-color: #18181b;
+    color: white;
+    font-size: 12px;
+    font-weight: 400;
+    text-transform: none;
+    letter-spacing: 0;
+    line-height: 1.6;
+    border-radius: 8px;
+    box-shadow: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.15s ease-out;
+    pointer-events: none;
+    z-index: 9999;
+    text-align: center;
+    white-space: normal;
+}
+
+.dark .cooking-cost-label::after {
+    background-color: #3f3f46;
+}
+
+.cooking-cost-label:hover::after {
+    opacity: 1;
+    visibility: visible;
+}
+
+/* 배달 가격 툴팁 스타일 */
+.delivery-price-label {
+    position: relative;
+    border-bottom: 1px dotted #a3a3a3;
+    cursor: help;
+}
+
+.dark .delivery-price-label {
+    border-bottom-color: #737373;
+}
+
+.delivery-price-label::after {
+    content: '배달 앱에서 판매되는 음식의 배달료가 포함된 평균 판매 가격입니다.';
+    position: fixed;
+    transform: translateX(-50%);
+    margin-top: -80px;
+    width: 200px;
+    padding: 12px;
+    background-color: #18181b;
+    color: white;
+    font-size: 12px;
+    font-weight: 400;
+    text-transform: none;
+    letter-spacing: 0;
+    line-height: 1.6;
+    border-radius: 8px;
+    box-shadow: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.15s ease-out;
+    pointer-events: none;
+    z-index: 9999;
+    text-align: center;
+    white-space: normal;
+}
+
+.dark .delivery-price-label::after {
+    background-color: #3f3f46;
+}
+
+.delivery-price-label:hover::after {
+    opacity: 1;
+    visibility: visible;
+}
