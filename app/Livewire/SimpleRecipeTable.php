@@ -125,24 +125,6 @@ class SimpleRecipeTable extends DataTableComponent
                 })
                 ->html(),
 
-            Column::make('난이도', 'difficulty')
-                ->sortable()
-                ->format(function ($value) {
-                    $text = match ($value) {
-                        'easy' => '쉬움',
-                        'medium' => '보통',
-                        'hard' => '어려움',
-                        default => $value,
-                    };
-
-                    return '<div class="text-sm text-zinc-600 dark:text-zinc-300">'.$text.'</div>';
-                })
-                ->html(),
-
-            Column::make('조리시간', 'cooking_time')
-                ->sortable()
-                ->format(fn ($value) => '<div class="text-sm text-zinc-600 dark:text-zinc-300">'.$value.'분</div>')
-                ->html(),
 
             Column::make('집밥 원가', 'calculated_cooking_cost')
                 ->sortable()
