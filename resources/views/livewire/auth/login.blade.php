@@ -16,7 +16,6 @@
                 required
                 autofocus
                 autocomplete="email"
-                placeholder="email@example.com"
             />
 
             <!-- Password -->
@@ -27,7 +26,6 @@
                     type="password"
                     required
                     autocomplete="current-password"
-                    placeholder="비밀번호를 입력하세요"
                     viewable
                 />
 

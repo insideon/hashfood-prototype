@@ -15,7 +15,6 @@
                 required
                 autofocus
                 autocomplete="name"
-                placeholder="홍길동"
             />
 
             <!-- Email Address -->
@@ -25,7 +24,6 @@
                 type="email"
                 required
                 autocomplete="email"
-                placeholder="email@example.com"
             />
 
             <!-- Password -->
@@ -35,7 +33,6 @@
                 type="password"
                 required
                 autocomplete="new-password"
-                placeholder="비밀번호를 입력하세요"
                 viewable
             />
 
@@ -46,7 +43,6 @@
                 type="password"
                 required
                 autocomplete="new-password"
-                placeholder="비밀번호를 다시 입력하세요"
                 viewable
             />
 
