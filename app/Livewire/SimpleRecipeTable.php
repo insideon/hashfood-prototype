@@ -21,6 +21,33 @@ class SimpleRecipeTable extends DataTableComponent
 
     protected $listeners = ['refreshComponent' => '$refresh'];
 
+    // 쿼리스트링 비활성화
+    protected $queryString = [];
+
+    /**
+     * 컴포넌트 마운트 시 상태 관리
+     * 항상 기본 상태로 리셋
+     */
+    public function mount(): void
+    {
+        // 항상 기본 상태로 리셋
+        $this->resetPage();
+        $this->setSort('calculated_savings_percentage', 'desc');
+    }
+
+    /**
+     * 검색어 변경 시 상태 관리
+     * 검색어가 비워지면 기본 상태로 리셋
+     */
+    public function updatedSearch(array|string|null $value): void
+    {
+        // 검색어가 비워지면 기본 상태로 리셋
+        if (empty($value)) {
+            $this->resetPage();
+            $this->setSort('calculated_savings_percentage', 'desc');
+        }
+    }
+
     /**
      * 테이블 설정
      * - 기본 정렬: 절약률 높은순 (내림차순)
@@ -44,6 +71,10 @@ class SimpleRecipeTable extends DataTableComponent
             ->setSortingPillsDisabled()
             ->setColumnSelectDisabled()
             ->setDisplayPaginationDetails(false)
+            ->setQueryStringDisabled()
+            ->setQueryStringForSearchDisabled()
+            ->setQueryStringForSortDisabled()
+            ->setQueryStringForFilterDisabled()
             ->setPaginationWrapperAttributes([
                 'class' => 'flex justify-center mt-4',
                 'default' => false,
