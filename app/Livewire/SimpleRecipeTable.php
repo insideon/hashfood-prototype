@@ -32,7 +32,7 @@ class SimpleRecipeTable extends DataTableComponent
         $this->setPrimaryKey('id')
             ->setDefaultSort('calculated_savings_percentage', 'desc')
             ->setSearchEnabled()
-            ->setSearchPlaceholder('음식명, 카테고리로 검색...')
+            ->setSearchPlaceholder('오늘은 어떤 음식을 드실건가요?')
             ->setSearchIcon('heroicon-m-magnifying-glass')
             ->setSearchIconAttributes([
                 'class' => 'h-5 w-5 text-gray-400 dark:text-gray-500',
@@ -91,7 +91,10 @@ class SimpleRecipeTable extends DataTableComponent
                     'default' => false,
                 ];
             })
-            ->setEmptyMessage('레시피를 찾을 수 없습니다');
+            ->setEmptyMessage('레시피를 찾을 수 없습니다')
+            ->setToolBarAttributes([
+                'class' => 'flex flex-col items-center mb-4 px-4 md:p-0'
+            ]);
     }
 
     /**

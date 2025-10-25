@@ -136,3 +136,13 @@ select:focus[data-flux-control] {
 .livewire-tables .relative.inline-flex.flex-row {
     @apply relative w-full sm:w-96;
 }
+
+/* Livewire Tables toolbar 오른쪽 요소들 숨기기 */
+.livewire-tables .flex.flex-col.items-center > div:last-child {
+    @apply hidden;
+}
+
+/* Livewire Tables toolbar 왼쪽 div 중앙 정렬 */
+.livewire-tables .flex.flex-col.items-center > div:first-child {
+    @apply w-full flex justify-center;
+}

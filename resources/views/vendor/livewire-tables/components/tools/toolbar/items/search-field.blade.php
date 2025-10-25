@@ -1,13 +1,14 @@
 @aware(['isTailwind', 'isBootstrap'])
 
-<div class="relative w-full sm:w-96 mb-4">
+<div class="relative w-full max-w-md mx-auto">
     @if($this->hasSearchIcon)
         <x-livewire-tables::tools.toolbar.items.search.icon :searchIcon="$this->getSearchIcon" :searchIconClasses="$this->getSearchIconClasses" :searchIconOtherAttributes="$this->getSearchIconOtherAttributes"  />
     @endif
 
     <x-livewire-tables::tools.toolbar.items.search.input />
 
-    @if ($this->hasSearch)
+    {{-- ClearSearch 버튼 비활성화 --}}
+    {{-- @if ($this->hasSearch)
         <x-livewire-tables::tools.toolbar.items.search.remove />
-    @endif
+    @endif --}}
 </div>
