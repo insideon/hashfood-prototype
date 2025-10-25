@@ -11,10 +11,10 @@
     x-on:drop.prevent="currentlyReorderingStatus && dropEvent(event)"
     x-on:dragover.prevent.throttle.500ms="currentlyReorderingStatus && dragOverEvent(event)"
     x-on:dragleave.prevent.throttle.500ms="currentlyReorderingStatus && dragLeaveEvent(event)"
-    @if($this->hasDisplayLoadingPlaceholder()) 
+    @if($this->hasDisplayLoadingPlaceholder())
         wire:loading.class.add="hidden d-none"
     @else
-        wire:loading.class.delay="opacity-50 dark:bg-gray-900 dark:opacity-60"
+        wire:loading.class.delay="opacity-50 dark:bg-zinc-800 dark:opacity-60"
     @endif
     id="{{ $tableName }}-row-{{ $row->{$primaryKey} }}"
     :draggable="currentlyReorderingStatus"

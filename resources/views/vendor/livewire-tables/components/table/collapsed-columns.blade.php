@@ -7,7 +7,7 @@
         @toggle-row-content.window="($event.detail.tableName === '{{ $tableName }}' && $event.detail.row === {{ $rowIndex }}) ? $el.classList.toggle('{{ $isBootstrap ? 'd-none' : 'hidden' }}') : null"
         {{
             $attributes->merge([
-                    'wire:loading.class.delay' => 'opacity-50 dark:bg-gray-900 dark:opacity-60',
+                    'wire:loading.class.delay' => 'opacity-50 dark:bg-zinc-800 dark:opacity-60',
                     'wire:key' => $tableName.'-row-'.$row->{$primaryKey}.'-collapsed-contents',
                 ])
                 ->merge($customAttributes)
@@ -38,7 +38,7 @@
                             'd-md-none' => $isBootstrap && !$column->shouldCollapseAlways() && !$column->shouldCollapseOnTablet() && $column->shouldCollapseOnMobile(),
                             'd-lg-none' => $isBootstrap && !$column->shouldCollapseAlways() && ($column->shouldCollapseOnTablet() || $column->shouldCollapseOnMobile()),
                     ])>
-                        <strong>{{ $column->getTitle() }}</strong>: 
+                        <strong>{{ $column->getTitle() }}</strong>:
                         @if($column->isHtml())
                             {!! $column->setIndexes($rowIndex, $colIndex)->renderContents($row) !!}
                         @else
