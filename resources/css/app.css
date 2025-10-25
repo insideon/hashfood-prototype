@@ -121,6 +121,24 @@ select:focus[data-flux-control] {
 .letter-animation:nth-child(19) { animation-delay: 1.9s; }
 .letter-animation:nth-child(20) { animation-delay: 2.0s; }
 
+/* Livewire 로딩 상태에서 tbody 배경색 고정 */
+.livewire-tables tbody {
+    background-color: white;
+}
+
+.dark .livewire-tables tbody {
+    background-color: #262626;
+}
+
+/* Livewire 로딩 중일 때도 배경색 유지 */
+[wire\:loading] tbody {
+    background-color: white;
+}
+
+.dark [wire\:loading] tbody {
+    background-color: #262626;
+}
+
 /* 집밥 원가 툴팁 스타일 */
 .cooking-cost-label {
     position: relative;
