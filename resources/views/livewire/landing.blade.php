@@ -53,7 +53,7 @@ $toJSON = fn() => json_encode(['status' => 'ok']);
                     </div>
                     <div class="ml-4">
                         <div class="text-2xl font-bold text-gray-900 dark:text-white">
-                            ₩{{ number_format(Recipe::get()->avg(function($r) { return $r->calculateSavings(); })) }}
+                            ₩{{ number_format(Recipe::avg('savings')) }}
                         </div>
                         <div class="text-sm text-gray-500 dark:text-gray-400">평균 절약</div>
                     </div>
@@ -67,7 +67,7 @@ $toJSON = fn() => json_encode(['status' => 'ok']);
                     </div>
                     <div class="ml-4">
                         <div class="text-2xl font-bold text-gray-900 dark:text-white">
-                            {{ number_format(Recipe::get()->avg(function($r) { return $r->calculateSavingsPercentage(); }), 0) }}%
+                            {{ number_format(Recipe::avg('savings_percentage'), 0) }}%
                         </div>
                         <div class="text-sm text-gray-500 dark:text-gray-400">평균 절약률</div>
                     </div>
