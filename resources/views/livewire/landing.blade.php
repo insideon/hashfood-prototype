@@ -96,7 +96,8 @@ $toJSON = fn() => json_encode(['status' => 'ok']);
                         <span class="text-xl font-bold text-gray-900 dark:text-white">해시푸드</span>
                     </div>
                     <p class="text-gray-600 dark:text-gray-400 max-w-md">
-                        실제 식자재 원가를 기반으로 가장 합리적인 식사 선택을 도와드리는 데이터 기반 플랫폼입니다.
+                        실제 식자재 원가를 기반으로 가장 합리적인<br>
+                        식사 선택을 도와드리는 데이터 기반 플랫폼입니다.
                     </p>
                 </div>
 
@@ -130,8 +131,10 @@ $toJSON = fn() => json_encode(['status' => 'ok']);
             {{-- Bottom --}}
             <div class="border-t border-gray-200 dark:border-zinc-700 mt-8 pt-8">
                 <div class="flex flex-col md:flex-row justify-between items-center">
-                    <div class="text-sm text-gray-500 dark:text-gray-400 mb-4 md:mb-0">
-                        © 2025 HashFood, operated by Loofend Inc. All rights reserved.
+                    <div class="text-sm text-gray-500 dark:text-gray-400 mb-4 md:mb-0 text-center md:text-left">
+                        © 2025 HashFood,<br class="md:hidden">
+                        operated by Loofend Inc.<br class="md:hidden">
+                        All rights reserved.
                     </div>
                     <div class="flex space-x-6 text-sm">
                         <a href="{{ route('terms') }}" wire:navigate class="text-gray-500 dark:text-gray-400 hover:text-orange-600 dark:hover:text-orange-400 transition-colors">이용약관</a>
