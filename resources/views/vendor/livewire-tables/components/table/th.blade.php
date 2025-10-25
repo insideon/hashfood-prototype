@@ -14,7 +14,7 @@
     $attributes->merge($customThAttributes)
         ->class([
             'text-gray-500 dark:bg-gray-800 dark:text-gray-400' => $isTailwind && (($customThAttributes['default-colors'] ?? true) || ($customThAttributes['default'] ?? true)),
-            'px-6 py-3 text-left text-xs font-semibold whitespace-nowrap uppercase tracking-wider' => $isTailwind && (($customThAttributes['default-styling'] ?? true) || ($customThAttributes['default'] ?? true)),
+            'px-6 py-3 text-left text-xs font-semibold whitespace-nowrap uppercase tracking-wider overflow-hidden text-ellipsis' => $isTailwind && (($customThAttributes['default-styling'] ?? true) || ($customThAttributes['default'] ?? true)),
             'text-center' => $isTailwind && $column->getTitle() === '액션',
             'hidden' => $isTailwind && $column->shouldCollapseAlways(),
             'hidden md:table-cell' => $isTailwind && $column->shouldCollapseOnMobile(),

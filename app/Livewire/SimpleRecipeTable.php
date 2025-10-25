@@ -123,7 +123,8 @@ class SimpleRecipeTable extends DataTableComponent
     private function setTableStyling(): self
     {
         return $this->setTableWrapperAttributes([
-                'class' => 'border border-zinc-200 dark:!border-zinc-700 rounded-2xl shadow-sm overflow-hidden',
+                'class' => 'border border-zinc-200 dark:!border-zinc-700 rounded-2xl shadow-sm overflow-x-auto',
+                'style' => 'min-width: 60rem;',
                 'default' => false,
             ])
             ->setTableAttributes([
@@ -177,7 +178,7 @@ class SimpleRecipeTable extends DataTableComponent
             Column::make('음식명', 'name')
                 ->sortable()
                 ->searchable()
-                ->format(fn ($value) => '<div class="text-sm font-semibold text-zinc-900 dark:text-zinc-100">'.$value.'</div>')
+                ->format(fn ($value) => '<div class="text-sm font-semibold text-zinc-900 dark:text-zinc-100 overflow-hidden text-ellipsis whitespace-nowrap">'.$value.'</div>')
                 ->html(),
 
             Column::make('카테고리', 'category')
@@ -192,32 +193,32 @@ class SimpleRecipeTable extends DataTableComponent
                     ];
                     $color = $colors[$value] ?? 'text-zinc-600 dark:text-zinc-400';
 
-                    return '<div class="text-sm font-medium '.$color.'">'.$value.'</div>';
+                    return '<div class="text-sm font-medium '.$color.' overflow-hidden text-ellipsis whitespace-nowrap">'.$value.'</div>';
                 })
                 ->html(),
 
             Column::make('집밥 원가', 'calculated_cooking_cost')
                 ->sortable()
-                ->format(fn ($value) => '<div class="text-sm font-semibold text-zinc-900 dark:text-zinc-100">₩'.number_format($value).'</div>')
+                ->format(fn ($value) => '<div class="text-sm font-semibold text-zinc-900 dark:text-zinc-100 overflow-hidden text-ellipsis whitespace-nowrap">₩'.number_format($value).'</div>')
                 ->html(),
 
             Column::make('배달 가격', 'delivery_price')
                 ->sortable()
-                ->format(fn ($value) => '<div class="text-sm text-zinc-600 dark:text-zinc-300">₩'.number_format($value).'</div>')
+                ->format(fn ($value) => '<div class="text-sm text-zinc-600 dark:text-zinc-300 overflow-hidden text-ellipsis whitespace-nowrap">₩'.number_format($value).'</div>')
                 ->html(),
 
             Column::make('절약 금액', 'calculated_savings')
                 ->sortable()
-                ->format(fn ($value) => '<div class="text-sm font-semibold text-green-600 dark:text-green-400">₩'.number_format($value).'</div>')
+                ->format(fn ($value) => '<div class="text-sm font-semibold text-green-600 dark:text-green-400 overflow-hidden text-ellipsis whitespace-nowrap">₩'.number_format($value).'</div>')
                 ->html(),
 
             Column::make('절약률', 'calculated_savings_percentage')
                 ->sortable()
-                ->format(fn ($value) => '<div class="text-sm font-semibold text-blue-600 dark:text-blue-400">'.number_format($value, 0).'%</div>')
+                ->format(fn ($value) => '<div class="text-sm font-semibold text-blue-600 dark:text-blue-400 overflow-hidden text-ellipsis whitespace-nowrap">'.number_format($value, 0).'%</div>')
                 ->html(),
 
             Column::make('액션', 'id')
-                ->format(fn ($value) => '<div class="text-center"><a href="'.route('recipes.show', ['recipeId' => $value]).'" class="inline-flex items-center justify-center px-3 py-1.5 text-xs font-medium text-white bg-blue-600 hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600 rounded-lg transition-colors duration-200">보기</a></div>')
+                ->format(fn ($value) => '<div class="text-center overflow-hidden text-ellipsis whitespace-nowrap"><a href="'.route('recipes.show', ['recipeId' => $value]).'" class="inline-flex items-center justify-center px-3 py-1.5 text-xs font-medium text-white bg-blue-600 hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600 rounded-lg transition-colors duration-200 whitespace-nowrap">보기</a></div>')
                 ->html(),
         ];
     }
