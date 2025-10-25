@@ -31,7 +31,13 @@ class SimpleRecipeTable extends DataTableComponent
     {
         $this->setPrimaryKey('id')
             ->setDefaultSort('calculated_savings_percentage', 'desc')
-            ->setSearchDisabled()
+            ->setSearchEnabled()
+            ->setSearchPlaceholder('음식명, 카테고리로 검색...')
+            ->setSearchIcon('heroicon-m-magnifying-glass')
+            ->setSearchIconAttributes([
+                'class' => 'h-5 w-5 text-gray-400 dark:text-gray-500',
+                'style' => 'position: absolute; left: 1rem; top: 50%; transform: translateY(-50%);',
+            ])
             ->setPerPageVisibilityDisabled()
             ->setPerPageAccepted([10])
             ->setPerPage(10)
@@ -90,8 +96,6 @@ class SimpleRecipeTable extends DataTableComponent
 
     /**
      * 테이블 컬럼 정의
-     *
-     * @return array
      */
     public function columns(): array
     {
@@ -104,6 +108,7 @@ class SimpleRecipeTable extends DataTableComponent
 
             Column::make('카테고리', 'category')
                 ->sortable()
+                ->searchable()
                 ->format(function ($value) {
                     $colors = [
                         '한식' => 'text-red-600 dark:text-red-400',
@@ -167,13 +172,11 @@ class SimpleRecipeTable extends DataTableComponent
      *
      * 계산된 컬럼들을 포함한 레시피 데이터를 조회합니다.
      * 성능 최적화를 위해 캐싱과 서브쿼리 재사용을 적용합니다.
-     *
-     * @return Builder
      */
     public function builder(): Builder
     {
         // 캐시 키 생성 (재료 가격이 변경되면 캐시 무효화)
-        $cacheKey = 'recipe_calculations_' . $this->getIngredientsLastUpdated();
+        $cacheKey = 'recipe_calculations_'.$this->getIngredientsLastUpdated();
 
         // 캐시에서 계산된 데이터 가져오기
         $cachedCalculations = Cache::remember($cacheKey, 3600, function () {
@@ -198,7 +201,7 @@ class SimpleRecipeTable extends DataTableComponent
             ]);
 
         // 캐시된 계산 결과를 서브쿼리로 추가
-        if (!empty($cachedCalculations)) {
+        if (! empty($cachedCalculations)) {
             $recipeIds = array_keys($cachedCalculations);
             $caseStatements = $this->buildCaseStatements($cachedCalculations);
 
@@ -226,7 +229,7 @@ class SimpleRecipeTable extends DataTableComponent
         // 모든 레시피와 재료 관계를 한 번에 로드
         $recipes = Recipe::with(['ingredients' => function ($query) {
             $query->select('ingredients.id', 'ingredients.current_price')
-                  ->withPivot('quantity');
+                ->withPivot('quantity');
         }])->get();
 
         foreach ($recipes as $recipe) {
@@ -277,9 +280,9 @@ class SimpleRecipeTable extends DataTableComponent
         }
 
         return [
-            'cooking_cost' => 'CASE ' . implode(' ', $cookingCostCases) . ' ELSE 0 END',
-            'savings' => 'CASE ' . implode(' ', $savingsCases) . ' ELSE 0 END',
-            'savings_percentage' => 'CASE ' . implode(' ', $savingsPercentageCases) . ' ELSE 0 END',
+            'cooking_cost' => 'CASE '.implode(' ', $cookingCostCases).' ELSE 0 END',
+            'savings' => 'CASE '.implode(' ', $savingsCases).' ELSE 0 END',
+            'savings_percentage' => 'CASE '.implode(' ', $savingsPercentageCases).' ELSE 0 END',
         ];
     }
 
@@ -289,12 +292,19 @@ class SimpleRecipeTable extends DataTableComponent
      * 라이브와이어 테이블 라이브러리의 기본 정렬 로직을 오버라이드하여
      * 계산된 컬럼들도 정렬할 수 있도록 합니다.
      * 라이브와이어 테이블이 자동으로 페이징을 처리하므로 limit을 제거합니다.
-     *
-     * @return Builder
      */
     public function getBuilder(): Builder
     {
         $builder = $this->builder();
+
+        // 검색어가 있으면 적용
+        if ($this->getSearch()) {
+            $searchTerm = $this->getSearch();
+            $builder->where(function ($query) use ($searchTerm) {
+                $query->where('name', 'like', '%'.$searchTerm.'%')
+                    ->orWhere('category', 'like', '%'.$searchTerm.'%');
+            });
+        }
 
         // 정렬 적용
         foreach ($this->getSorts() as $field => $direction) {

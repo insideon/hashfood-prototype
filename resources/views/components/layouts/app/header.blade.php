@@ -43,6 +43,11 @@
                 </flux:tooltip>
             </flux:navbar>
 
+            <!-- 다크 모드 토글 -->
+            <div class="me-2 flex items-center">
+                <livewire:dark-mode-toggle />
+            </div>
+
             <!-- Desktop User Menu -->
             <flux:dropdown position="top" align="end">
                 <flux:profile
