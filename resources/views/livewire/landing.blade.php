@@ -178,12 +178,12 @@ document.addEventListener('DOMContentLoaded', function() {
             currentText += currentFullText.charAt(index);
             typingElement.textContent = currentText;
             index++;
-            setTimeout(typeText, 120); // 타이핑 속도 (120ms)
+            setTimeout(typeText, 80); // 타이핑 속도 (80ms)
         } else if (isDeleting && currentText.length > 0) {
             // 지우는 중
             currentText = currentText.slice(0, -1);
             typingElement.textContent = currentText;
-            setTimeout(typeText, 80); // 지우기 속도 (80ms)
+            setTimeout(typeText, 50); // 지우기 속도 (50ms)
         } else if (!isDeleting && index >= currentFullText.length) {
             // 타이핑 완료, 잠시 대기 후 지우기 시작
             setTimeout(() => {
