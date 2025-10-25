@@ -16,13 +16,18 @@ use Rappasoft\LaravelLivewireTables\Views\Column;
 class SimpleRecipeTable extends DataTableComponent
 {
     protected $model = Recipe::class;
+
     protected $listeners = ['refreshComponent' => '$refresh'];
+
     protected $queryString = [];
 
     // 상수 정의
     private const DEFAULT_SORT_FIELD = 'savings_percentage';
+
     private const DEFAULT_SORT_DIRECTION = 'desc';
+
     private const ITEMS_PER_PAGE = 10;
+
     private const SEARCH_PLACEHOLDER = '오늘은 어떤 음식을 드실건가요?';
 
     /**
@@ -69,12 +74,12 @@ class SimpleRecipeTable extends DataTableComponent
      */
     private function setBasicConfiguration(): self
     {
-                return $this->setPrimaryKey('id')
-                    ->setDefaultSort(self::DEFAULT_SORT_FIELD, self::DEFAULT_SORT_DIRECTION)
-                    ->setSortingPillsDisabled()
-                    ->setColumnSelectDisabled()
-                    ->setDisplayPaginationDetails(false)
-                    ->setLoadingPlaceholderDisabled();
+        return $this->setPrimaryKey('id')
+            ->setDefaultSort(self::DEFAULT_SORT_FIELD, self::DEFAULT_SORT_DIRECTION)
+            ->setSortingPillsDisabled()
+            ->setColumnSelectDisabled()
+            ->setDisplayPaginationDetails(false)
+            ->setLoadingPlaceholderDisabled();
     }
 
     /**
@@ -124,9 +129,9 @@ class SimpleRecipeTable extends DataTableComponent
     private function setTableStyling(): self
     {
         return $this->setTableWrapperAttributes([
-                'class' => 'border border-zinc-200 dark:!border-zinc-700 rounded-2xl shadow-sm overflow-x-auto',
-                'default' => false,
-            ])
+            'class' => 'border border-zinc-200 dark:!border-zinc-700 rounded-2xl shadow-sm overflow-x-auto',
+            'default' => false,
+        ])
             ->setTableAttributes([
                 'class' => 'min-w-full bg-white dark:bg-zinc-800 text-gray-900 dark:text-white',
                 'default' => false,
@@ -144,20 +149,20 @@ class SimpleRecipeTable extends DataTableComponent
 
                 if ($column->getTitle() === '집밥 원가' || $column->getTitle() === '배달 가격' || $column->getTitle() === '절약률') {
                     return [
-                        'class' => $baseClass . ' text-left overflow-visible relative',
+                        'class' => $baseClass.' text-left overflow-visible relative',
                         'default' => false,
                     ];
                 }
 
-                if ($column->getTitle() === '액션') {
+                if ($column->getTitle() === '링크') {
                     return [
-                        'class' => $baseClass . ' text-center',
+                        'class' => $baseClass.' text-center',
                         'default' => false,
                     ];
                 }
 
                 return [
-                    'class' => $baseClass . ' text-left',
+                    'class' => $baseClass.' text-left',
                     'default' => false,
                 ];
             })
@@ -228,8 +233,30 @@ class SimpleRecipeTable extends DataTableComponent
                 ->format(fn ($value) => '<div class="text-sm font-semibold text-blue-600 dark:text-blue-400 overflow-hidden text-ellipsis whitespace-nowrap">'.number_format($value, 0).'%</div>')
                 ->html(),
 
-            Column::make('액션', 'id')
-                ->format(fn ($value) => '<div class="text-center overflow-hidden text-ellipsis whitespace-nowrap"><a href="'.route('recipes.show', ['recipeId' => $value]).'" class="inline-flex items-center justify-center px-3 py-1.5 text-xs font-medium text-white bg-blue-600 hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600 rounded-lg transition-colors duration-200 whitespace-nowrap">보기</a></div>')
+            Column::make('링크', 'id')
+                ->format(function ($value, $row) {
+                    $recipeUrl = route('recipes.show', ['recipeId' => $value]);
+                    $coupangUrl = 'https://www.coupang.com/np/search?q='.urlencode($row->name);
+
+                    return '<div class="flex items-center justify-center gap-2">
+                        <a href="'.$recipeUrl.'"
+                           class="inline-flex items-center justify-center w-8 h-8 text-orange-600 hover:text-orange-700 dark:text-orange-400 dark:hover:text-orange-300 hover:bg-orange-50 dark:hover:bg-orange-900/20 rounded-lg transition-all duration-200"
+                           title="레시피 보기">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M3 2v7c0 1.1.9 2 2 2h4a2 2 0 0 0 2-2V2"></path>
+                                <path d="M7 2v20"></path>
+                                <path d="M21 15V2v0a5 5 0 0 0-5 5v6c0 1.1.9 2 2 2h3Zm0 0v7"></path>
+                            </svg>
+                        </a>
+                        <a href="'.$coupangUrl.'"
+                           target="_blank"
+                           rel="noopener noreferrer"
+                           class="inline-flex items-center justify-center hover:opacity-80 transition-opacity duration-200"
+                           title="쿠팡에서 검색">
+                            <img src="'.asset('images/coupang-logo.png').'" alt="쿠팡" class="w-8 h-8 rounded-full" />
+                        </a>
+                    </div>';
+                })
                 ->html(),
         ];
     }
@@ -243,5 +270,4 @@ class SimpleRecipeTable extends DataTableComponent
     {
         return Recipe::query();
     }
-
 }
