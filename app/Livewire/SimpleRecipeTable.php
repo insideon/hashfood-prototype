@@ -75,7 +75,9 @@ class SimpleRecipeTable extends DataTableComponent
             ->setDefaultSort(self::DEFAULT_SORT_FIELD, self::DEFAULT_SORT_DIRECTION)
             ->setSortingPillsDisabled()
             ->setColumnSelectDisabled()
-            ->setDisplayPaginationDetails(false);
+            ->setDisplayPaginationDetails(false)
+            ->setLoadingPlaceholderEnabled()
+            ->setLoadingPlaceholderContent('레시피를 불러오는 중...');
     }
 
     /**
