@@ -76,27 +76,49 @@ class Recipe extends Model
         return $totalCost / $servings;
     }
 
-    public function calculateSavings(?int $servings = null): float
+    public function calculateDeliveryCost(?int $servings = null): float
     {
         if (! $this->delivery_price) {
             return 0;
         }
 
-        $servings = $servings ?? $this->servings;
-        $cookingCost = $this->calculateCost($servings);
+        $baseServings = max(1, (int) $this->servings);
+        $servings = max(1, (int) ($servings ?? $baseServings));
 
-        return $this->delivery_price - $cookingCost;
+        $deliveryPerServing = $this->delivery_price / $baseServings;
+
+        return $deliveryPerServing * $servings;
+    }
+
+    public function calculateDeliveryCostPerServing(?int $servings = null): float
+    {
+        $servings = max(1, (int) ($servings ?? $this->servings ?? 1));
+        $deliveryCost = $this->calculateDeliveryCost($servings);
+
+        return $deliveryCost / $servings;
+    }
+
+    public function calculateSavings(?int $servings = null): float
+    {
+        $servings = max(1, (int) ($servings ?? $this->servings ?? 1));
+        $cookingCost = $this->calculateCost($servings);
+        $deliveryCost = $this->calculateDeliveryCost($servings);
+
+        return $deliveryCost - $cookingCost;
     }
 
     public function calculateSavingsPercentage(?int $servings = null): float
     {
-        if (! $this->delivery_price || $this->delivery_price == 0) {
+        $servings = max(1, (int) ($servings ?? $this->servings ?? 1));
+        $deliveryCost = $this->calculateDeliveryCost($servings);
+
+        if ($deliveryCost <= 0) {
             return 0;
         }
 
         $savings = $this->calculateSavings($servings);
 
-        return ($savings / $this->delivery_price) * 100;
+        return ($savings / $deliveryCost) * 100;
     }
 
     public function getDifficultyKoreanAttribute(): string

@@ -3,8 +3,10 @@
 use App\Models\ActivityLog;
 use App\Models\Recipe;
 use Illuminate\Support\Facades\Auth;
-use Livewire\Volt\Component;
-use function Livewire\Volt\{computed, layout, state};
+
+use function Livewire\Volt\computed;
+use function Livewire\Volt\layout;
+use function Livewire\Volt\state;
 
 layout('components.layouts.guest');
 
@@ -105,6 +107,7 @@ $updateServings = function ($newServings) {
 $logDecision = function ($decisionType) {
     if (! Auth::check()) {
         $this->toastMessage = '로그인 후에 결정을 기록할 수 있어요.';
+
         return;
     }
 
@@ -139,7 +142,7 @@ $logDecision = function ($decisionType) {
                 <flux:icon.arrow-left class="w-4 h-4 mr-2" />
                 레시피 목록으로
             </flux:button>
-            <span class="px-3 py-1 bg-zinc-900 text-white text-sm rounded-full dark:bg-zinc-700">
+            <span class="px-3 py-1 bg-zinc-100 text-zinc-600 text-sm font-medium rounded-full dark:bg-zinc-800 dark:text-zinc-400">
                 {{ $this->recipe->category }}
             </span>
         </div>
@@ -168,7 +171,7 @@ $logDecision = function ($decisionType) {
                 <div class="flex h-56 items-center justify-center bg-gradient-to-br from-orange-400 via-rose-500 to-purple-500 sm:h-64">
                     <flux:icon.fire class="h-24 w-24 text-white/70" />
                 </div>
-                <div class="absolute right-4 top-4 rounded-full bg-black/70 px-3 py-1 text-sm font-medium text-white">
+                <div class="absolute right-4 top-4 rounded-full bg-white/95 backdrop-blur-sm px-3 py-1 text-sm font-bold text-zinc-900 shadow-lg dark:bg-zinc-900/95 dark:text-white">
                     배달가 ₩{{ number_format($this->recipe->delivery_price) }}
                 </div>
             </div>
@@ -187,7 +190,7 @@ $logDecision = function ($decisionType) {
                             조리시간
                         </flux:text>
                         <div class="flex items-center gap-2">
-                            <flux:icon.clock class="h-5 w-5 text-orange-500" />
+                            <flux:icon.clock class="h-5 w-5 text-orange-500 dark:text-orange-400" />
                             <flux:heading size="lg">{{ $this->recipe->cooking_time }}분</flux:heading>
                         </div>
                     </div>
@@ -196,7 +199,7 @@ $logDecision = function ($decisionType) {
                             기본 인분
                         </flux:text>
                         <div class="flex items-center gap-2">
-                            <flux:icon.user-group class="h-5 w-5 text-orange-500" />
+                            <flux:icon.user-group class="h-5 w-5 text-orange-500 dark:text-orange-400" />
                             <flux:heading size="lg">{{ $this->recipe->servings }}인분</flux:heading>
                         </div>
                     </div>
@@ -205,7 +208,7 @@ $logDecision = function ($decisionType) {
                             난이도
                         </flux:text>
                         <div class="flex items-center gap-2">
-                            <flux:icon.chart-bar class="h-5 w-5 text-orange-500" />
+                            <flux:icon.chart-bar class="h-5 w-5 text-orange-500 dark:text-orange-400" />
                             <flux:badge
                                 :color="$this->recipe->difficulty === 'easy' ? 'green' : ($this->recipe->difficulty === 'medium' ? 'yellow' : 'red')"
                             >
@@ -218,7 +221,7 @@ $logDecision = function ($decisionType) {
                             1인분 원가
                         </flux:text>
                         <div class="flex items-center gap-2">
-                            <flux:icon.currency-dollar class="h-5 w-5 text-orange-500" />
+                            <flux:icon.currency-dollar class="h-5 w-5 text-orange-500 dark:text-orange-400" />
                             <flux:heading size="lg">₩{{ number_format($costSummary['costPerServing']) }}</flux:heading>
                         </div>
                     </div>
@@ -254,6 +257,7 @@ $logDecision = function ($decisionType) {
                     <flux:button
                         size="sm"
                         variant="ghost"
+                        :disabled="$effectiveServings >= 10"
                         wire:click="updateServings({{ $effectiveServings + 1 }})"
                     >
                         <flux:icon.plus class="h-4 w-4" />
@@ -263,7 +267,7 @@ $logDecision = function ($decisionType) {
                     <input
                         type="range"
                         min="1"
-                        max="12"
+                        max="10"
                         step="1"
                         wire:model.live.debounce.200ms="servings"
                         class="h-2 w-full rounded-lg bg-zinc-200 accent-orange-500 dark:bg-zinc-700"
@@ -283,7 +287,7 @@ $logDecision = function ($decisionType) {
                         1인분당 ₩{{ number_format($costSummary['costPerServing']) }}
                     </flux:text>
                 </div>
-                <div class="rounded-lg border border-zinc-200 p-6 dark:border-zinc-700">
+                <div class="rounded-lg border border-zinc-200 bg-zinc-50 p-6 dark:border-zinc-700 dark:bg-zinc-900">
                     <flux:text class="text-sm font-medium text-zinc-600 dark:text-zinc-400">
                         배달 주문
                     </flux:text>
@@ -317,48 +321,6 @@ $logDecision = function ($decisionType) {
                     </flux:text>
                 </div>
             @endif
-
-            @auth
-                <div class="mt-6 grid grid-cols-1 gap-4 md:grid-cols-2">
-                    <flux:button
-                        color="green"
-                        size="lg"
-                        class="w-full justify-center py-4"
-                        wire:click="logDecision('cook')"
-                    >
-                        <flux:icon.home class="h-5 w-5" />
-                        <span class="ml-2">
-                            집에서 요리하기
-                            <span class="block text-sm font-normal text-white/80">
-                                ₩{{ number_format($costSummary['cookingCost']) }} • {{ $this->recipe->cooking_time }}분
-                            </span>
-                        </span>
-                    </flux:button>
-                    <flux:button
-                        color="red"
-                        size="lg"
-                        class="w-full justify-center py-4"
-                        wire:click="logDecision('delivery')"
-                    >
-                        <flux:icon.truck class="h-5 w-5" />
-                        <span class="ml-2">
-                            배달 주문하기
-                            <span class="block text-sm font-normal text-white/80">
-                                ₩{{ number_format($this->recipe->delivery_price) }} • 30-40분
-                            </span>
-                        </span>
-                    </flux:button>
-                </div>
-            @else
-                <div class="mt-6 rounded-lg border border-blue-200 bg-blue-50 p-4 text-center text-blue-700 dark:border-blue-700/60 dark:bg-blue-900/20 dark:text-blue-200">
-                    <flux:text class="mb-2 text-sm">
-                        로그인하면 결정 기록과 절약 통계를 모아볼 수 있어요.
-                    </flux:text>
-                    <flux:button href="{{ route('login') }}" color="blue" variant="outline">
-                        로그인하기
-                    </flux:button>
-                </div>
-            @endauth
         </div>
 
         @php
@@ -367,7 +329,8 @@ $logDecision = function ($decisionType) {
             $totalCost = $costSummary['cookingCost'];
         @endphp
 
-        <div class="mb-8 rounded-xl border border-zinc-200 bg-white p-6 shadow-sm dark:border-zinc-700 dark:bg-zinc-800">
+        <div class="mb-8 grid grid-cols-1 gap-6 lg:grid-cols-2">
+        <div class="rounded-xl border border-zinc-200 bg-white p-6 shadow-sm dark:border-zinc-700 dark:bg-zinc-800">
             <flux:heading size="lg" class="mb-4 flex items-center gap-2 text-zinc-900 dark:text-white">
                 <flux:icon.chart-pie class="h-5 w-5" />
                 주요 재료 비용 분석
@@ -429,64 +392,63 @@ $logDecision = function ($decisionType) {
             $multiplier = $effectiveServings / $baseServings;
         @endphp
 
-        <div class="grid grid-cols-1 gap-6 lg:grid-cols-2">
-            <div class="rounded-xl border border-zinc-200 bg-white p-6 shadow-sm dark:border-zinc-700 dark:bg-zinc-800">
-                <flux:heading size="lg" class="mb-4 flex items-center gap-2 text-zinc-900 dark:text-white">
-                    <flux:icon.shopping-cart class="h-5 w-5" />
-                    전체 재료 ({{ $effectiveServings }}인분)
-                </flux:heading>
-                <div class="space-y-4">
-                    @foreach($this->recipe->ingredients as $ingredient)
-                        @php
-                            $adjustedQuantity = $ingredient->pivot->quantity * $multiplier;
-                            $ingredientCost = $adjustedQuantity * $ingredient->current_price;
-                        @endphp
-                        <div class="flex items-start justify-between gap-3 pb-3 border-b border-zinc-100 dark:border-zinc-700 last:border-0">
-                            <div>
-                                <flux:text class="font-semibold text-zinc-900 dark:text-zinc-100">
-                                    {{ $ingredient->name }}
-                                </flux:text>
-                                <flux:text class="text-xs text-zinc-500 dark:text-zinc-400">
-                                    {{ number_format($adjustedQuantity, 1) }}{{ $ingredient->unit }}
-                                    @if($ingredient->pivot->is_optional)
-                                        <span class="ml-1 text-emerald-500">(선택)</span>
-                                    @endif
-                                </flux:text>
-                                @if($ingredient->pivot->notes)
-                                    <flux:text class="text-xs text-zinc-400 dark:text-zinc-500">
-                                        {{ $ingredient->pivot->notes }}
-                                    </flux:text>
+        <div class="rounded-xl border border-zinc-200 bg-white p-6 shadow-sm dark:border-zinc-700 dark:bg-zinc-800">
+            <flux:heading size="lg" class="mb-4 flex items-center gap-2 text-zinc-900 dark:text-white">
+                <flux:icon.shopping-cart class="h-5 w-5" />
+                전체 재료 ({{ $effectiveServings }}인분)
+            </flux:heading>
+            <div class="space-y-4">
+                @foreach($this->recipe->ingredients as $ingredient)
+                    @php
+                        $adjustedQuantity = $ingredient->pivot->quantity * $multiplier;
+                        $ingredientCost = $adjustedQuantity * $ingredient->current_price;
+                    @endphp
+                    <div class="flex items-start justify-between gap-3 pb-3 border-b border-zinc-100 dark:border-zinc-700 last:border-0">
+                        <div>
+                            <flux:text class="font-semibold text-zinc-900 dark:text-zinc-100">
+                                {{ $ingredient->name }}
+                            </flux:text>
+                            <flux:text class="text-xs text-zinc-500 dark:text-zinc-400">
+                                {{ number_format($adjustedQuantity, 1) }}{{ $ingredient->unit }}
+                                @if($ingredient->pivot->is_optional)
+                                    <span class="ml-1 text-emerald-600 dark:text-emerald-400">(선택)</span>
                                 @endif
-                            </div>
-                            <flux:text class="text-sm font-semibold text-zinc-800 dark:text-zinc-200">
-                                ₩{{ number_format($ingredientCost) }}
                             </flux:text>
+                            @if($ingredient->pivot->notes)
+                                <flux:text class="text-xs text-zinc-400 dark:text-zinc-500">
+                                    {{ $ingredient->pivot->notes }}
+                                </flux:text>
+                            @endif
                         </div>
-                    @endforeach
-                </div>
-            </div>
-
-            <div class="rounded-xl border border-zinc-200 bg-white p-6 shadow-sm dark:border-zinc-700 dark:bg-zinc-800">
-                <flux:heading size="lg" class="mb-4 flex items-center gap-2 text-zinc-900 dark:text-white">
-                    <flux:icon.document-text class="h-5 w-5" />
-                    조리 방법
-                </flux:heading>
-                <div class="space-y-4">
-                    @forelse($this->instructions as $index => $step)
-                        <div class="flex gap-3">
-                            <div class="flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-full bg-orange-100 text-sm font-semibold text-orange-600 dark:bg-orange-900/40 dark:text-orange-300">
-                                {{ $index + 1 }}
-                            </div>
-                            <flux:text class="flex-1 leading-relaxed text-zinc-700 dark:text-zinc-200">
-                                {{ $step }}
-                            </flux:text>
-                        </div>
-                    @empty
-                        <flux:text class="text-sm text-zinc-500 dark:text-zinc-400">
-                            아직 조리 단계가 등록되지 않았어요.
+                        <flux:text class="text-sm font-semibold text-zinc-800 dark:text-zinc-200">
+                            ₩{{ number_format($ingredientCost) }}
                         </flux:text>
-                    @endforelse
-                </div>
+                    </div>
+                @endforeach
+            </div>
+        </div>
+        </div>
+
+        <div class="mb-8 rounded-xl border border-zinc-200 bg-white p-6 shadow-sm dark:border-zinc-700 dark:bg-zinc-800">
+            <flux:heading size="lg" class="mb-4 flex items-center gap-2 text-zinc-900 dark:text-white">
+                <flux:icon.document-text class="h-5 w-5" />
+                조리 방법
+            </flux:heading>
+            <div class="space-y-4">
+                @forelse($this->instructions as $index => $step)
+                    <div class="flex gap-3">
+                        <div class="flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-full bg-orange-100 text-sm font-semibold text-orange-600 dark:bg-orange-900/40 dark:text-orange-300">
+                            {{ $index + 1 }}
+                        </div>
+                        <flux:text class="flex-1 leading-relaxed text-zinc-700 dark:text-zinc-200">
+                            {{ $step }}
+                        </flux:text>
+                    </div>
+                @empty
+                    <flux:text class="text-sm text-zinc-500 dark:text-zinc-400">
+                        아직 조리 단계가 등록되지 않았어요.
+                    </flux:text>
+                @endforelse
             </div>
         </div>
     </div>
