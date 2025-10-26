@@ -36,12 +36,16 @@ $costSummary = computed(function () {
     $servings = $this->effectiveServings;
     $cookingCost = $this->recipe->calculateCost($servings);
     $costPerServing = $this->recipe->calculateCostPerServing($servings);
+    $deliveryCost = $this->recipe->calculateDeliveryCost($servings);
+    $deliveryCostPerServing = $this->recipe->calculateDeliveryCostPerServing($servings);
     $savings = $this->recipe->calculateSavings($servings);
     $savingsPercentage = $this->recipe->calculateSavingsPercentage($servings);
 
     return [
         'cookingCost' => $cookingCost,
         'costPerServing' => $costPerServing,
+        'deliveryCost' => $deliveryCost,
+        'deliveryCostPerServing' => $deliveryCostPerServing,
         'savings' => $savings,
         'savingsPercentage' => $savingsPercentage,
     ];
@@ -276,6 +280,17 @@ $logDecision = function ($decisionType) {
             </div>
 
             <div class="mt-6 grid grid-cols-1 gap-6 md:grid-cols-2">
+                <div class="rounded-lg border border-zinc-200 bg-zinc-50 p-6 dark:border-zinc-700 dark:bg-zinc-900">
+                    <flux:text class="text-sm font-medium text-zinc-600 dark:text-zinc-400">
+                        배달 주문
+                    </flux:text>
+                    <flux:heading size="2xl" class="mt-2 text-zinc-700 dark:text-zinc-200">
+                        ₩{{ number_format($costSummary['deliveryCost']) }}
+                    </flux:heading>
+                    <flux:text class="text-xs text-zinc-500 dark:text-zinc-400">
+                        1인분당 ₩{{ number_format($costSummary['deliveryCostPerServing']) }}
+                    </flux:text>
+                </div>
                 <div class="rounded-lg border border-green-200 bg-green-50 p-6 dark:border-green-700/60 dark:bg-green-900/10">
                     <flux:text class="text-sm font-medium text-green-700 dark:text-green-300">
                         집에서 요리
@@ -285,17 +300,6 @@ $logDecision = function ($decisionType) {
                     </flux:heading>
                     <flux:text class="text-xs text-green-700/80 dark:text-green-300/80">
                         1인분당 ₩{{ number_format($costSummary['costPerServing']) }}
-                    </flux:text>
-                </div>
-                <div class="rounded-lg border border-zinc-200 bg-zinc-50 p-6 dark:border-zinc-700 dark:bg-zinc-900">
-                    <flux:text class="text-sm font-medium text-zinc-600 dark:text-zinc-400">
-                        배달 주문
-                    </flux:text>
-                    <flux:heading size="2xl" class="mt-2 text-zinc-400 line-through">
-                        ₩{{ number_format($this->recipe->delivery_price) }}
-                    </flux:heading>
-                    <flux:text class="text-xs text-zinc-500 dark:text-zinc-400">
-                        2인분 기준 배달가 추정치
                     </flux:text>
                 </div>
             </div>
